@@ -1,5 +1,6 @@
+import "./Welcome.css";
 import { Link } from "react-router-dom";
-import welcomeLumi from "../assets/lumi-peek.png";
+import welcomeLumi from "../../assets/lumi/peek.png";
 
 function Welcome() {
     return (

@@ -1,12 +1,12 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Landing from "./pages/Landing";
-import Welcome from "./pages/Welcome";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Upload from "./pages/Upload";
-import Workspace from "./pages/Workspace";
+import Landing from "./pages/Landing/Landing";
+import Welcome from "./pages/Welcome/Welcome";
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Upload from "./pages/Upload/Upload";
+import Workspace from "./pages/Workspace/Workspace";
 
 function App() {
   return (

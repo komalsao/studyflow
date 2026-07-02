@@ -1,4 +1,4 @@
-import aboutLumi from "../assets/lumi-wave.png";
+import aboutLumi from "../assets/lumi/wave.png";
 
 function About() {
   return (

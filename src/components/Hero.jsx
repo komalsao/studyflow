@@ -1,4 +1,4 @@
-import heroLumi from "../assets/lumi-hero.png";
+import heroLumi from "../assets/lumi/hero.png";
 import { Link } from "react-router-dom";
 
 function Hero() {

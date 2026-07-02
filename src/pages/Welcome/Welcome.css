@@ -1,0 +1,84 @@
+.welcome {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #faf8f5;
+  padding: 40px;
+}
+
+.welcome-card {
+  position: relative;
+  width: 520px;
+  background: white;
+  border-radius: 28px;
+  padding: 110px 45px 45px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-lumi {
+  position: absolute;
+  top: -120px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 170px;
+}
+
+.welcome h1 {
+  font-size: 2.6rem;
+  margin-top: -30px;
+  margin-bottom: 18px;
+}
+
+.welcome-text {
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.welcome-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: #6b7b5d;
+  color: white;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.or-text {
+  margin: 20px 0;
+  color: #888;
+}
+
+.signup-text {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.signup-link {
+  color: #6b7b5d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
