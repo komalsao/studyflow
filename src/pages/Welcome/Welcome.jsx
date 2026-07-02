@@ -36,7 +36,7 @@ function Welcome() {
 
                 <p className="signup-text">
                     Don't have an account?{" "}
-                    <Link to="/login" className="signup-link">
+                    <Link to="/signup" className="signup-link">
                         Create Account
                     </Link>
                 </p>

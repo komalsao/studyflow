@@ -1,0 +1,205 @@
+.login-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#faf8f5;
+    padding:40px;
+}
+
+.login-card{
+    width:520px;
+    background:white;
+    border-radius:28px;
+    padding:50px 45px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.brand-title{
+    font-family:"Playfair Display",serif;
+    font-size:2.3rem;
+    font-weight:700;
+    color:#6b7b5d;
+    margin-bottom:6px;
+}
+
+.brand-tagline{
+    color:#777;
+    font-size:.95rem;
+}
+
+.login-card h1{
+    text-align:center;
+    font-size:2.3rem;
+    margin-bottom:10px;
+}
+
+.login-subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:30px;
+    line-height:1.6;
+}
+
+.google-btn{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    background:white;
+    border-radius:14px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+
+    font-size:1rem;
+    font-weight:600;
+
+    cursor:pointer;
+    transition:.25s;
+}
+
+.google-btn:hover{
+    background:#fafafa;
+}
+
+.google-icon{
+    font-size:1.4rem;
+}
+
+.divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:28px 0;
+}
+
+.divider span{
+    flex:1;
+    height:1px;
+    background:#ddd;
+}
+
+.divider p{
+    color:#888;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:18px;
+}
+
+.input-group label{
+    font-size:.95rem;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.input-group input{
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:1rem;
+    outline:none;
+}
+
+.input-group input:focus{
+    border-color:#6b7b5d;
+}
+
+.forgot-password{
+    display:block;
+    text-align:right;
+    margin-bottom:28px;
+    color:#6b7b5d;
+    text-decoration:none;
+    font-size:.95rem;
+}
+
+.signin-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#6b7b5d;
+    color:white;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.signin-btn:hover{
+    background:#5b6b4e;
+}
+
+.signup-text{
+    text-align:center;
+    margin-top:28px;
+    color:#666;
+}
+
+.signup-link{
+    color:#6b7b5d;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.signup-link:hover{
+    text-decoration:underline;
+}
+
+.brand-title{
+    font-family: "Cormorant Garamond", serif;
+}
+
+.login-page{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#faf8f5;
+    overflow:hidden;
+}
+
+.login-lumi{
+    position:fixed;
+    right:0;
+    top:90px;
+    width:400px;
+    z-index:10;
+    pointer-events:none;
+    right: -71px;
+}
+
+.password-input{
+    position:relative;
+}
+
+.password-input input{
+    width:100%;
+    padding:15px 50px 15px 15px;
+}
+
+.eye-btn{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    border:none;
+    background:none;
+    cursor:pointer;
+    color:#666;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.2rem;
+}

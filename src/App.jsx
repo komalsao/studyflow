@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Upload from "./pages/Upload/Upload";
 import Workspace from "./pages/Workspace/Workspace";
+import Signup from "./pages/Signup/Signup";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/workspace" element={<Workspace />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );
