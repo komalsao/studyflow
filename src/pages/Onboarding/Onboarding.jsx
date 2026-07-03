@@ -2,8 +2,10 @@ import "./Onboarding.css";
 import sitLumi from "../../assets/lumi/sit.png";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Onboarding() {
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     
     const handleContinue = (e) => {

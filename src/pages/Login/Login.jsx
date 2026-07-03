@@ -5,13 +5,19 @@ import sideLumi from "../../assets/lumi/side.png";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useState } from "react";
 import auth from "../../firebase/auth";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,6 +34,29 @@ function Login() {
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/onboarding");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert("Please enter your email first.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent!");
+    } catch (error) {
+      alert(error.message);
+    }
+
   };
 
   return (
@@ -54,7 +83,7 @@ function Login() {
             Sign in to continue your study journey.
           </p>
 
-          <button className="google-btn">
+          <button className="google-btn" onClick={handleGoogleLogin}>
             <FcGoogle className="google-icon" />
             Continue with Google
           </button>
@@ -97,9 +126,11 @@ function Login() {
 
           </div>
 
-          <Link to="/" className="forgot-password">
-            Forgot password?
-          </Link>
+          <button type="button" className="forgot-password"
+          onClick={handleForgotPassword}
+          >
+            Forgot Password?
+          </button>
 
           <button
             type="submit"
