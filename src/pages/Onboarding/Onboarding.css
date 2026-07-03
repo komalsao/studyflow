@@ -1,0 +1,115 @@
+.onboarding-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f8f6f2;
+    padding:30px;
+}
+
+.onboarding-card{
+    width:480px;
+    background:#fff;
+    border-radius:32px;
+    padding:45px 40px 40px;
+    text-align:center;
+    box-shadow:0 15px 45px rgba(0,0,0,.08);
+}
+
+.brand-title{
+    font-size:2.1rem;
+    color:#6d825d;
+    margin-bottom:20px;
+}
+
+.onboarding-card h1{
+    font-size:3rem;
+    color:#253321;
+    margin-bottom:15px;
+}
+
+.heart-icon{
+    color:#71875d;   
+    font-size:2.5rem;
+}
+
+.subtitle{
+    color:#444;
+    font-size:1.3rem;
+    line-height:1.5;
+    margin-bottom:160px;
+}
+
+.subtitle span{
+    color:#6d825d;
+    font-weight:700;
+}
+
+.input-wrapper{
+    position:relative;
+    margin-bottom:35px;
+}
+
+.sit-lumi{
+    position:absolute;
+    width:190px;
+    left:50%;
+    transform:translateX(-50%);
+    top:-148px;
+    z-index:10;
+    pointer-events:none;
+}
+
+.input-wrapper input{
+    width:100%;
+    height:115px;
+    border:2px solid #88a16f;
+    border-radius:22px;
+    padding:55px 22px 18px;
+    font-size:1.1rem;
+    outline:none;
+    transition:.25s;
+}
+
+.input-wrapper input:focus{
+    border-color:#6d825d;
+}
+
+.input-wrapper input::placeholder{
+    color:#9b9b9b;
+}
+
+.journey-text{
+    color:#6d825d;
+    font-size:1rem;
+    margin:25px 0 35px;
+}
+
+.continue-btn{
+    width:100%;
+    height:60px;
+    border:none;
+    border-radius:18px;
+    background:#71875d;
+    color:white;
+    font-size:1.2rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.continue-btn:hover{
+    background:#627550;
+}
+
+.floating-label{
+    position:absolute;
+    left:25px;
+    top:22px;
+    font-size:.95rem;
+    color:#8b8b8b;
+    background:white;
+    padding:0 4px;
+    z-index:5;
+}
+

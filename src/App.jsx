@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Upload from "./pages/Upload/Upload";
 import Workspace from "./pages/Workspace/Workspace";
 import Signup from "./pages/Signup/Signup";
+import Onboarding from "./pages/Onboarding/Onboarding";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/workspace" element={<Workspace />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/onboarding" element={<Onboarding />} />
       </Routes>
     </BrowserRouter>
   );
