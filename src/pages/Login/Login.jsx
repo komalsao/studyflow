@@ -11,6 +11,8 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import db from "../../firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,10 +29,18 @@ function Login() {
         email,
         password
       );
+      const user = auth.currentUser;
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
 
       alert("Login successful!");
 
-      navigate("/dashboard");
     } catch (error) {
       alert(error.message);
     }
@@ -38,8 +48,18 @@ function Login() {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
-      navigate("/onboarding");
+
+      const result = await signInWithPopup(auth, provider);
+
+      const docRef = doc(db, "users", result.user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        navigate("/dashboard");
+      } else {
+        navigate("/onboarding");
+      }
+
     } catch (error) {
       alert(error.message);
     }
@@ -127,7 +147,7 @@ function Login() {
           </div>
 
           <button type="button" className="forgot-password"
-          onClick={handleForgotPassword}
+            onClick={handleForgotPassword}
           >
             Forgot Password?
           </button>

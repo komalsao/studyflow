@@ -3,24 +3,35 @@ import sitLumi from "../../assets/lumi/sit.png";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import db from "../../firebase/firestore";
+import auth from "../../firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 function Onboarding() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
-    
-    const handleContinue = (e) => {
-        e.preventDefault();
 
+    const handleContinue = async (e) => {
+        e.preventDefault();
         if (!name.trim()) {
             alert("Please enter your name.");
             return;
         }
-        // Later:
-        // Save to Firestore
+        try {
+            const user = auth.currentUser;
+            await setDoc(doc(db, "users", user.uid), {
+                name: name,
+                email: user.email,
+            });
 
-        navigate("/dashboard");
+            navigate("/dashboard");
+
+        } catch (error) {
+            alert(error.message);
+        }
     };
-    
+
+
     return (
         <div className="onboarding-page">
             <div className="onboarding-card">

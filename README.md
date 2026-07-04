@@ -87,7 +87,7 @@ The current focus is on building a complete authentication system, user dashboar
 - [x] Landing Page
 - [x] Welcome Page
 - [x] Routing
-- [ ] Authentication
+- [x] Authentication
 - [ ] User Dashboard
 - [ ] PDF Upload
 - [ ] Workspace
