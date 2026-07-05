@@ -1,0 +1,138 @@
+.start-card{
+
+    background:#ffffff;
+
+    border-radius:28px;
+
+    padding:32px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.start-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.start-icon{
+
+    width:64px;
+
+    height:64px;
+
+    background:#EAF8EE;
+
+    color:#2E8B57;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:22px;
+}
+
+.start-card h2{
+
+    font-size:28px;
+
+    color:#222;
+
+    margin-bottom:14px;
+}
+
+.start-card p{
+
+    color:#666;
+
+    line-height:1.7;
+
+    width:90%;
+}
+
+.card-arrow{
+
+    position:absolute;
+
+    bottom:28px;
+
+    right:28px;
+
+    color:#2E8B57;
+
+    transition:.25s;
+}
+
+.start-card:hover .card-arrow{
+
+    transform:translateX(8px);
+}
+
+.start-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:160px;
+
+    height:160px;
+
+    background:#EAF8EE;
+
+    border-radius:40% 60% 55% 45%;
+
+    top:-80px;
+
+    right:-80px;
+
+    transition:all .45s ease;
+
+    z-index:0;
+}
+
+.start-card:hover::before{
+
+    width:1000px;
+
+    height:900px;
+
+    top:-350px;
+
+    right:-350px;
+}
+
+.start-card > *{
+
+    position:relative;
+
+    z-index:2;
+}
+
+.start-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+
+    background:#F7FFF9;
+}
+
+.start-card:hover h2{
+
+    color:#1d6840;
+}
+

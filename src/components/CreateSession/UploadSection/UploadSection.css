@@ -1,0 +1,203 @@
+.upload-section{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:35px;
+
+    margin-bottom:35px;
+}
+
+.upload-card,
+.selected-materials{
+
+    background:#FCFDFC;
+
+    border:1px solid #EEF2EE;
+
+    border-radius:24px;
+
+    padding:30px;
+}
+
+.upload-box{
+
+    margin-top:25px;
+
+    height:300px;
+
+    border:2px dashed #C7DDCC;
+
+    border-radius:20px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#777;
+}
+
+.upload-subtitle{
+
+    color:#666;
+
+    margin-top:8px;
+
+    margin-bottom:24px;
+}
+
+.upload-box{
+
+    border:2px dashed #B9D9C1;
+
+    border-radius:22px;
+
+    height:340px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:18px;
+
+    transition:.3s;
+}
+
+.upload-box:hover{
+
+    background:#F7FCF8;
+
+    border-color:#2E8B57;
+}
+
+.upload-icon{
+
+    color:#2E8B57;
+}
+
+.upload-box h3{
+
+    font-size:24px;
+
+    margin:0;
+}
+
+.upload-box span{
+
+    color:#888;
+}
+
+.browse-btn{
+
+    background:#2E8B57;
+
+    color:white;
+
+    border:none;
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.browse-btn:hover{
+
+    transform:translateY(-2px);
+
+    background:#267148;
+}
+
+.upload-box small{
+
+    color:#888;
+}
+
+.materials-subtitle{
+
+    color:#666;
+
+    margin-top:8px;
+
+    margin-bottom:25px;
+}
+
+.material-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    margin-bottom:25px;
+}
+
+.material-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px 18px;
+
+    border:1px solid #E6ECE8;
+
+    border-radius:16px;
+
+    transition:.25s;
+
+    cursor:pointer;
+}
+
+.material-item:hover{
+
+    background:#F8FCF9;
+
+    border-color:#B7D8C2;
+}
+
+.material-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.pdf-icon{
+
+    color:#2E8B57;
+}
+
+.view-materials-btn{
+
+    background:none;
+
+    border:none;
+
+    color:#2E8B57;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    font-size:15px;
+}

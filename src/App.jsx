@@ -10,6 +10,7 @@ import Workspace from "./pages/Workspace/Workspace";
 import Signup from "./pages/Signup/Signup";
 import Onboarding from "./pages/Onboarding/Onboarding";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CreateSession from "./pages/CreateSession/CreateSession";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         />
         <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/create-session" element={<CreateSession />} />
       </Routes>
     </BrowserRouter>
   );

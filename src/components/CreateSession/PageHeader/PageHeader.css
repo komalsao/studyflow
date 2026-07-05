@@ -1,0 +1,57 @@
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:40px;
+}
+.page-title{
+
+    max-width:620px;
+}
+
+
+.page-title h1{
+
+    font-size:40px;
+
+    font-weight:700;
+
+    color:#222;
+
+    margin-bottom:14px;
+}
+
+.page-title p{
+
+    font-size:18px;
+
+    color:#666;
+
+    line-height:1.7;
+}
+
+.lumi-area{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    padding-right:90px;   /* Increase this */
+
+    flex:1;
+}
+
+.lumi-area img{
+
+    width:400px;
+
+    object-fit:contain;
+
+    
+}

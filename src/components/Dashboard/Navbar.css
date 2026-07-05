@@ -1,0 +1,77 @@
+.navbar{
+
+    width:100%;
+
+    height:74px;
+
+    background:#ffffff;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 55px;
+
+    border-bottom:1px solid #E7EFE9;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+}
+
+.logo h2{
+
+    font-size:34px;
+
+    color:#2E8B57;
+
+    font-weight:700;
+
+    letter-spacing:-0.5px;
+}
+
+.navbar-right{
+
+    display:flex;
+
+    align-items:center;
+}
+
+.profile-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:none;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#222;
+
+    transition:.2s;
+}
+
+.profile-btn:hover{
+
+    color:#2E8B57;
+}
+
+.dropdown{
+
+    font-size:14px;
+
+    color:#666;
+}

@@ -91,7 +91,7 @@ The current focus is on building a complete authentication system, user dashboar
 - [ ] User Dashboard
 - [ ] PDF Upload
 - [ ] Workspace
-- [ ] Firebase Integration
+- [x] Firebase Integration
 - [ ] Gemini API Integration
 - [ ] AI Summaries
 - [ ] Flashcards
