@@ -1,0 +1,188 @@
+.materials-card{
+
+    width:100%;
+
+    height:100%;
+
+    background:#FFFFFF;
+
+    border:1px solid #E7EFE9;
+
+    border-radius:22px;
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    align-self:stretch;
+
+    box-sizing:border-box;
+}
+
+/* ---------------- */
+
+.materials-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:24px;
+}
+
+.materials-header h3{
+
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#202020;
+}
+
+/* ---------------- */
+
+.upload-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    border:1px solid #CFE7D7;
+
+    background:#fff;
+
+    color:#2E8B57;
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.upload-btn:hover{
+
+    background:#EEF8F2;
+}
+
+/* ---------------- */
+
+.materials-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+    flex:1;
+}
+
+/* ---------------- */
+
+.material-item{
+
+    border:1px solid #EDF3EF;
+
+    border-radius:16px;
+
+    padding:16px;
+
+    transition:.25s;
+
+    cursor:pointer;
+}
+
+.material-item:hover{
+
+    border-color:#2E8B57;
+
+    transform:translateY(-2px);
+}
+
+/* ---------------- */
+
+.material-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.file-icon{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    background:#EEF8F2;
+
+    color:#2E8B57;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.material-left span{
+
+    font-size:15px;
+
+    font-weight:500;
+
+    color:#444;
+}
+
+/* ---------------- */
+
+.materials-footer{
+
+    margin-top:24px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    background:#F5FBF7;
+
+    color:#2E8B57;
+
+    font-weight:600;
+}
+
+.dot{
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#2E8B57;
+}

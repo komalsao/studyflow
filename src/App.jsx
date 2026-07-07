@@ -11,6 +11,8 @@ import Signup from "./pages/Signup/Signup";
 import Onboarding from "./pages/Onboarding/Onboarding";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CreateSession from "./pages/CreateSession/CreateSession";
+import StudyWorkspace from "./pages/StudyWorkspace/StudyWorkspace";
+import StudySessions from "./pages/StudySessions/StudySessions";
 
 function App() {
   return (
@@ -43,6 +45,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/create-session" element={<CreateSession />} />
+        <Route path="/study-workspace" element={<StudyWorkspace />} />
+        <Route path="/study-sessions" element={<StudySessions />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,150 @@
+.workspace-header{
+
+    height:78px;
+
+    background:#FFFFFF;
+
+    border-bottom:1px solid #E8EFEA;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 30px;
+
+    flex-shrink:0;
+}
+
+/* ---------- Left ---------- */
+
+.workspace-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+.workspace-logo{
+
+    margin:0;
+
+    font-family:"Playfair Display",serif;
+
+    font-size:1.75rem;
+
+    font-weight:700;
+
+    color:#6B7B5D;
+
+    letter-spacing:-0.3px;
+}
+
+/* ---------- Collapse ---------- */
+
+.collapse-btn{
+
+    width:36px;
+
+    height:36px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#F5FAF7;
+
+    color:#555;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.collapse-btn:hover{
+
+    background:#E8F6ED;
+
+    color:#2E8B57;
+}
+
+/* ---------- Right ---------- */
+
+.workspace-session{
+
+    text-align:right;
+}
+
+.workspace-session h1{
+
+    margin:0;
+
+    font-size:1.55rem;
+
+    font-weight:700;
+
+    color:#1E1E1E;
+
+    line-height:1.2;
+}
+
+.workspace-session p{
+
+    margin-top:4px;
+
+    font-size:14px;
+
+    color:#7A8780;
+}
+
+.workspace-title{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-end;
+
+    gap:10px;
+}
+
+.edit-title-btn{
+
+    width:32px;
+
+    height:32px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#F6FBF8;
+
+    color:#6E7A72;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.edit-title-btn:hover{
+
+    background:#EAF7EF;
+
+    color:#2E8B57;
+}

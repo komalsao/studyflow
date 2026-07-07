@@ -1,0 +1,212 @@
+.session-card{
+
+    background:#FFFFFF;
+
+    border:1px solid #E7EFE9;
+
+    border-radius:22px;
+
+    padding:22px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.session-card:hover{
+
+    border-color:#2E8B57;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 30px rgba(46,139,87,.06);
+}
+
+.session-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.session-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+}
+
+.session-icon{
+
+    width:56px;
+
+    height:56px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.session-left h3{
+
+    margin:0;
+
+    font-size:20px;
+
+    color:#202020;
+}
+
+.session-left p{
+
+    margin-top:6px;
+
+    color:#7B8680;
+
+    font-size:14px;
+}
+
+.session-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+}
+
+.session-right span{
+
+    font-weight:700;
+
+    font-size:18px;
+}
+
+.open-session{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#EEF8F2;
+
+    color:#2E8B57;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.open-session:hover{
+
+    background:#2E8B57;
+
+    color:white;
+}
+
+.session-details{
+
+    margin-top:22px;
+
+    padding-top:20px;
+
+    border-top:1px solid #EEF3EF;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+/* Progress */
+
+.progress-section{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.progress-section span{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#444;
+}
+
+.progress-bar{
+
+    height:10px;
+
+    background:#EEF4F0;
+
+    border-radius:999px;
+
+    overflow:hidden;
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:999px;
+
+    transition:width .35s ease;
+}
+
+/* Materials */
+
+.materials-section{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+}
+
+.materials-section h4{
+
+    margin:0;
+
+    font-size:15px;
+
+    color:#444;
+}
+
+.material-chip{
+
+    padding:12px 16px;
+
+    background:#F7FBF8;
+
+    border-radius:12px;
+
+    border:1px solid #E7EFE9;
+
+    font-size:14px;
+
+    color:#666;
+}

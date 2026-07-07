@@ -1,0 +1,94 @@
+.study-workspace{
+
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    background:#F7FBF8;
+}
+
+/* ---------------------------- */
+/* Header */
+/* ---------------------------- */
+
+.workspace-header {
+
+    flex-shrink: 0;
+}
+
+/* ---------------------------- */
+/* Body */
+/* ---------------------------- */
+
+.workspace-body{
+
+    flex:1;
+
+    display:flex;
+
+    overflow:hidden;
+
+    height:calc(100vh - 72px);
+}
+/* ---------------------------- */
+/* Main Workspace */
+/* ---------------------------- */
+
+.workspace-content{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    background:#F7FBF8;
+}
+
+/* ---------------------------- */
+/* Main Workspace */
+/* ---------------------------- */
+
+.workspace-scroll{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:32px;
+
+    padding-bottom:20px;
+}
+/* Scrollbar */
+
+.workspace-scroll::-webkit-scrollbar{
+
+    width:8px;
+}
+
+.workspace-scroll::-webkit-scrollbar-thumb{
+
+    background:#C9D8CD;
+
+    border-radius:100px;
+}
+
+.workspace-scroll::-webkit-scrollbar-track{
+
+    background:transparent;
+}
+
+.workspace-chat{
+
+    flex-shrink:0;
+
+    padding:0 24px 20px;
+
+    background:#F7FBF8;
+}

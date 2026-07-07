@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import db from "../../firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
-import Navbar from "../../components/Dashboard/Navbar";
+import AppHeader from "../../components/Shared/AppHeader/AppHeader";
 import HeroCard from "../../components/Dashboard/HeroCard";
 import StartSessionCard from "../../components/Dashboard/StartSessionCard";
 import RecentSessions from "../../components/Dashboard/RecentSessions";
@@ -45,7 +45,7 @@ function Dashboard() {
 
   return (
     <>
-      <Navbar
+      <AppHeader 
         name={name}
         onLogout={handleLogout}
       />

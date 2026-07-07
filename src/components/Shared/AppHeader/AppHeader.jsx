@@ -1,6 +1,6 @@
-import "./Navbar.css";
+import "./AppHeader.css";
 
-function Navbar({ name, onLogout }) {
+function AppHeader({ name, onLogout }) {
     return (
         <nav className="navbar">
 
@@ -28,4 +28,4 @@ function Navbar({ name, onLogout }) {
     );
 }
 
-export default Navbar;
+export default AppHeader;

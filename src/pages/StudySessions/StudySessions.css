@@ -1,0 +1,77 @@
+.study-sessions-page{
+
+    min-height:100vh;
+
+    background:#F7FBF8;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.study-sessions-content{
+
+    flex:1;
+
+    padding:36px 48px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+}
+
+.study-sessions-header h1{
+
+    margin:0;
+
+    font-size:40px;
+
+    font-weight:700;
+
+    color:#202020;
+}
+
+.study-sessions-header p{
+
+    margin-top:8px;
+
+    font-size:17px;
+
+    color:#6D7871;
+}
+
+.study-sessions-layout{
+
+    display:grid;
+
+    grid-template-columns:1.7fr 1fr;
+
+    gap:28px;
+
+    align-items:start;
+
+    height:calc(100vh - 240px);
+}
+
+.sessions-list{
+
+    height:100%;
+
+    overflow-y:auto;
+
+    padding-right:6px;
+}
+
+.sessions-list::-webkit-scrollbar{
+
+    width:6px;
+}
+
+.sessions-list::-webkit-scrollbar-thumb{
+
+    background:#D4DDD7;
+
+    border-radius:999px;
+}
