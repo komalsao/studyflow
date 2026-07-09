@@ -12,7 +12,7 @@
 
     justify-content: space-between;
 
-    padding: 16px;
+    padding:0;
 
     transition: width .3s ease;
 
@@ -27,7 +27,7 @@
 
 .study-sidebar.collapsed {
 
-    width: 72px;
+    width: 60px;
 }
 
 /* ---------------------- */
@@ -211,7 +211,7 @@
 
     align-items:center;
 
-    gap:14px;
+    gap:18px;
 
     padding:12px;
 
@@ -285,7 +285,7 @@
 
     width:52px;
 
-    margin:0 auto 0 -8px;
+    margin:0 auto 0 1px;
 
     border-radius:16px;
 }

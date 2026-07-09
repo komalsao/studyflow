@@ -1,0 +1,213 @@
+.delete-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(4px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+    animation:fadeIn .2s ease;
+}
+
+.delete-modal{
+
+    width:420px;
+
+    background:#FFFFFF;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    position:relative;
+
+    box-shadow:0 24px 60px rgba(0,0,0,.18);
+
+    animation:popIn .25s ease;
+}
+
+.delete-close{
+
+    position:absolute;
+
+    top:18px;
+
+    right:18px;
+
+    width:38px;
+
+    height:38px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#F4F7F5;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.delete-close:hover{
+
+    background:#FEECEC;
+
+    color:#DC2626;
+}
+
+.delete-icon{
+
+    width:72px;
+
+    height:72px;
+
+    margin:0 auto 22px;
+
+    border-radius:50%;
+
+    background:#FFF1F2;
+
+    color:#DC2626;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.delete-modal h2{
+
+    margin:0;
+
+    text-align:center;
+
+    font-size:24px;
+
+    color:#202020;
+}
+
+.delete-modal p{
+
+    margin:14px 0 28px;
+
+    text-align:center;
+
+    color:#6F7A73;
+
+    line-height:1.6;
+}
+
+.delete-actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:14px;
+}
+
+.delete-cancel{
+
+    height:46px;
+
+    padding:0 24px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#F3F5F4;
+
+    color:#555;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.delete-cancel:hover{
+
+    background:#E7ECE9;
+}
+
+.delete-btn{
+
+    height:46px;
+
+    padding:0 24px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#DC2626;
+
+    color:#FFFFFF;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.delete-btn:hover{
+
+    background:#B91C1C;
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes popIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}

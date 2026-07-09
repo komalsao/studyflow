@@ -1,9 +1,8 @@
-import "./MaterialsLibrary.css";
+import "./Materialslibrary.css";
 
 import { useState, useEffect } from "react";
 
 import {
-    Search,
     Upload,
     SquarePen,
     Trash2,
@@ -13,7 +12,10 @@ import {
     Presentation
 } from "lucide-react";
 
-const materials = [
+import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
+import DeleteModal from "../../Shared/Modals/DeleteModal/DeleteModal";
+
+const initialMaterials = [
     {
         id: 1,
         name: "Operating Systems.pdf",
@@ -58,72 +60,112 @@ const iconMap = {
     txt: FileCode2
 };
 
-function MaterialsLibrary() {
+function MaterialsPreview() {
+
+    const [materials, setMaterials] = useState(initialMaterials);
 
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
+    const [editingMaterial, setEditingMaterial] = useState(null);
+
+    const [showRenameModal, setShowRenameModal] = useState(false);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const [newName, setNewName] = useState("");
+
     useEffect(() => {
 
-        function handleClick() {
+        function handleOutsideClick() {
 
             setSelectedMaterial(null);
 
         }
 
-        document.addEventListener("click", handleClick);
+        document.addEventListener("click", handleOutsideClick);
 
         return () => {
 
-            document.removeEventListener("click", handleClick);
+            document.removeEventListener("click", handleOutsideClick);
 
         };
 
     }, []);
 
+    function openRename(material) {
+
+        const dotIndex = material.name.lastIndexOf(".");
+
+        setEditingMaterial(material);
+
+        setNewName(
+            material.name.substring(0, dotIndex)
+        );
+
+        setShowRenameModal(true);
+
+    }
+
+    function openDelete(material) {
+
+        setEditingMaterial(material);
+
+        setShowDeleteModal(true);
+
+    }
+
+    function handleRename() {
+
+        const extension =
+            editingMaterial.name.substring(
+                editingMaterial.name.lastIndexOf(".")
+            );
+
+        setMaterials(prev =>
+            prev.map(material =>
+                material.id === editingMaterial.id
+                    ? {
+                        ...material,
+                        name: newName + extension
+                    }
+                    : material
+            )
+        );
+
+        setShowRenameModal(false);
+
+        setEditingMaterial(null);
+
+    }
+
+    function handleDelete() {
+
+        setMaterials(prev =>
+            prev.filter(
+                material =>
+                    material.id !== editingMaterial.id
+            )
+        );
+
+        setShowDeleteModal(false);
+
+        setSelectedMaterial(null);
+
+        setEditingMaterial(null);
+
+    }
+
     return (
 
-        <aside className="materials-library">
+        <>        <aside className="materials-preview">
 
             <div className="materials-header">
 
-                <h2>Materials Library</h2>
+                <h2>Materials</h2>
 
-                <div className="materials-stats">
-
-                    <span>18 Materials</span>
-
-                    <div className="file-badges">
-
-                        <div className="file-badge pdf">
-                            PDF&nbsp;4
-                        </div>
-
-                        <div className="file-badge docx">
-                            DOCX&nbsp;8
-                        </div>
-
-                        <div className="file-badge ppt">
-                            PPT&nbsp;3
-                        </div>
-
-                        <div className="file-badge txt">
-                            TXT&nbsp;3
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div className="materials-search">
-
-                <Search size={18} />
-
-                <input
-                    type="text"
-                    placeholder="Search materials..."
-                />
+                <p className="materials-subtitle">
+                    Available in this study session
+                </p>
 
             </div>
 
@@ -147,14 +189,13 @@ function MaterialsLibrary() {
                                 e.stopPropagation();
 
                                 setSelectedMaterial(
-
                                     selectedMaterial === material.id
                                         ? null
                                         : material.id
-
                                 );
 
                             }}
+
                             onDoubleClick={(e) => {
 
                                 e.stopPropagation();
@@ -174,10 +215,19 @@ function MaterialsLibrary() {
 
                                 <div className="material-info">
 
-                                    <span>{material.name}</span>
+                                    <span>
+
+                                        {material.name.substring(
+                                            0,
+                                            material.name.lastIndexOf(".")
+                                        )}
+
+                                    </span>
 
                                     <small>
+
                                         {material.type.toUpperCase()}
+
                                     </small>
 
                                 </div>
@@ -193,7 +243,7 @@ function MaterialsLibrary() {
 
                                             e.stopPropagation();
 
-                                            console.log("Rename:", material.name);
+                                            openRename(material);
 
                                         }}
                                     >
@@ -207,7 +257,7 @@ function MaterialsLibrary() {
 
                                             e.stopPropagation();
 
-                                            console.log("Delete:", material.name);
+                                            openDelete(material);
 
                                         }}
                                     >
@@ -230,7 +280,13 @@ function MaterialsLibrary() {
 
             <button
                 className="upload-material-btn"
-                onClick={() => setSelectedMaterial(null)}
+                onClick={() => {
+
+                    console.log("Upload clicked");
+
+                    setSelectedMaterial(null);
+
+                }}
             >
 
                 <Upload size={18} />
@@ -240,9 +296,39 @@ function MaterialsLibrary() {
             </button>
 
         </aside>
+                <RenameModal
+            isOpen={showRenameModal}
+            title="Rename Material"
+            value={newName}
+            setValue={setNewName}
+            onClose={() => {
+
+                setShowRenameModal(false);
+
+                setEditingMaterial(null);
+
+            }}
+            onSave={handleRename}
+        />
+
+        <DeleteModal
+            isOpen={showDeleteModal}
+            title="Delete Material"
+            message={`Are you sure you want to delete "${editingMaterial?.name}"?`}
+            onClose={() => {
+
+                setShowDeleteModal(false);
+
+                setEditingMaterial(null);
+
+            }}
+            onDelete={handleDelete}
+        />
+
+        </>
 
     );
 
 }
 
-export default MaterialsLibrary;
+export default MaterialsPreview;

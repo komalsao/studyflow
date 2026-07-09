@@ -16,7 +16,7 @@ function WelcomeView({ setActiveView }) {
 
                     <HeroCard />
 
-                    <ActionGrid />
+                    <ActionGrid setActiveView={setActiveView} />
 
                 </div>
 
