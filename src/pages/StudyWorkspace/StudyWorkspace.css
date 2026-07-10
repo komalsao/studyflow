@@ -59,11 +59,7 @@
 
     flex:1;
 
-    overflow-y:auto;
-
-    padding:32px;
-
-    padding-bottom:20px;
+    overflow:hidden;
 }
 /* Scrollbar */
 
@@ -91,4 +87,32 @@
     padding:0 24px 20px;
 
     background:#F7FBF8;
+}
+
+.welcome-scroll{
+
+    overflow-y:auto;
+
+    padding:32px;
+
+    padding-bottom:20px;
+}
+
+/* Scrollbar */
+
+.welcome-scroll::-webkit-scrollbar{
+
+    width:8px;
+}
+
+.welcome-scroll::-webkit-scrollbar-thumb{
+
+    background:#C9D8CD;
+
+    border-radius:100px;
+}
+
+.welcome-scroll::-webkit-scrollbar-track{
+
+    background:transparent;
 }

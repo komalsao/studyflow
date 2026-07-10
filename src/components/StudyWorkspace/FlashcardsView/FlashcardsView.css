@@ -1,0 +1,1059 @@
+/* ==========================================
+   FLASHCARDS VIEW
+========================================== */
+
+.flashcards-view{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+
+    padding:40px;
+
+    background:#F8F6F1;
+
+    box-sizing:border-box;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.flashcards-header{
+
+    width:100%;
+    max-width:900px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:50px;
+}
+
+.flashcards-header h1{
+
+    margin:0;
+
+    font-size:2.3rem;
+
+    color:#2E7D58;
+}
+
+.flashcards-header span{
+
+    color:#777;
+
+    font-weight:600;
+}
+
+/* ==========================================
+   STACK
+========================================== */
+
+.flashcards-stack{
+
+    position:relative;
+
+    width:620px;
+
+    height:390px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+/* ==========================================
+   BACK CARDS
+========================================== */
+
+.stack-card{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    border-radius:24px;
+
+    background:#FFFDF8;
+
+    border:1px solid #E8E3D9;
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.05);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:50px;
+
+    box-sizing:border-box;
+
+    overflow:hidden;
+}
+.stack-card span{
+
+    font-size:1.5rem;
+
+    font-weight:600;
+
+    color:#B4B4B4;
+
+    text-align:center;
+
+    line-height:1.5;
+
+    user-select:none;
+}
+
+.second{
+
+    transform:
+        translateY(12px)
+        scale(.98);
+
+    opacity:.82;
+}
+
+.third{
+
+    transform:
+        translateY(24px)
+        scale(.96);
+
+    opacity:.55;
+}
+
+/* ==========================================
+   MAIN CARD
+========================================== */
+
+.flashcard{
+
+    position:absolute;
+
+    width:100%;
+    height:100%;
+
+    perspective:1600px;
+
+    cursor:pointer;
+
+    z-index:5;
+}
+
+.flashcard-inner{
+
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+    transition:
+        transform .65s ease;
+
+    transform-style:preserve-3d;
+}
+
+.flashcard.moving .flashcard-inner{
+
+    transition:none;
+
+}
+
+/* Flip */
+
+.flashcard.show-answer .flashcard-inner{
+
+    transform:rotateY(180deg);
+}
+
+/* ==========================================
+   FRONT / BACK
+========================================== */
+
+.flashcard-front,
+.flashcard-back{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:24px;
+
+    background:#FFFDF8;
+
+    border:1px solid #E8E3D9;
+
+    box-shadow:
+        0 16px 36px rgba(0,0,0,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:60px;
+
+    box-sizing:border-box;
+
+    backface-visibility:hidden;
+}
+
+.flashcard-back{
+
+    transform:rotateY(180deg);
+}
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+.flashcard p{
+
+    margin:0 0 18px;
+
+    font-size:.95rem;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    color:#9A9A9A;
+}
+
+.flashcard h2{
+
+    margin:0;
+
+    font-size:2rem;
+
+    line-height:1.5;
+
+    color:#2D7A4E;
+}
+
+/* ==========================================
+   HINT
+========================================== */
+
+.flashcard-hint{
+
+    margin-top:40px;
+
+    color:#777;
+
+    font-size:15px;
+}
+
+/* ==========================================
+   CARD MOVES TO BACK
+========================================== */
+
+.flashcard.moving{
+
+    animation:
+        sendBack .45s forwards;
+}
+
+@keyframes sendBack{
+
+    0%{
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        opacity:1;
+    }
+
+    40%{
+
+        transform:
+            translateY(-16px)
+            scale(.98);
+    }
+
+    100%{
+
+        transform:
+            translateY(40px)
+            scale(.93);
+
+        opacity:0;
+    }
+}
+
+/* ==========================================
+   STACK ANIMATION
+========================================== */
+
+.flashcards-stack.animating .flashcard{
+
+    animation:
+        topCard .5s ease forwards;
+}
+
+.flashcards-stack.animating .second{
+
+    animation:
+        secondCard .5s ease forwards;
+}
+
+.flashcards-stack.animating .third{
+
+    animation:
+        thirdCard .5s ease forwards;
+}
+
+@keyframes topCard{
+
+    0%{
+
+        transform:
+            translateY(0)
+            rotate(0);
+
+        opacity:1;
+    }
+
+    25%{
+
+        transform:
+            translateY(-12px)
+            rotate(3deg);
+    }
+
+    100%{
+
+        transform:
+            translateX(180px)
+            translateY(60px)
+            rotate(14deg)
+            scale(.92);
+
+        opacity:0;
+    }
+}
+
+@keyframes secondCard{
+
+    from{
+
+        transform:
+            translateY(12px)
+            scale(.98);
+    }
+
+    to{
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+@keyframes thirdCard{
+
+    from{
+
+        transform:
+            translateY(24px)
+            scale(.96);
+    }
+
+    to{
+
+        transform:
+            translateY(12px)
+            scale(.98);
+    }
+}
+
+/* ==========================================================
+   PAGE
+========================================================== */
+
+.flashcards-view{
+
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:40px 60px;
+
+    background:#F9F7F1;
+
+    box-sizing:border-box;
+}
+
+/* ==========================================================
+   BACKGROUND CARDS
+========================================================== */
+
+.bg-card{
+
+    position:absolute;
+
+    width:260px;
+    height:170px;
+
+    border:2px solid rgba(46,125,88,.06);
+
+    border-radius:20px;
+
+    pointer-events:none;
+
+    z-index:0;
+}
+
+.bg-card-1{
+
+    top:8%;
+    left:8%;
+
+    transform:rotate(-12deg);
+}
+
+.bg-card-2{
+
+    top:16%;
+    right:10%;
+
+    transform:rotate(10deg);
+}
+
+.bg-card-3{
+
+    bottom:18%;
+    left:12%;
+
+    transform:rotate(8deg);
+}
+
+.bg-card-4{
+
+    bottom:12%;
+    right:12%;
+
+    transform:rotate(-10deg);
+}
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.flashcards-header{
+
+    position:relative;
+
+    z-index:5;
+
+    width:100%;
+
+    max-width:760px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:50px;
+}
+
+.flashcards-header h1{
+
+    margin:0;
+
+    font-size:2.5rem;
+
+    color:#2D7A4E;
+}
+
+.flashcards-header h3{
+
+    margin:0;
+
+    font-weight:500;
+
+    color:#6D6D6D;
+}
+
+/* ==========================================================
+   PROGRESS
+========================================================== */
+
+.progress-wrapper{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.progress-bar{
+
+    width:430px;
+
+    height:10px;
+
+    border-radius:999px;
+
+    background:#E8E3D8;
+
+    overflow:hidden;
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:999px;
+
+    background:#2D7A4E;
+
+    transition:width .45s;
+}
+
+.progress-wrapper span{
+
+    color:#7B7B7B;
+
+    font-size:.95rem;
+}
+
+/* ==========================================================
+   STACK
+========================================================== */
+
+.flashcards-stack{
+
+    position:relative;
+
+    width:620px;
+
+    height:390px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:5;
+}
+
+/* ==========================================================
+   STACK CARDS
+========================================================== */
+
+.stack-card{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:24px;
+
+    background:#FFFDF8;
+
+    border:1px solid #E7E2D8;
+
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.05);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:50px;
+
+    text-align:center;
+
+    transition:.45s;
+}
+
+.stack-card span{
+
+    color:#B9B9B9;
+
+    font-size:1.4rem;
+
+    font-weight:600;
+
+    line-height:1.5;
+}
+
+.second{
+
+    transform:
+        translateY(14px)
+        scale(.98);
+
+    opacity:.8;
+}
+
+.third{
+
+    transform:
+        translateY(28px)
+        scale(.96);
+
+    opacity:.55;
+}
+
+/* ==========================================================
+   MAIN CARD
+========================================================== */
+
+.flashcard{
+
+    position:absolute;
+
+    inset:0;
+
+    cursor:pointer;
+
+    perspective:1500px;
+
+    z-index:5;
+}
+
+.flashcard-inner{
+
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+    transform-style:preserve-3d;
+
+    transition:transform .7s;
+}
+
+.flashcard.show-answer .flashcard-inner{
+
+    transform:rotateY(180deg);
+}
+
+/* ==========================================================
+   FRONT / BACK
+========================================================== */
+
+.flashcard-front,
+.flashcard-back{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:24px;
+
+    background:#FFFDF8;
+
+    border:1px solid #E7E2D8;
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.08);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:60px;
+
+    text-align:center;
+
+    backface-visibility:hidden;
+}
+
+.flashcard-back{
+
+    transform:rotateY(180deg);
+}
+
+.flashcard-front p,
+.flashcard-back p{
+
+    margin-bottom:18px;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    color:#999;
+
+    font-size:.9rem;
+}
+
+.flashcard-front h2,
+.flashcard-back h2{
+
+    margin:0;
+
+    font-size:2rem;
+
+    color:#2D7A4E;
+
+    line-height:1.6;
+}
+
+/* ==========================================================
+   STACK ANIMATION
+========================================================== */
+
+.flashcards-stack.animating .flashcard{
+
+    animation:topCard .5s ease forwards;
+}
+
+.flashcards-stack.animating .second{
+
+    animation:riseSecond .5s ease forwards;
+}
+
+.flashcards-stack.animating .third{
+
+    animation:riseThird .5s ease forwards;
+}
+
+@keyframes topCard{
+
+    0%{
+
+        transform:none;
+
+        opacity:1;
+    }
+
+    20%{
+
+        transform:
+            translateY(-14px)
+            rotate(2deg);
+    }
+
+    100%{
+
+        transform:
+            translateX(180px)
+            translateY(70px)
+            rotate(12deg)
+            scale(.92);
+
+        opacity:0;
+    }
+}
+
+@keyframes riseSecond{
+
+    from{
+
+        transform:
+            translateY(14px)
+            scale(.98);
+    }
+
+    to{
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+@keyframes riseThird{
+
+    from{
+
+        transform:
+            translateY(28px)
+            scale(.96);
+    }
+
+    to{
+
+        transform:
+            translateY(14px)
+            scale(.98);
+    }
+}
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.flashcard-footer{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-top:55px;
+
+    z-index:5;
+}
+
+.flashcard-footer p{
+
+    margin:0;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:#FFFFFF;
+
+    color:#666;
+
+    font-weight:500;
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,.05);
+}
+
+.flashcard-footer span{
+
+    color:#9A9A9A;
+
+    font-size:.82rem;
+
+    letter-spacing:.5px;
+}
+
+/* ==========================================================
+   COMPLETION
+========================================================== */
+
+.completion-screen{
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+}
+
+.completion-screen h1{
+
+    font-size:3rem;
+
+    color:#2D7A4E;
+
+    margin-bottom:18px;
+}
+
+.completion-screen p{
+
+    font-size:1.15rem;
+
+    color:#666;
+}
+
+.completion-screen span{
+
+    margin:30px 0;
+
+    color:#2D7A4E;
+
+    font-weight:600;
+}
+
+.completion-buttons{
+
+    display:flex;
+
+    gap:18px;
+}
+
+.completion-buttons button{
+
+    padding:14px 28px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    background:white;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.06);
+
+    transition:.2s;
+}
+
+.completion-buttons button:hover{
+
+    transform:translateY(-2px);
+}
+
+/* ==========================================
+   WRAPPER
+========================================== */
+
+.completion-card-wrapper{
+
+    position:relative;
+
+    margin-top:110px;
+
+    display:flex;
+
+    justify-content:center;
+}
+
+/* ==========================================
+   LUMI
+========================================== */
+
+.completion-lumi{
+
+    position:absolute;
+
+    top:-127px;
+
+    width:180px;
+
+    z-index:5;
+
+    pointer-events:none;
+}
+
+/* ==========================================
+   CARD
+========================================== */
+
+.completion-card{
+
+    width:640px;
+
+    background:#FFFDF8;
+
+    border:1px solid #E8E2D8;
+
+    border-radius:24px;
+
+    padding:70px 50px 48px;
+
+    text-align:center;
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.08);
+
+    animation:fadeUp .45s ease;
+}
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+.completion-content h1{
+
+    margin:0;
+
+    color:#2D7A4E;
+
+    font-size:2.7rem;
+}
+
+.completion-content p{
+
+    margin-top:10px;
+
+    line-height:1.8;
+
+    color:#666;
+}
+
+.completion-message{
+
+    color:#8A8A8A;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.completion-actions{
+
+    margin-top:40px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:18px;
+}
+
+.completion-actions button{
+
+    padding:14px 28px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:white;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.06);
+
+    transition:.2s;
+}
+
+.completion-actions button:hover{
+
+    transform:translateY(-2px);
+}

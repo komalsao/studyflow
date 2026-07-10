@@ -1,0 +1,558 @@
+/* ==========================================================
+   SUMMARY VIEW
+========================================================== */
+
+.summary-view{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#F9F7F1;
+}
+
+.summary-layout{
+    width:100%;
+    height:100%;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 320px;
+    gap:28px;
+    padding:24px 28px;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+
+/* ==========================================================
+   CONTENT AREA
+========================================================== */
+
+.paper{
+    height:100%;
+    overflow:hidden;
+}
+
+.paper-content{
+    height:100%;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+    padding-right:8px;
+    box-sizing:border-box;
+}
+
+/* ==========================================================
+   COMMON CARD
+========================================================== */
+
+.summary-overview,
+.summary-topic{
+
+    background:#FFFDF8;
+
+    border-radius:18px;
+
+    transition:.25s ease;
+
+    box-shadow:
+        0 4px 12px rgba(120,100,70,.05),
+        0 14px 34px rgba(120,100,70,.06);
+}
+
+.summary-overview:hover,
+.summary-topic:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 28px rgba(120,100,70,.08);
+}
+
+/* ==========================================================
+   OVERVIEW
+========================================================== */
+
+.summary-overview{
+
+    min-height:260px;
+
+    border:1px solid #CFE5D3;
+
+    padding:36px;
+
+    display:grid;
+
+    grid-template-columns:1fr 150px;
+
+    align-items:center;
+
+    gap:34px;
+}
+
+.overview-text{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+.overview-text h2{
+
+    margin:0;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    color:#2D7A4E;
+
+    font-size:2rem;
+
+    font-weight:700;
+}
+
+.overview-text p{
+
+    margin:0;
+
+    font-size:16px;
+
+    line-height:1.8;
+
+    color:#505050;
+}
+
+.overview-illustration{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#2D7A4E;
+
+    opacity:.45;
+}
+
+/* ==========================================================
+   EXPANDED TOPIC
+========================================================== */
+
+.summary-topic.expanded{
+
+    border:1px solid #F0D9D1;
+
+    padding:34px;
+}
+
+.topic-header{
+
+    display:flex;
+
+    align-items:center;
+}
+
+.topic-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.topic-title h3{
+
+    margin:0;
+
+    font-size:1.8rem;
+
+    color:#2D7A4E;
+}
+
+.topic-body{
+
+    display:grid;
+
+    grid-template-columns:1fr 120px;
+
+    gap:30px;
+
+    align-items:center;
+
+    margin-top:24px;
+}
+
+.topic-body p{
+
+    margin:0;
+
+    line-height:1.8;
+
+    color:#505050;
+}
+
+.topic-illustration{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:#888;
+
+    opacity:.45;
+}
+
+.topic-divider{
+
+    height:1px;
+
+    background:#EEE5D9;
+
+    margin:28px 0;
+}
+
+.explore-topic{
+
+    border:none;
+
+    background:none;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#2D7A4E;
+
+    font-weight:600;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.explore-topic:hover{
+
+    transform:translateX(4px);
+}
+
+/* ==========================================================
+   COLLAPSED TOPICS
+========================================================== */
+
+.summary-topic.collapsed{
+
+    min-height:84px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    padding:0 28px;
+
+    border:1px solid #ECE2D5;
+
+    cursor:pointer;
+}
+
+.summary-topic.collapsed:hover{
+
+    border-color:#DDD4C8;
+
+    transform:translateY(-2px);
+}
+
+.summary-topic.collapsed span{
+
+    font-size:1.25rem;
+
+    font-weight:600;
+
+    color:#333;
+}
+
+/* ==========================================================
+   RIGHT SIDEBAR
+========================================================== */
+
+.notes{
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+
+    flex-shrink:0;
+}
+
+/* ==========================================================
+   STICKY NOTES
+========================================================== */
+
+.note{
+
+    position:relative;
+
+    height:220px;
+
+    border-radius:18px;
+
+    padding:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    box-sizing:border-box;
+
+    box-shadow:
+        0 8px 20px rgba(110,95,70,.08),
+        0 18px 40px rgba(110,95,70,.08);
+}
+
+/* tape */
+
+.note::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-8px;
+
+    left:50%;
+
+    transform:translateX(-50%) rotate(-4deg);
+
+    width:74px;
+
+    height:16px;
+
+    border-radius:4px;
+
+    background:rgba(255,255,255,.55);
+
+    backdrop-filter:blur(2px);
+
+    box-shadow:
+        0 2px 6px rgba(0,0,0,.05);
+}
+
+.yellow{
+
+    background:#FFF2B8;
+}
+
+.blue{
+
+    background:#EAF3FF;
+}
+
+.purple{
+
+    background:#F2E7FF;
+}
+
+/* ==========================================================
+   NOTE HEADER
+========================================================== */
+
+.note h3{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:0;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#2F2F2F;
+
+    flex-shrink:0;
+}
+
+/* ==========================================================
+   NOTE CONTENT
+========================================================== */
+
+.note-content{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    margin-top:20px;
+
+    padding-right:6px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+.note-content p{
+
+    margin:0;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    color:#444;
+}
+
+.note-content ul{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.note-content li{
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    color:#444;
+}
+
+/* ==========================================================
+   QUICK REVISION TAGS
+========================================================== */
+
+.revision-tags{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+}
+
+.revision-tags span{
+
+    background:white;
+
+    border:1px solid #DCE5F6;
+
+    border-radius:999px;
+
+    padding:8px 16px;
+
+    font-size:14px;
+
+    color:#444;
+
+    white-space:nowrap;
+}
+
+/* ==========================================================
+   LUMI BUTTONS
+========================================================== */
+
+.note-content button{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:14px 16px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    box-shadow:
+        inset 0 0 0 1px #E7E7E7;
+}
+
+.note-content button:hover{
+
+    background:#FCFCFC;
+
+    transform:translateX(2px);
+}
+
+/* ==========================================================
+   SCROLLBARS
+========================================================== */
+
+/* Firefox */
+
+.paper-content,
+.note-content{
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #CFC8BB transparent;
+}
+
+/* Chrome / Edge / Safari */
+
+.paper-content::-webkit-scrollbar,
+.note-content::-webkit-scrollbar{
+
+    width:1px;
+}
+
+.paper-content::-webkit-scrollbar-track,
+.note-content::-webkit-scrollbar-track{
+
+    background:transparent;
+}
+
+.paper-content::-webkit-scrollbar-thumb,
+.note-content::-webkit-scrollbar-thumb{
+
+    background:#CFC8BB;
+
+    border-radius:999px;
+}
+
+.paper-content::-webkit-scrollbar-thumb:hover,
+.note-content::-webkit-scrollbar-thumb:hover{
+
+    background:#BDB5A7;
+}

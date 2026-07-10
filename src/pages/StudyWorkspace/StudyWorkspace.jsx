@@ -17,6 +17,9 @@ import ChatInput from "../../components/StudyWorkspace/Shared/ChatInput/ChatInpu
 function StudyWorkspace() {
     const [activeView, setActiveView] = useState("welcome");
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const showChatBar =
+        activeView === "welcome" ||
+        activeView === "chat";
 
     return (
         <div className="study-workspace">
@@ -36,7 +39,12 @@ function StudyWorkspace() {
 
                 <main className="workspace-content">
 
-                    <div className="workspace-scroll">
+                    <div
+                        className={`workspace-scroll ${activeView === "welcome"
+                            ? "welcome-scroll"
+                            : ""
+                            }`}
+                    >
 
                         {activeView === "welcome" && (
                             <WelcomeView setActiveView={setActiveView} />
@@ -46,8 +54,13 @@ function StudyWorkspace() {
 
                         {activeView === "summary" && <SummaryView />}
 
-                        {activeView === "flashcards" && <FlashcardsView />}
+                        {activeView === "flashcards" && (
 
+                            <FlashcardsView
+                                setActiveView={setActiveView}
+                            />
+
+                        )}
                         {activeView === "quiz" && <QuizView />}
 
                         {activeView === "mindmap" && <MindMapView />}
@@ -56,11 +69,17 @@ function StudyWorkspace() {
 
                     </div>
 
-                    <div className="workspace-chat">
+                    {showChatBar && (
 
-                        <ChatInput setActiveView={setActiveView} />
+                        <div className="workspace-chat">
 
-                    </div>
+                            <ChatInput
+                                setActiveView={setActiveView}
+                            />
+
+                        </div>
+
+                    )}
 
                 </main>
 
