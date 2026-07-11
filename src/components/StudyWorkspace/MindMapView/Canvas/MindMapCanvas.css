@@ -1,0 +1,91 @@
+/* ==========================================================
+   CANVAS
+========================================================== */
+
+.mindmap-canvas{
+
+    flex:1;
+
+    position:relative;
+
+    overflow:hidden;
+
+    margin:0 40px 40px;
+
+    border-radius:24px;
+
+    background:#FCFBF7;
+
+    border:1px solid #ECE4D7;
+
+    box-shadow:
+        0 14px 34px rgba(0,0,0,.05);
+}
+
+/* ==========================================================
+   PAPER TEXTURE
+========================================================== */
+
+.mindmap-canvas::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+        radial-gradient(circle, rgba(0,0,0,.02) 1px, transparent 1px);
+
+    background-size:22px 22px;
+
+    opacity:.4;
+
+    pointer-events:none;
+}
+
+/* ==========================================================
+   PLACEHOLDER
+========================================================== */
+
+.mindmap-placeholder{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    z-index:2;
+}
+
+.mindmap-placeholder h2{
+
+    margin:0;
+
+    color:#2D7A4E;
+
+    font-size:2rem;
+}
+
+.mindmap-placeholder p{
+
+    margin-top:18px;
+
+    color:#7A7A7A;
+
+    max-width:520px;
+
+    line-height:1.8;
+}
+
+

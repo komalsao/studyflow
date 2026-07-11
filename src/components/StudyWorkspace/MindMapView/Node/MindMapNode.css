@@ -1,0 +1,31 @@
+.mindmap-node{
+
+    min-width:180px;
+
+    padding:18px 22px;
+
+    background:#FFFDF8;
+
+    border:1px solid #E7E2D8;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,.06);
+
+    color:#2D7A4E;
+
+    font-weight:600;
+
+    text-align:center;
+
+    transition:.25s;
+}
+
+.mindmap-node:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 18px 36px rgba(0,0,0,.08);
+}

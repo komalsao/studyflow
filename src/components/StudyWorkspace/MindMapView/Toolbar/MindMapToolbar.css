@@ -1,0 +1,53 @@
+.mindmap-toolbar{
+
+    position:absolute;
+
+    right:24px;
+
+    bottom:24px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    z-index:100;
+}
+
+.mindmap-toolbar button{
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#FFFDF8;
+
+    cursor:pointer;
+
+    color:#2D7A4E;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,.08);
+
+    transition:.25s;
+}
+
+.mindmap-toolbar button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow: 0 10px 25px rgba(45, 93, 63, 0.18);
+
+    background:white;
+}
