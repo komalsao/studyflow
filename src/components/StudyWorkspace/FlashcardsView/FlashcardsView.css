@@ -510,7 +510,7 @@
    PROGRESS
 ========================================================== */
 
-.progress-wrapper{
+.flash-progress-wrapper{
 
     width:100%;
 
@@ -536,7 +536,7 @@
     overflow:hidden;
 }
 
-.progress-fill{
+.flash-progress-fill{
 
     height:100%;
 
@@ -547,7 +547,7 @@
     transition:width .45s;
 }
 
-.progress-wrapper span{
+.flash-progress-wrapper span{
 
     color:#7B7B7B;
 

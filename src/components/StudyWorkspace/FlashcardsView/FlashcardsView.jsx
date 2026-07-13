@@ -230,12 +230,12 @@ function FlashcardsView({ setActiveView }) {
 
                 </h3>
 
-                <div className="progress-wrapper">
+                <div className="flash-progress-wrapper">
 
                     <div className="progress-bar">
 
                         <div
-                            className="progress-fill"
+                            className="flash-progress-fill"
                             style={{
                                 width: `${progress}%`
                             }}
