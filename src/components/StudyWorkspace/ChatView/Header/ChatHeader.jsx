@@ -1,4 +1,4 @@
-function QuizView() {
+function ChatView() {
     return (
         <div>
             Welcome View
@@ -6,4 +6,4 @@ function QuizView() {
     );
 }
 
-export default QuizView;
+export default ChatView;

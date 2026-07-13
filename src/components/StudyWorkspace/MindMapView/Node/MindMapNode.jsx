@@ -10,7 +10,6 @@ function MindMapNode({ data }) {
     return (
 
         <>
-
             <Handle
                 type="target"
                 position={Position.Top}
@@ -18,10 +17,28 @@ function MindMapNode({ data }) {
             />
 
             <div
+
                 className={`mindmap-node level-${data.level}`}
+
+                onClick={() =>
+
+                    data.onClick({
+
+                        title: data.title,
+
+                        description: data.description
+
+                    })
+
+                }
+
             >
 
-                {data.label}
+                <div className="node-title">
+
+                    {data.label}
+
+                </div>
 
             </div>
 
@@ -30,7 +47,6 @@ function MindMapNode({ data }) {
                 position={Position.Bottom}
                 style={{ opacity: 0 }}
             />
-
         </>
 
     );

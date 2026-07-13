@@ -5,17 +5,14 @@
 .mindmap-view{
 
     width:100%;
+
     height:100%;
 
     display:flex;
 
-    flex-direction:column;
-
-    background:#F9F7F1;
-
     overflow:hidden;
 
-    position:relative;
+    background:#F9F7F1;
 }
 
 /* ==========================================================

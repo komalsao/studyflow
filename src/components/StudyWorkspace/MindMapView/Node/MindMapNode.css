@@ -1,31 +1,93 @@
 .mindmap-node{
 
-    min-width:180px;
+    display:flex;
 
-    padding:18px 22px;
+    justify-content:center;
+
+    align-items:center;
 
     background:#FFFDF8;
 
-    border:1px solid #E7E2D8;
+    border:1px solid #E6DED2;
 
-    border-radius:18px;
+    border-radius:20px;
 
     box-shadow:
-        0 10px 24px rgba(0,0,0,.06);
+        0 3px 10px rgba(0,0,0,.05),
+        0 10px 28px rgba(0,0,0,.06);
 
-    color:#2D7A4E;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
 
-    font-weight:600;
-
-    text-align:center;
-
-    transition:.25s;
+    cursor:pointer;
 }
 
 .mindmap-node:hover{
 
-    transform:translateY(-3px);
+    transform:translateY(-4px);
 
     box-shadow:
-        0 18px 36px rgba(0,0,0,.08);
+        0 12px 30px rgba(0,0,0,.09);
+}
+
+/* Root */
+
+.level-0{
+
+    width:320px;
+
+    min-height:92px;
+
+    padding:24px 36px;
+
+    border:2px solid #D6E8D9;
+
+    color:#2D7A4E;
+}
+
+/* First Branch */
+
+.level-1{
+
+    width:200px;
+
+    min-height:70px;
+
+    padding:18px 26px;
+}
+
+/* Leaf */
+
+.level-2{
+
+    width:150px;
+
+    min-height:54px;
+
+    padding:14px 20px;
+}
+
+.node-title{
+
+    text-align:center;
+
+    font-weight:600;
+
+    line-height:1.5;
+}
+
+.level-0 .node-title{
+
+    font-size:28px;
+}
+
+.level-1 .node-title{
+
+    font-size:18px;
+}
+
+.level-2 .node-title{
+
+    font-size:15px;
 }

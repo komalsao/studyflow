@@ -10,22 +10,24 @@ export async function layoutTree(nodes, edges) {
 
         layoutOptions: {
 
-            "elk.algorithm": "layered",
+            "elk.algorithm": "mrtree",
 
             "elk.direction": "DOWN",
 
             "elk.layered.nodePlacement.strategy": "NETWORK_SIMPLEX",
+            "elk.layered.considerModelOrder": "NODES_AND_EDGES",
+            "elk.layered.mergeEdges": "true",
+            "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
 
             "elk.layered.crossingMinimization.strategy": "LAYER_SWEEP",
 
-            "elk.spacing.nodeNode": "80",
+            "elk.spacing.nodeNode": "140",
 
-            "elk.layered.spacing.nodeNodeBetweenLayers": "180",
+            "elk.layered.spacing.nodeNodeBetweenLayers": "220",
 
-            "elk.padding": "[top=80,left=80,bottom=80,right=80]"
+            "elk.padding": "[top=120,left=150,bottom=120,right=150]"
 
-        }, // <-- Missing comma was here
-
+        },
         children: nodes.map(node => ({
 
             id: node.id,
@@ -34,22 +36,25 @@ export async function layoutTree(nodes, edges) {
 
                 node.data.level === 0
 
-                    ? 300
+                    ? 340
 
                     : node.data.level === 1
 
-                        ? 180
+                        ? 220
 
-                        : 150,
+                        : 170,
 
             height:
 
                 node.data.level === 0
 
-                    ? 90
+                    ? 100
 
-                    : 60
+                    : node.data.level === 1
 
+                        ? 72
+
+                        : 58,
         })),
 
         edges: edges.map(edge => ({
@@ -90,25 +95,20 @@ export async function layoutTree(nodes, edges) {
 
     });
 
-    // Center the root node
+    const minX = Math.min(...positionedNodes.map(n => n.position.x));
+    const maxX = Math.max(...positionedNodes.map(n => n.position.x));
 
-    const root = positionedNodes.find(
+    const graphWidth = maxX - minX;
+    const targetCenterX = 600; // half of ~1200px canvas
 
-        node => node.data.level === 0
+    const currentCenterX = minX + graphWidth / 2;
+    const offsetX = targetCenterX - currentCenterX;
 
-    );
+    positionedNodes.forEach(node => {
+        node.position.x += offsetX;
+    });
 
-    if (root) {
 
-        const offsetX = 600 - root.position.x;
-
-        positionedNodes.forEach(node => {
-
-            node.position.x += offsetX;
-
-        });
-
-    }
 
     return {
 

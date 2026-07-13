@@ -28,11 +28,13 @@ function MindMapEdge(props) {
 
             style={{
 
-                stroke: "#84A98C",
+                stroke: "#8AAE91",
 
-                strokeWidth: 3,
+                strokeWidth: 4,
 
-                strokeLinecap: "round"
+                strokeLinecap: "round",
+
+                opacity: 0.85
 
             }}
 

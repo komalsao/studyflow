@@ -2,7 +2,8 @@ import "./MindMapCanvas.css";
 import {
     ReactFlow,
     Background,
-    ReactFlowProvider
+    ReactFlowProvider,
+    useReactFlow
 } from "@xyflow/react";
 
 import MindMapEdge from "../Edge/MindMapEdge";
@@ -14,7 +15,31 @@ import { convertTree } from "../utils/convertTree";
 import { useEffect, useState } from "react";
 import { layoutTree } from "../utils/layout";
 
-function MindMapCanvas() {
+function AutoFit({ nodes }) {
+
+    const { fitView } = useReactFlow();
+
+    useEffect(() => {
+
+        if (!nodes.length) return;
+
+        fitView({
+            padding: 0.3,
+            duration: 800,
+        });
+
+    }, [nodes, fitView]);
+
+    return null;
+}
+
+function MindMapCanvas({
+
+    onNodeSelect,
+
+    onCanvasClick
+
+}) {
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
     const edgeTypes = {
@@ -35,6 +60,34 @@ function MindMapCanvas() {
 
             const tree = convertTree(sampleMindMap);
 
+            const descriptions = {
+
+                "Memory Management":
+                    "Memory Management controls how memory is allocated and used by programs.",
+
+                "Paging":
+                    "Paging divides memory into fixed-size pages for efficient allocation.",
+
+                "Segmentation":
+                    "Segmentation divides memory into logical sections such as code and data.",
+
+                "Virtual Memory":
+                    "Virtual Memory allows programs to use more memory than physically available.",
+
+                "Frames":
+                    "Frames are fixed-size blocks of physical memory.",
+
+                "TLB":
+                    "The Translation Lookaside Buffer caches recent page table entries.",
+
+                "Page Table":
+                    "A Page Table maps virtual pages to physical frames.",
+
+                "Demand Paging":
+                    "Demand Paging loads pages only when they are actually needed."
+
+            };
+
             const layout = await layoutTree(
 
                 tree.nodes,
@@ -43,7 +96,31 @@ function MindMapCanvas() {
 
             );
 
-            setNodes(layout.nodes);
+            setNodes(
+
+                layout.nodes.map(node => ({
+
+                    ...node,
+
+                    data: {
+
+                        ...node.data,
+
+                        title: node.data.label,
+
+                        description:
+
+                            descriptions[node.data.label] ||
+
+                            "Explanation coming soon.",
+
+                        onClick: onNodeSelect
+
+                    }
+
+                }))
+
+            );
 
             setEdges(layout.edges);
 
@@ -61,22 +138,22 @@ function MindMapCanvas() {
             <div className="mindmap-canvas">
 
                 <ReactFlow
-
                     nodes={nodes}
-
                     edges={edges}
-
                     nodeTypes={nodeTypes}
-
                     edgeTypes={edgeTypes}
-
                     fitView
-
                     proOptions={{ hideAttribution: true }}
-
+                    onPaneClick={onCanvasClick}
                 >
 
-                    <Background />
+                    <AutoFit nodes={nodes} />
+
+                    <Background
+                        gap={32}
+                        size={1}
+                        color="#F1EBE0"
+                    />
 
                     <MindMapToolbar />
 
