@@ -60,7 +60,11 @@ const iconMap = {
     txt: FileCode2
 };
 
-function MaterialsPreview() {
+function MaterialsPreview({
+
+    popup = false
+
+}) {
 
     const [materials, setMaterials] = useState(initialMaterials);
 
@@ -148,7 +152,10 @@ function MaterialsPreview() {
 
     return (
 
-        <>        <aside className="materials-preview">
+        <>       <aside
+            className={`materials-preview ${popup ? "popup" : ""
+                }`}
+        >
 
             <div className="materials-header">
 

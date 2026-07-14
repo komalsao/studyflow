@@ -9,7 +9,19 @@ import {
     FolderOpen
 } from "lucide-react";
 
-function Sidebar({ activeView, setActiveView, collapsed }) {
+function Sidebar({
+
+    activeView,
+
+    setActiveView,
+
+    collapsed,
+
+    showMaterials,
+
+    setShowMaterials
+
+}) {
 
     return (
 
@@ -29,7 +41,7 @@ function Sidebar({ activeView, setActiveView, collapsed }) {
 
                         <button
                             className={`sidebar-item ${activeView === "chat" ? "active" : ""}`}
-                            onClick={() => setActiveView("chat")}
+                            onClick={() => { setShowMaterials(false); setActiveView("chat") }}
                         >
                             <MessageSquare size={20} />
                             {!collapsed && <span>Ask Lumi</span>}
@@ -37,7 +49,7 @@ function Sidebar({ activeView, setActiveView, collapsed }) {
 
                         <button
                             className={`sidebar-item ${activeView === "summary" ? "active" : ""}`}
-                            onClick={() => setActiveView("summary")}
+                            onClick={() => { setShowMaterials(false); setActiveView("summary") }}
                         >
                             <FileText size={20} />
                             {!collapsed && <span>Summary</span>}
@@ -45,7 +57,7 @@ function Sidebar({ activeView, setActiveView, collapsed }) {
 
                         <button
                             className={`sidebar-item ${activeView === "flashcards" ? "active" : ""}`}
-                            onClick={() => setActiveView("flashcards")}
+                            onClick={() => { setShowMaterials(false); setActiveView("flashcards") }}
                         >
                             <Layers size={20} />
                             {!collapsed && <span>Flashcards</span>}
@@ -53,7 +65,7 @@ function Sidebar({ activeView, setActiveView, collapsed }) {
 
                         <button
                             className={`sidebar-item ${activeView === "quiz" ? "active" : ""}`}
-                            onClick={() => setActiveView("quiz")}
+                            onClick={() => { setShowMaterials(false); setActiveView("quiz") }}
                         >
                             <CircleHelp size={20} />
                             {!collapsed && <span>Quiz</span>}
@@ -61,7 +73,7 @@ function Sidebar({ activeView, setActiveView, collapsed }) {
 
                         <button
                             className={`sidebar-item ${activeView === "mindmap" ? "active" : ""}`}
-                            onClick={() => setActiveView("mindmap")}
+                            onClick={() => { setShowMaterials(false); setActiveView("mindmap") }}
                         >
                             <Network size={20} />
                             {!collapsed && <span>Mind Map</span>}
@@ -78,10 +90,15 @@ function Sidebar({ activeView, setActiveView, collapsed }) {
                         )}
 
                         <button
-                            className={`sidebar-item ${activeView === "materials" ? "active" : ""}`}
-                            onClick={() => setActiveView("materials")}
+                            className={`sidebar-item ${showMaterials ? "active" : ""}`}
+                            onClick={() => {
+
+                                setShowMaterials(prev => !prev);
+
+                            }}
                         >
                             <FolderOpen size={20} />
+
                             {!collapsed && <span>Materials</span>}
                         </button>
 
