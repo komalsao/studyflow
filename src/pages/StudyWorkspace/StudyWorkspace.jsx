@@ -18,8 +18,7 @@ function StudyWorkspace() {
     const [activeView, setActiveView] = useState("welcome");
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const showChatBar =
-        activeView === "welcome" ||
-        activeView === "chat";
+        activeView === "welcome";
 
     useEffect(() => {
 

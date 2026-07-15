@@ -1,44 +1,123 @@
 import "./ChatInput.css";
+
 import { Paperclip, Send } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-function ChatInput({ setActiveView }) {
+function ChatInput({
 
-    const openChat = () => {
-        setActiveView("chat");
-    };
+    setActiveView,
+    onSend,
+    autoFocus = false
+
+}) {
+
     const [message, setMessage] = useState("");
 
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+
+        if (autoFocus) {
+
+            inputRef.current?.focus();
+
+        }
+
+    }, [autoFocus]);
+
+    function handleSend() {
+
+        const text = message.trim();
+
+        if (!text) return;
+
+        if (onSend) {
+
+            onSend(text);
+
+            setMessage("");
+
+            inputRef.current?.focus();
+
+        }
+
+    }
+
+    function handleBoxClick() {
+
+        inputRef.current?.focus();
+
+        if (setActiveView) {
+
+            setActiveView("chat");
+
+        }
+
+    }
+
+    function handleKeyDown(e) {
+
+        if (e.key === "Enter" && !e.shiftKey) {
+
+            e.preventDefault();
+
+            handleSend();
+
+        }
+
+    }
 
     return (
 
         <div className="chat-launcher">
 
-            
-
             <div
                 className="chat-box"
-                onClick={openChat}
+                onClick={handleBoxClick}
             >
 
-                <button className="chat-icon">
+                <button
+                    className="chat-icon"
+                    type="button"
+                >
 
                     <Paperclip size={20} />
 
                 </button>
 
                 <input
+
+                    ref={inputRef}
+
                     type="text"
+
                     value={message}
+
                     placeholder="Ask Lumi anything about your study materials..."
-                    onChange={(e) => {
-                        setMessage(e.target.value);
-                        setActiveView("chat");
-                    }}
+
+                    onChange={(e) => setMessage(e.target.value)}
+
+                    onKeyDown={handleKeyDown}
+
                 />
 
+                <button
 
-                <button className="chat-send">
+                    className="chat-send"
+
+                    type="button"
+
+                    disabled={!message.trim()}
+
+                    onClick={(e) => {
+
+                        e.stopPropagation();
+
+                        handleSend();
+
+                    }}
+
+                >
 
                     <Send size={18} />
 

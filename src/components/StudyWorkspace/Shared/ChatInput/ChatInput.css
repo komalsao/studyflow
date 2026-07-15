@@ -1,11 +1,14 @@
 .chat-launcher{
 
-    position:relative;
+    width:100%;
 
     margin-top:12px;
+
 }
 
 .chat-box{
+
+    width:100%;
 
     position:relative;
 
@@ -21,13 +24,16 @@
 
     border-radius:24px;
 
-    padding:24px;
+    padding:20px 24px;
 
-    max-height:70px;
+    min-height:70px;
 
     cursor:text;
 
     transition:.25s;
+
+    box-sizing:border-box;
+
 }
 
 .chat-box:hover{
