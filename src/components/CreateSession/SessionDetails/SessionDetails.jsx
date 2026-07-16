@@ -1,7 +1,7 @@
 import "./SessionDetails.css";
 import { Lightbulb } from "lucide-react";
 
-function SessionDetails() {
+function SessionDetails({ title, onTitleChange }) {
     return (
         <section className="session-details">
 
@@ -17,6 +17,8 @@ function SessionDetails() {
                     type="text"
                     placeholder="Eg. Operating Systems Midterm"
                     className="session-input"
+                    value={title}
+                    onChange={(event) => onTitleChange(event.target.value)}
                 />
 
                 <span className="character-count">

@@ -3,14 +3,17 @@ import "./UploadSection.css";
 import UploadCard from "./UploadCard";
 import SelectedMaterials from "./SelectedMaterials";
 
-function UploadSection() {
+function UploadSection({ selectedFiles, setSelectedFiles }) {
     return (
 
         <section className="upload-wrapper">
 
             <div className="upload-section">
 
-                <UploadCard />
+                <UploadCard
+                    selectedFiles={selectedFiles}
+                    setSelectedFiles={setSelectedFiles}
+                />
 
                 <SelectedMaterials />
 
