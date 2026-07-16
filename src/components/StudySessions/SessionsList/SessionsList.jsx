@@ -1,5 +1,6 @@
 import "./SessionsList.css";
 
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 import SessionCard from "../SessionCard/SessionCard";
@@ -44,23 +45,35 @@ function SessionsList() {
 
     useEffect(() => {
 
-        const loadSessions = async () => {
+        let isActive = true;
 
-            const user = auth.currentUser;
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
             if (!user) {
 
-                setLoading(false);
+                if (isActive) {
+
+                    setSessions([]);
+
+                    setLoading(false);
+
+                }
 
                 return;
 
             }
 
+            setLoading(true);
+
             try {
 
                 const userSessions = await getUserSessions(user.uid);
 
-                setSessions(userSessions.map(formatSession));
+                if (isActive) {
+
+                    setSessions(userSessions.map(formatSession));
+
+                }
 
             } catch (error) {
 
@@ -68,14 +81,23 @@ function SessionsList() {
 
             } finally {
 
-                setLoading(false);
+                if (isActive) {
+
+                    setLoading(false);
+
+                }
 
             }
 
+        });
+
+        return () => {
+
+            isActive = false;
+
+            unsubscribe();
+
         };
-
-        loadSessions();
-
     }, []);
 
     const handleSessionRename = (sessionId, newTitle) => {

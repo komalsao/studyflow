@@ -1,5 +1,6 @@
 import "./MaterialsPreview.css";
 
+import { onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect } from "react";
 
 import {
@@ -15,43 +16,12 @@ import {
 import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
 import DeleteModal from "../../Shared/Modals/DeleteModal/DeleteModal";
 
-const initialMaterials = [
-    {
-        id: 1,
-        name: "Operating Systems.pdf",
-        type: "pdf"
-    },
-    {
-        id: 2,
-        name: "Assignment.docx",
-        type: "docx"
-    },
-    {
-        id: 3,
-        name: "Lecture 5.pptx",
-        type: "pptx"
-    },
-    {
-        id: 4,
-        name: "Commands.txt",
-        type: "txt"
-    },
-    {
-        id: 5,
-        name: "Memory Management.pdf",
-        type: "pdf"
-    },
-    {
-        id: 6,
-        name: "Unit 4 Notes.docx",
-        type: "docx"
-    },
-    {
-        id: 7,
-        name: "OSI Model.pptx",
-        type: "pptx"
-    }
-];
+import auth from "../../../firebase/auth";
+import {
+    deleteMaterial,
+    getUserMaterials,
+    renameMaterial
+} from "../../../services/materialService";
 
 const iconMap = {
     pdf: FileText,
@@ -60,13 +30,42 @@ const iconMap = {
     txt: FileCode2
 };
 
+function formatMaterial(material) {
+
+    const name = material.originalFileName;
+    const extension = name.split(".").pop().toLowerCase();
+
+    return {
+        ...material,
+        name,
+        type: iconMap[extension] ? extension : "pdf"
+    };
+
+}
+
+function getFileNameWithoutExtension(name) {
+
+    const dotIndex = name.lastIndexOf(".");
+
+    return dotIndex > 0 ? name.substring(0, dotIndex) : name;
+
+}
+
+function getFileExtension(name) {
+
+    const dotIndex = name.lastIndexOf(".");
+
+    return dotIndex > 0 ? name.substring(dotIndex) : "";
+
+}
+
 function MaterialsPreview({
 
     popup = false
 
 }) {
 
-    const [materials, setMaterials] = useState(initialMaterials);
+    const [materials, setMaterials] = useState([]);
 
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
@@ -77,6 +76,52 @@ function MaterialsPreview({
     const [editingMaterial, setEditingMaterial] = useState(null);
 
     const [newName, setNewName] = useState("");
+
+    useEffect(() => {
+
+        let isActive = true;
+
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+            if (!user) {
+
+                if (isActive) {
+
+                    setMaterials([]);
+
+                }
+
+                return;
+
+            }
+
+            try {
+
+                const userMaterials = await getUserMaterials(user.uid);
+
+                if (isActive) {
+
+                    setMaterials(userMaterials.map(formatMaterial));
+
+                }
+
+            } catch (error) {
+
+                console.error("Unable to load user materials:", error);
+
+            }
+
+        });
+
+        return () => {
+
+            isActive = false;
+
+            unsubscribe();
+
+        };
+
+    }, []);
 
     useEffect(() => {
 
@@ -100,9 +145,7 @@ function MaterialsPreview({
 
         setEditingMaterial(material);
 
-        const dotIndex = material.name.lastIndexOf(".");
-
-        setNewName(material.name.substring(0, dotIndex));
+        setNewName(getFileNameWithoutExtension(material.name));
 
         setShowRenameModal(true);
 
@@ -116,37 +159,61 @@ function MaterialsPreview({
 
     }
 
-    function handleRename() {
+    async function handleRename() {
 
-        const extension =
-            editingMaterial.name.substring(
-                editingMaterial.name.lastIndexOf(".")
+        const extension = getFileExtension(editingMaterial.name);
+
+        const updatedName = newName + extension;
+
+        try {
+
+            await renameMaterial(editingMaterial.id, updatedName);
+
+            setMaterials(prev =>
+                prev.map(material =>
+                    material.id === editingMaterial.id
+                        ? {
+                            ...material,
+                            name: updatedName,
+                            originalFileName: updatedName
+                        }
+                        : material
+                )
             );
 
-        setMaterials(prev =>
-            prev.map(material =>
-                material.id === editingMaterial.id
-                    ? {
-                        ...material,
-                        name: newName + extension
-                    }
-                    : material
-            )
-        );
+            setShowRenameModal(false);
 
-        setShowRenameModal(false);
+            setEditingMaterial(null);
+
+        } catch (error) {
+
+            console.error("Unable to rename material:", error);
+
+        }
 
     }
 
-    function handleDelete() {
+    async function handleDelete() {
 
-        setMaterials(prev =>
-            prev.filter(material => material.id !== editingMaterial.id)
-        );
+        try {
 
-        setShowDeleteModal(false);
+            await deleteMaterial(editingMaterial.id);
 
-        setSelectedMaterial(null);
+            setMaterials(prev =>
+                prev.filter(material => material.id !== editingMaterial.id)
+            );
+
+            setShowDeleteModal(false);
+
+            setSelectedMaterial(null);
+
+            setEditingMaterial(null);
+
+        } catch (error) {
+
+            console.error("Unable to delete material:", error);
+
+        }
 
     }
 
@@ -205,7 +272,7 @@ function MaterialsPreview({
                                 <div className="material-info">
 
                                     <span>
-                                        {material.name.substring(0, material.name.lastIndexOf("."))}
+                                        {getFileNameWithoutExtension(material.name)}
                                     </span>
 
                                     <small>

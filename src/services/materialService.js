@@ -8,6 +8,7 @@ import {
     query,
     serverTimestamp,
     setDoc,
+    updateDoc,
     where,
 } from "firebase/firestore";
 import {
@@ -96,6 +97,20 @@ export async function getUserMaterials(userId) {
         }));
     } catch (error) {
         console.error("Error fetching user materials:", error);
+        throw error;
+    }
+}
+
+/**
+ * Updates the display name stored for a material.
+ */
+export async function renameMaterial(materialId, originalFileName) {
+    try {
+        await updateDoc(doc(db, "materials", materialId), {
+            originalFileName,
+        });
+    } catch (error) {
+        console.error("Error renaming material:", error);
         throw error;
     }
 }

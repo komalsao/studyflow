@@ -1,6 +1,7 @@
 import "./CreateSession.css";
 
-import { useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PageHeader from "../../components/CreateSession/PageHeader/PageHeader";
@@ -12,7 +13,10 @@ import {
     createSession,
     attachMaterialToSession,
 } from "../../services/sessionService";
-import { uploadMaterial } from "../../services/materialService";
+import {
+    getUserMaterials,
+    uploadMaterial
+} from "../../services/materialService";
 
 
 function CreateSession() {
@@ -21,66 +25,136 @@ function CreateSession() {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
 
+    const [materials, setMaterials] = useState([]);
+
+    const [selectedMaterialIds, setSelectedMaterialIds] = useState([]);
+
     const [isCreating, setIsCreating] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleCreateSession = async () => {
+    useEffect(() => {
 
-        if (isCreating) return;
+        let isActive = true;
 
-        const trimmedTitle = title.trim();
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
-        if (!trimmedTitle) {
+            if (!user) {
 
-            console.error("A session title is required.");
+                if (isActive) {
 
-            return;
+                    setMaterials([]);
 
-        }
+                    setSelectedMaterialIds([]);
 
-        const user = auth.currentUser;
+                }
 
-        if (!user) {
+                return;
 
-            console.error("A user must be logged in to create a session.");
+            }
 
-            return;
+            try {
 
-        }
+                const userMaterials = await getUserMaterials(user.uid);
 
-        setIsCreating(true);
+                if (isActive) {
 
-        try {
+                    setMaterials(userMaterials);
 
-            const sessionId = await createSession(user.uid, {
-                title: trimmedTitle,
-            });
+                }
 
-            const materials = await Promise.all(
-                selectedFiles.map((file) => uploadMaterial(user.uid, file))
-            );
+            } catch (error) {
 
-            await Promise.all(
-                materials.map((material) =>
-                    attachMaterialToSession(sessionId, material.id)
-                )
-            );
+                console.error("Unable to load user materials:", error);
 
-            navigate("/study-sessions");
+            }
 
-        } catch (error) {
+        });
 
-            console.error("Unable to create study session:", error);
+        return () => {
 
-        } finally {
+            isActive = false;
 
-            setIsCreating(false);
+            unsubscribe();
 
-        }
+        };
+
+    }, []);
+
+    const handleMaterialToggle = (materialId) => {
+
+        setSelectedMaterialIds((currentMaterialIds) =>
+            currentMaterialIds.includes(materialId)
+                ? currentMaterialIds.filter((id) => id !== materialId)
+                : [...currentMaterialIds, materialId]
+        );
 
     };
 
+    const handleCreateSession = async () => {
+
+    console.log("🔥 Create button clicked");
+
+    if (isCreating) {
+        console.log("Already creating");
+        return;
+    }
+
+    const trimmedTitle = title.trim();
+    console.log("Title:", trimmedTitle);
+
+    if (!trimmedTitle) {
+        console.error("A session title is required.");
+        return;
+    }
+
+    const user = auth.currentUser;
+    console.log("Current user:", user);
+
+    if (!user) {
+        console.error("A user must be logged in.");
+        return;
+    }
+
+    setIsCreating(true);
+
+    try {
+
+        console.log("Creating session...");
+
+        const sessionId = await createSession(user.uid, {
+            title: trimmedTitle,
+        });
+
+        console.log("Session created:", sessionId);
+
+        const materials = await Promise.all(
+            selectedFiles.map((file) => uploadMaterial(user.uid, file))
+        );
+
+        console.log("Uploaded materials:", materials);
+
+        await Promise.all(
+            materials.map((material) =>
+                attachMaterialToSession(sessionId, material.id)
+            )
+        );
+
+        console.log("Navigation...");
+
+        navigate("/study-sessions");
+
+    } catch (error) {
+
+        console.error(error);
+
+    } finally {
+
+        setIsCreating(false);
+
+    }
+
+};
     return (
 
         <div className="create-session-page">
@@ -96,6 +170,9 @@ function CreateSession() {
                 <UploadSection
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
+                    materials={materials}
+                    selectedMaterialIds={selectedMaterialIds}
+                    onMaterialToggle={handleMaterialToggle}
                 />
 
                 <SessionDetails

@@ -1,5 +1,6 @@
 import "./Materialslibrary.css";
 
+import { onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect } from "react";
 
 import {
@@ -15,43 +16,12 @@ import {
 import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
 import DeleteModal from "../../Shared/Modals/DeleteModal/DeleteModal";
 
-const initialMaterials = [
-    {
-        id: 1,
-        name: "Operating Systems.pdf",
-        type: "pdf"
-    },
-    {
-        id: 2,
-        name: "Assignment.docx",
-        type: "docx"
-    },
-    {
-        id: 3,
-        name: "Lecture 5.pptx",
-        type: "pptx"
-    },
-    {
-        id: 4,
-        name: "Commands.txt",
-        type: "txt"
-    },
-    {
-        id: 5,
-        name: "Memory Management.pdf",
-        type: "pdf"
-    },
-    {
-        id: 6,
-        name: "Unit 4 Notes.docx",
-        type: "docx"
-    },
-    {
-        id: 7,
-        name: "OSI Model.pptx",
-        type: "pptx"
-    }
-];
+import auth from "../../../firebase/auth";
+import {
+    deleteMaterial,
+    getUserMaterials,
+    renameMaterial
+} from "../../../services/materialService";
 
 const iconMap = {
     pdf: FileText,
@@ -60,9 +30,22 @@ const iconMap = {
     txt: FileCode2
 };
 
+function formatMaterial(material) {
+
+    const name = material.originalFileName;
+    const extension = name.split(".").pop().toLowerCase();
+
+    return {
+        ...material,
+        name,
+        type: iconMap[extension] ? extension : "pdf"
+    };
+
+}
+
 function MaterialsPreview() {
 
-    const [materials, setMaterials] = useState(initialMaterials);
+    const [materials, setMaterials] = useState([]);
 
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
@@ -73,6 +56,52 @@ function MaterialsPreview() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const [newName, setNewName] = useState("");
+
+    useEffect(() => {
+
+        let isActive = true;
+
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+            if (!user) {
+
+                if (isActive) {
+
+                    setMaterials([]);
+
+                }
+
+                return;
+
+            }
+
+            try {
+
+                const userMaterials = await getUserMaterials(user.uid);
+
+                if (isActive) {
+
+                    setMaterials(userMaterials.map(formatMaterial));
+
+                }
+
+            } catch (error) {
+
+                console.error("Unable to load user materials:", error);
+
+            }
+
+        });
+
+        return () => {
+
+            isActive = false;
+
+            unsubscribe();
+
+        };
+
+    }, []);
 
     useEffect(() => {
 
@@ -114,44 +143,67 @@ function MaterialsPreview() {
 
     }
 
-    function handleRename() {
+    async function handleRename() {
 
         const extension =
             editingMaterial.name.substring(
                 editingMaterial.name.lastIndexOf(".")
             );
 
-        setMaterials(prev =>
-            prev.map(material =>
-                material.id === editingMaterial.id
-                    ? {
-                        ...material,
-                        name: newName + extension
-                    }
-                    : material
-            )
-        );
+        const updatedName = newName + extension;
 
-        setShowRenameModal(false);
+        try {
 
-        setEditingMaterial(null);
+            await renameMaterial(editingMaterial.id, updatedName);
+
+            setMaterials(prev =>
+                prev.map(material =>
+                    material.id === editingMaterial.id
+                        ? {
+                            ...material,
+                            name: updatedName,
+                            originalFileName: updatedName
+                        }
+                        : material
+                )
+            );
+
+            setShowRenameModal(false);
+
+            setEditingMaterial(null);
+
+        } catch (error) {
+
+            console.error("Unable to rename material:", error);
+
+        }
 
     }
 
-    function handleDelete() {
+    async function handleDelete() {
 
-        setMaterials(prev =>
-            prev.filter(
-                material =>
-                    material.id !== editingMaterial.id
-            )
-        );
+        try {
 
-        setShowDeleteModal(false);
+            await deleteMaterial(editingMaterial.id);
 
-        setSelectedMaterial(null);
+            setMaterials(prev =>
+                prev.filter(
+                    material =>
+                        material.id !== editingMaterial.id
+                )
+            );
 
-        setEditingMaterial(null);
+            setShowDeleteModal(false);
+
+            setSelectedMaterial(null);
+
+            setEditingMaterial(null);
+
+        } catch (error) {
+
+            console.error("Unable to delete material:", error);
+
+        }
 
     }
 
