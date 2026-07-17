@@ -1,7 +1,7 @@
 import "./Materialslibrary.css";
 
 import { onAuthStateChanged } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import {
     Upload,
@@ -57,6 +57,11 @@ function MaterialsPreview() {
 
     const [newName, setNewName] = useState("");
 
+    const formattedMaterials = useMemo(
+        () => materials.map(formatMaterial),
+        [materials]
+    );
+
     useEffect(() => {
 
         let isActive = true;
@@ -81,7 +86,7 @@ function MaterialsPreview() {
 
                 if (isActive) {
 
-                    setMaterials(userMaterials.map(formatMaterial));
+                    setMaterials(userMaterials);
 
                 }
 
@@ -96,7 +101,6 @@ function MaterialsPreview() {
         return () => {
 
             isActive = false;
-
             unsubscribe();
 
         };
@@ -156,14 +160,10 @@ function MaterialsPreview() {
 
             await renameMaterial(editingMaterial.id, updatedName);
 
-            setMaterials(prev =>
-                prev.map(material =>
+            setMaterials((currentMaterials) =>
+                currentMaterials.map((material) =>
                     material.id === editingMaterial.id
-                        ? {
-                            ...material,
-                            name: updatedName,
-                            originalFileName: updatedName
-                        }
+                        ? { ...material, originalFileName: updatedName }
                         : material
                 )
             );
@@ -186,10 +186,9 @@ function MaterialsPreview() {
 
             await deleteMaterial(editingMaterial.id);
 
-            setMaterials(prev =>
-                prev.filter(
-                    material =>
-                        material.id !== editingMaterial.id
+            setMaterials((currentMaterials) =>
+                currentMaterials.filter(
+                    (material) => material.id !== editingMaterial.id
                 )
             );
 
@@ -223,7 +222,7 @@ function MaterialsPreview() {
 
             <div className="materials-list">
 
-                {materials.map((material) => {
+                {formattedMaterials.map((material) => {
 
                     const Icon = iconMap[material.type];
 
@@ -245,14 +244,6 @@ function MaterialsPreview() {
                                         ? null
                                         : material.id
                                 );
-
-                            }}
-
-                            onDoubleClick={(e) => {
-
-                                e.stopPropagation();
-
-                                console.log("Open:", material.name);
 
                             }}
                         >
@@ -332,13 +323,7 @@ function MaterialsPreview() {
 
             <button
                 className="upload-material-btn"
-                onClick={() => {
-
-                    console.log("Upload clicked");
-
-                    setSelectedMaterial(null);
-
-                }}
+                onClick={() => setSelectedMaterial(null)}
             >
 
                 <Upload size={18} />

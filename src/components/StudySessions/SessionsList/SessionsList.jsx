@@ -2,6 +2,8 @@ import "./SessionsList.css";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import SessionCard from "../SessionCard/SessionCard";
 
@@ -32,12 +34,18 @@ function formatSession(session, index) {
         color: session.color || sessionColors[index % sessionColors.length],
         progress: typeof session.progress === "number" ? session.progress : 0,
         lastOpened: formatLastOpened(session.lastOpened),
-        materials: Array.isArray(session.materials) ? session.materials : [],
     };
 
 }
 
-function SessionsList() {
+function SessionsList({
+    selectedSessionId,
+    selectedMaterials,
+    onSessionSelect,
+    onSessionDelete
+}) {
+
+    const navigate = useNavigate();
 
     const [sessions, setSessions] = useState([]);
 
@@ -118,11 +126,25 @@ function SessionsList() {
             currentSessions.filter((session) => session.id !== sessionId)
         );
 
+        onSessionDelete(sessionId);
+
     };
 
     return (
 
         <div className="sessions-list">
+
+            <button
+                type="button"
+                className="session-card create-session-card"
+                onClick={() => navigate("/create-session")}
+            >
+
+                <Plus size={28} aria-hidden="true" />
+
+                <span>Create New Session</span>
+
+            </button>
 
             {loading ? (
 
@@ -135,6 +157,16 @@ function SessionsList() {
                     key={session.id}
 
                     session={session}
+
+                    materials={
+                        session.id === selectedSessionId
+                            ? selectedMaterials
+                            : []
+                    }
+
+                    isSelected={session.id === selectedSessionId}
+
+                    onSelect={() => onSessionSelect(session.id)}
 
                     onRename={handleSessionRename}
 

@@ -3,7 +3,12 @@ import HeroCard from "./HeroCard";
 import ActionGrid from "./ActionGrid";
 import MaterialsPreview from "./MaterialsPreview";
 
-function WelcomeView({ setActiveView }) {
+function WelcomeView({
+    setActiveView,
+    materials,
+    onMaterialRename,
+    onMaterialDelete
+}) {
 
     return (
 
@@ -21,7 +26,11 @@ function WelcomeView({ setActiveView }) {
 
                 <div className="welcome-right">
 
-                    <MaterialsPreview />
+                    <MaterialsPreview
+                        materials={materials}
+                        onMaterialRename={onMaterialRename}
+                        onMaterialDelete={onMaterialDelete}
+                    />
 
                 </div>
 

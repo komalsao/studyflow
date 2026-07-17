@@ -3,7 +3,12 @@ import { forwardRef } from "react";
 
 import MaterialsPreview from "../WelcomeView/MaterialsPreview";
 
-const MaterialsView = forwardRef(({ open }, ref) => {
+const MaterialsView = forwardRef(({
+    open,
+    materials,
+    onMaterialRename,
+    onMaterialDelete
+}, ref) => {
 
     return (
 
@@ -16,7 +21,12 @@ const MaterialsView = forwardRef(({ open }, ref) => {
 
             <div className="materials-content">
 
-                <MaterialsPreview popup />
+                <MaterialsPreview
+                    popup
+                    materials={materials}
+                    onMaterialRename={onMaterialRename}
+                    onMaterialDelete={onMaterialDelete}
+                />
 
             </div>
 

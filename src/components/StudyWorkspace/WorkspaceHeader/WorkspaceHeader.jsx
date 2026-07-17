@@ -5,6 +5,8 @@ import { PencilLine } from "lucide-react";
 function WorkspaceHeader({
     sidebarCollapsed,
     setSidebarCollapsed,
+    session,
+    materialsCount,
 }) {
     return (
         <header className="workspace-header">
@@ -34,7 +36,7 @@ function WorkspaceHeader({
 
                 <div className="workspace-title">
 
-                    <h1>Operating Systems</h1>
+                    <h1>{session?.title || "Study Session"}</h1>
 
                     <button className="edit-title-btn">
 
@@ -45,7 +47,7 @@ function WorkspaceHeader({
                 </div>
 
                 <p>
-                    Created July 6 • 3 Materials
+                    {materialsCount} Materials
                 </p>
 
             </div>

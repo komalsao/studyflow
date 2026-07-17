@@ -1,7 +1,6 @@
 import "./MaterialsPreview.css";
 
-import { onAuthStateChanged } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import {
     Upload,
@@ -16,10 +15,8 @@ import {
 import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
 import DeleteModal from "../../Shared/Modals/DeleteModal/DeleteModal";
 
-import auth from "../../../firebase/auth";
 import {
     deleteMaterial,
-    getUserMaterials,
     renameMaterial
 } from "../../../services/materialService";
 
@@ -61,11 +58,12 @@ function getFileExtension(name) {
 
 function MaterialsPreview({
 
-    popup = false
+    popup = false,
+    materials = [],
+    onMaterialRename,
+    onMaterialDelete
 
 }) {
-
-    const [materials, setMaterials] = useState([]);
 
     const [selectedMaterial, setSelectedMaterial] = useState(null);
 
@@ -77,51 +75,10 @@ function MaterialsPreview({
 
     const [newName, setNewName] = useState("");
 
-    useEffect(() => {
-
-        let isActive = true;
-
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-
-            if (!user) {
-
-                if (isActive) {
-
-                    setMaterials([]);
-
-                }
-
-                return;
-
-            }
-
-            try {
-
-                const userMaterials = await getUserMaterials(user.uid);
-
-                if (isActive) {
-
-                    setMaterials(userMaterials.map(formatMaterial));
-
-                }
-
-            } catch (error) {
-
-                console.error("Unable to load user materials:", error);
-
-            }
-
-        });
-
-        return () => {
-
-            isActive = false;
-
-            unsubscribe();
-
-        };
-
-    }, []);
+    const formattedMaterials = useMemo(
+        () => materials.map(formatMaterial),
+        [materials]
+    );
 
     useEffect(() => {
 
@@ -169,17 +126,7 @@ function MaterialsPreview({
 
             await renameMaterial(editingMaterial.id, updatedName);
 
-            setMaterials(prev =>
-                prev.map(material =>
-                    material.id === editingMaterial.id
-                        ? {
-                            ...material,
-                            name: updatedName,
-                            originalFileName: updatedName
-                        }
-                        : material
-                )
-            );
+            onMaterialRename(editingMaterial.id, updatedName);
 
             setShowRenameModal(false);
 
@@ -199,9 +146,7 @@ function MaterialsPreview({
 
             await deleteMaterial(editingMaterial.id);
 
-            setMaterials(prev =>
-                prev.filter(material => material.id !== editingMaterial.id)
-            );
+            onMaterialDelete(editingMaterial.id);
 
             setShowDeleteModal(false);
 
@@ -236,7 +181,7 @@ function MaterialsPreview({
 
             <div className="materials-list">
 
-                {materials.map((material) => {
+                {formattedMaterials.map((material) => {
 
                     const Icon = iconMap[material.type];
 
@@ -292,8 +237,6 @@ function MaterialsPreview({
 
                                             e.stopPropagation();
 
-                                            console.log("Rename clicked");
-
                                             openRename(material);
 
                                         }}
@@ -305,8 +248,6 @@ function MaterialsPreview({
                                         onClick={(e) => {
 
                                             e.stopPropagation();
-
-                                            console.log("Delete clicked");
 
                                             openDelete(material);
 

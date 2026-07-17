@@ -6,3 +6,26 @@
 
     gap:18px;
 }
+
+.create-session-card{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    width:100%;
+
+    font:inherit;
+
+    font-size:20px;
+
+    font-weight:600;
+
+    color:#2E8B57;
+
+    text-align:center;
+}

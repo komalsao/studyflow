@@ -45,7 +45,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/create-session" element={<CreateSession />} />
-        <Route path="/study-workspace" element={<StudyWorkspace />} />
+        <Route path="/study-workspace/:sessionId" element={<StudyWorkspace />} />
         <Route path="/study-sessions" element={<StudySessions />} />
       </Routes>
     </BrowserRouter>

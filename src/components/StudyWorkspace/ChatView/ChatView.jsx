@@ -6,7 +6,6 @@ import ChatInput from "../Shared/ChatInput/ChatInput";
 function ChatView() {
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
-    console.log(messages);
 
     function handleSend(text) {
 

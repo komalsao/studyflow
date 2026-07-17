@@ -1,6 +1,7 @@
 import "./SessionCard.css";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
     ArrowRight,
@@ -9,7 +10,8 @@ import {
     Network,
     Code2,
     SquarePen,
-    Trash2
+    Trash2,
+    FileText
 } from "lucide-react";
 
 import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
@@ -27,9 +29,16 @@ const iconMap = {
     code: Code2
 };
 
-function SessionCard({ session, onRename, onDelete }) {
+function SessionCard({
+    session,
+    materials,
+    isSelected,
+    onSelect,
+    onRename,
+    onDelete
+}) {
 
-    const [expanded, setExpanded] = useState(false);
+    const navigate = useNavigate();
 
     const [showRenameModal, setShowRenameModal] = useState(false);
 
@@ -44,8 +53,8 @@ function SessionCard({ session, onRename, onDelete }) {
         <>
 
             <div
-                className={`session-card ${expanded ? "expanded" : ""}`}
-                onClick={() => setExpanded(!expanded)}
+                className={`session-card ${isSelected ? "expanded" : ""}`}
+                onClick={onSelect}
             >
 
                 <div className="session-top">
@@ -96,7 +105,7 @@ function SessionCard({ session, onRename, onDelete }) {
 
                                 e.stopPropagation();
 
-                                console.log("Open Workspace");
+                                navigate(`/study-workspace/${session.id}`);
 
                             }}
                         >
@@ -109,7 +118,7 @@ function SessionCard({ session, onRename, onDelete }) {
 
                 </div>
 
-                {expanded && (
+                {isSelected && (
 
                     <div className="session-details">
 
@@ -135,18 +144,28 @@ function SessionCard({ session, onRename, onDelete }) {
 
                             <h4>Materials</h4>
 
-                            {session.materials.map((file) => (
+                            {materials.length > 0 ? materials.map((material) => (
 
                                 <div
-                                    key={file}
+                                    key={material.id}
                                     className="material-chip"
                                 >
 
-                                    {file}
+                                    <FileText size={16} />
+
+                                    {material.originalFileName}
 
                                 </div>
 
-                            ))}
+                            )) : (
+
+                                <div className="material-chip">
+
+                                    No materials attached.
+
+                                </div>
+
+                            )}
 
                         </div>
 

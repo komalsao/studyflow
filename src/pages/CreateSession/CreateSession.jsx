@@ -93,68 +93,55 @@ function CreateSession() {
 
     const handleCreateSession = async () => {
 
-    console.log("🔥 Create button clicked");
+        if (isCreating) {
+            return;
+        }
 
-    if (isCreating) {
-        console.log("Already creating");
-        return;
-    }
+        const trimmedTitle = title.trim();
 
-    const trimmedTitle = title.trim();
-    console.log("Title:", trimmedTitle);
+        if (!trimmedTitle) {
+            console.error("A session title is required.");
+            return;
+        }
 
-    if (!trimmedTitle) {
-        console.error("A session title is required.");
-        return;
-    }
+        const user = auth.currentUser;
 
-    const user = auth.currentUser;
-    console.log("Current user:", user);
+        if (!user) {
+            console.error("A user must be logged in.");
+            return;
+        }
 
-    if (!user) {
-        console.error("A user must be logged in.");
-        return;
-    }
+        setIsCreating(true);
 
-    setIsCreating(true);
+        try {
 
-    try {
+            const session = await createSession(user.uid, {
+                title: trimmedTitle,
+            });
 
-        console.log("Creating session...");
+            const materials = await Promise.all(
+                selectedFiles.map((file) => uploadMaterial(user.uid, file))
+            );
 
-        const sessionId = await createSession(user.uid, {
-            title: trimmedTitle,
-        });
+            await Promise.all(
+                materials.map((material) =>
+                    attachMaterialToSession(session.id, material.id)
+                )
+            );
 
-        console.log("Session created:", sessionId);
+            navigate("/study-sessions");
 
-        const materials = await Promise.all(
-            selectedFiles.map((file) => uploadMaterial(user.uid, file))
-        );
+        } catch (error) {
 
-        console.log("Uploaded materials:", materials);
+            console.error(error);
 
-        await Promise.all(
-            materials.map((material) =>
-                attachMaterialToSession(sessionId, material.id)
-            )
-        );
+        } finally {
 
-        console.log("Navigation...");
+            setIsCreating(false);
 
-        navigate("/study-sessions");
+        }
 
-    } catch (error) {
-
-        console.error(error);
-
-    } finally {
-
-        setIsCreating(false);
-
-    }
-
-};
+    };
     return (
 
         <div className="create-session-page">
