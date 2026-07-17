@@ -7,7 +7,8 @@ function ChatInput({
 
     setActiveView,
     onSend,
-    autoFocus = false
+    autoFocus = false,
+    disabled = false
 
 }) {
 
@@ -27,21 +28,23 @@ function ChatInput({
 
     function handleSend() {
 
-        const text = message.trim();
+    if (disabled) return;
 
-        if (!text) return;
+    const text = message.trim();
 
-        if (onSend) {
+    if (!text) return;
 
-            onSend(text);
+    if (onSend) {
 
-            setMessage("");
+        onSend(text);
 
-            inputRef.current?.focus();
+        setMessage("");
 
-        }
+        inputRef.current?.focus();
 
     }
+
+}
 
     function handleBoxClick() {
 
@@ -107,7 +110,7 @@ function ChatInput({
 
                     type="button"
 
-                    disabled={!message.trim()}
+                    disabled={disabled || !message.trim()}
 
                     onClick={(e) => {
 
