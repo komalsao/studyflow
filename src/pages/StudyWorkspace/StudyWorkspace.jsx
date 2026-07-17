@@ -88,6 +88,16 @@ function StudyWorkspace() {
 
     };
 
+    const handleSessionRename = (renamedSessionId, title) => {
+
+        setSession((currentSession) =>
+            currentSession?.id === renamedSessionId
+                ? { ...currentSession, title }
+                : currentSession
+        );
+
+    };
+
     useEffect(() => {
 
         function handleClick(e) {
@@ -127,6 +137,7 @@ function StudyWorkspace() {
                 setSidebarCollapsed={setSidebarCollapsed}
                 session={activeSession}
                 materialsCount={activeMaterials.length}
+                onRename={handleSessionRename}
             />
 
             <div className="workspace-body">

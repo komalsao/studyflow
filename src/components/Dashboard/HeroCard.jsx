@@ -1,12 +1,14 @@
 import "./HeroCard.css";
 import sit from "../../assets/lumi/study.png";
-import { Play, Sparkles } from "lucide-react";
+import { Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-function HeroCard({ name }) {
+function HeroCard({ name, session }) {
+  const navigate = useNavigate();
   const hour = new Date().getHours();
 
-  let greeting = "";
-  let subtitle = "";
+  let greeting;
+  let subtitle;
 
   if (hour >= 5 && hour < 12) {
     greeting = "☀️ Good Morning";
@@ -38,7 +40,14 @@ function HeroCard({ name }) {
 
         <p>{subtitle}</p>
 
-        <button className="hero-btn">
+        <button
+          className="hero-btn"
+          onClick={() => navigate(
+            session
+              ? `/study-workspace/${session.id}`
+              : "/create-session"
+          )}
+        >
           <Play size={18} fill="white" />
           Continue Studying
         </button>

@@ -1,14 +1,61 @@
 import "./WorkspaceHeader.css";
+import { useState } from "react";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { PencilLine } from "lucide-react";
+import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
+import { renameSession } from "../../../services/sessionService";
 
 function WorkspaceHeader({
     sidebarCollapsed,
     setSidebarCollapsed,
     session,
     materialsCount,
+    onRename,
 }) {
+
+    const [showRenameModal, setShowRenameModal] = useState(false);
+    const [newName, setNewName] = useState("");
+
+    const handleOpenRenameModal = () => {
+
+        setNewName(session?.title || "");
+        setShowRenameModal(true);
+
+    };
+
+    const handleRename = async () => {
+
+        const trimmedName = newName.trim();
+
+        if (!trimmedName || !session) return;
+
+        if (trimmedName === session.title) {
+
+            setShowRenameModal(false);
+
+            return;
+
+        }
+
+        try {
+
+            await renameSession(session.id, trimmedName);
+
+            onRename(session.id, trimmedName);
+
+            setShowRenameModal(false);
+
+        } catch (error) {
+
+            console.error("Unable to rename session:", error);
+
+        }
+
+    };
+
     return (
+        <>
+
         <header className="workspace-header">
 
             <div className="workspace-brand">
@@ -38,7 +85,10 @@ function WorkspaceHeader({
 
                     <h1>{session?.title || "Study Session"}</h1>
 
-                    <button className="edit-title-btn">
+                    <button
+                        className="edit-title-btn"
+                        onClick={handleOpenRenameModal}
+                    >
 
                         <PencilLine size={16} />
 
@@ -53,6 +103,17 @@ function WorkspaceHeader({
             </div>
 
         </header>
+
+        <RenameModal
+            isOpen={showRenameModal}
+            title="Rename Study Session"
+            value={newName}
+            setValue={setNewName}
+            onClose={() => setShowRenameModal(false)}
+            onSave={handleRename}
+        />
+
+        </>
     );
 }
 

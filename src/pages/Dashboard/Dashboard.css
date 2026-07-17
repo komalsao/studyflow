@@ -11,10 +11,24 @@ body{
 .dashboard-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
+
+    grid-template-rows:260px 260px;
+
     gap:30px;
-    margin-bottom:30px;
 }
 
-.dashboard-grid > * {
-    height: 260px;
+.dashboard-start{
+    grid-column:1;
+    grid-row:1;
 }
+
+.dashboard-tip{
+    grid-column:1;
+    grid-row:2;
+}
+
+.dashboard-recent{
+    grid-column:2;
+    grid-row:1 / span 2;
+}
+

@@ -1,78 +1,161 @@
 import "./Dashboard.css";
-import { signOut } from "firebase/auth";
-import auth from "../../firebase/auth";
-import { useNavigate } from "react-router-dom";
+
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import db from "../../firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
+
+import auth from "../../firebase/auth";
+import db from "../../firebase/firestore";
+
+import { getUserSessions } from "../../services/sessionService";
+
 import AppHeader from "../../components/Shared/AppHeader/AppHeader";
 import HeroCard from "../../components/Dashboard/HeroCard";
 import StartSessionCard from "../../components/Dashboard/StartSessionCard";
 import RecentSessions from "../../components/Dashboard/RecentSessions";
-import ContinueCard from "../../components/Dashboard/ContinueCard";
 import TipCard from "../../components/Dashboard/TipCard";
 
-
 function Dashboard() {
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      alert("Logged out successfully!");
-      navigate("/login");
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const user = auth.currentUser;
+    const [name, setName] = useState("");
 
-      if (!user) return;
-      const snap = await getDoc(doc(db, "users", user.uid));
+    const [recentSessions, setRecentSessions] = useState([]);
 
-      if (snap.exists()) {
-        setName(snap.data().name);
-      }
+    const handleLogout = async () => {
+
+        try {
+
+            await signOut(auth);
+
+            alert("Logged out successfully!");
+
+            navigate("/login");
+
+        } catch (error) {
+
+            alert(error.message);
+
+        }
+
     };
-    loadUser();
-  }, []);
 
+    useEffect(() => {
 
+        const loadUser = async () => {
 
-  return (
-    <>
-      <AppHeader 
-        name={name}
-        onLogout={handleLogout}
-      />
-      <div className="dashboard">
+            const user = auth.currentUser;
 
-        <HeroCard name={name} />
+            if (!user) return;
 
-        <div className="dashboard-grid">
+            const snap = await getDoc(doc(db, "users", user.uid));
 
-          <StartSessionCard />
+            if (snap.exists()) {
 
-          <RecentSessions />
+                setName(snap.data().name);
 
-        </div>
+            }
 
-        <div className="dashboard-grid">
+        };
 
-          <ContinueCard />
+        loadUser();
 
-          <TipCard />
+    }, []);
 
-        </div>
+    useEffect(() => {
 
-      </div>
-    </>
-  );
+        let isActive = true;
+
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+            if (!user) {
+
+                if (isActive) {
+
+                    setRecentSessions([]);
+
+                }
+
+                return;
+
+            }
+
+            try {
+
+                const sessions = await getUserSessions(user.uid);
+
+                if (isActive) {
+
+                    setRecentSessions(sessions.slice(0, 6));
+
+                }
+
+            } catch (error) {
+
+                console.error("Unable to load recent study sessions:", error);
+
+            }
+
+        });
+
+        return () => {
+
+            isActive = false;
+
+            unsubscribe();
+
+        };
+
+    }, []);
+
+    return (
+
+        <>
+
+            <AppHeader
+                name={name}
+                onLogout={handleLogout}
+            />
+
+            <div className="dashboard">
+
+                <HeroCard
+                    name={name}
+                    session={recentSessions[0]}
+                />
+
+                <div className="dashboard-grid">
+
+                    <div className="dashboard-start">
+
+                        <StartSessionCard />
+
+                    </div>
+
+                    <div className="dashboard-recent">
+
+                        <RecentSessions
+                            sessions={recentSessions}
+                        />
+
+                    </div>
+
+                    <div className="dashboard-tip">
+
+                        <TipCard />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </>
+
+    );
 
 }
 
-export default Dashboard; 
+export default Dashboard;
