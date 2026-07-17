@@ -11,19 +11,11 @@ import {
     updateDoc,
     where,
 } from "firebase/firestore";
-import {
-    deleteObject,
-    getDownloadURL,
-    getStorage,
-    ref,
-    uploadBytes,
-} from "firebase/storage";
-
-import app from "../firebase/firebase";
 import db from "../firebase/firestore";
+import supabase from "../supabase";
 
-const storage = getStorage(app);
 const materialsCollection = collection(db, "materials");
+const materialsBucket = "materials";
 
 function getStorageFileName(fileName) {
     return fileName.replace(/[\\/]/g, "_");
@@ -33,18 +25,25 @@ function getStorageFileName(fileName) {
  * Uploads a material file to Storage and records its metadata in Firestore.
  */
 export async function uploadMaterial(userId, file) {
-    let storageMaterialRef;
+    let storagePath;
     let materialDocumentCreated = false;
 
     try {
         const materialRef = doc(materialsCollection);
-        const storagePath = `users/${userId}/materials/${materialRef.id}-${getStorageFileName(file.name)}`;
+        storagePath = `users/${userId}/materials/${materialRef.id}-${getStorageFileName(file.name)}`;
 
-        storageMaterialRef = ref(storage, storagePath);
+        const { error: uploadError } = await supabase.storage
+            .from(materialsBucket)
+            .upload(storagePath, file);
 
-        await uploadBytes(storageMaterialRef, file);
+        if (uploadError) {
+            throw uploadError;
+        }
 
-        const downloadURL = await getDownloadURL(storageMaterialRef);
+        const { data: publicUrlData } = supabase.storage
+            .from(materialsBucket)
+            .getPublicUrl(storagePath);
+        const downloadURL = publicUrlData.publicUrl;
         const materialData = {
             userId,
             originalFileName: file.name,
@@ -66,9 +65,15 @@ export async function uploadMaterial(userId, file) {
         };
     } catch (error) {
         // Avoid leaving an uploaded file behind if its Firestore record fails.
-        if (storageMaterialRef && !materialDocumentCreated) {
+        if (storagePath && !materialDocumentCreated) {
             try {
-                await deleteObject(storageMaterialRef);
+                const { error: cleanupError } = await supabase.storage
+                    .from(materialsBucket)
+                    .remove([storagePath]);
+
+                if (cleanupError) {
+                    throw cleanupError;
+                }
             } catch (cleanupError) {
                 console.error("Error cleaning up uploaded material:", cleanupError);
             }
@@ -129,7 +134,14 @@ export async function deleteMaterial(materialId) {
 
         const { storagePath } = materialSnapshot.data();
 
-        await deleteObject(ref(storage, storagePath));
+        const { error: storageError } = await supabase.storage
+            .from(materialsBucket)
+            .remove([storagePath]);
+
+        if (storageError) {
+            throw storageError;
+        }
+
         await deleteDoc(materialRef);
     } catch (error) {
         console.error("Error deleting material:", error);
