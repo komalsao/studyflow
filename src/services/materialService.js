@@ -16,6 +16,7 @@ import supabase from "../supabase";
 
 const materialsCollection = collection(db, "materials");
 const materialsBucket = "materials";
+const studyApiUrl = "http://localhost:3001/api/study";
 
 function getStorageFileName(fileName) {
     return fileName.replace(/[\\/]/g, "_");
@@ -82,6 +83,54 @@ export async function uploadMaterial(userId, file) {
         console.error("Error uploading material:", error);
         throw error;
     }
+}
+
+/**
+ * Generates study resources from an uploaded material through the backend.
+ */
+export async function generateStudyResources(downloadURL, mimeType) {
+    const response = await fetch(`${studyApiUrl}/generate`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            downloadURL,
+            mimeType,
+        }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || "Unable to generate study resources.");
+    }
+
+    return data;
+}
+
+/**
+ * Generates a suggested session title from an uploaded material.
+ */
+export async function generateSessionTitle(downloadURL, mimeType) {
+    const response = await fetch(`${studyApiUrl}/title`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            downloadURL,
+            mimeType,
+        }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || "Unable to generate a session title.");
+    }
+
+    return data.title;
 }
 
 /**

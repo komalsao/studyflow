@@ -8,7 +8,8 @@ function UploadSection({
     setSelectedFiles,
     materials,
     selectedMaterialIds,
-    onMaterialToggle
+    onMaterialToggle,
+    onFilesSelected
 }) {
     return (
 
@@ -19,6 +20,7 @@ function UploadSection({
                 <UploadCard
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
+                    onFilesSelected={onFilesSelected}
                 />
 
                 <SelectedMaterials

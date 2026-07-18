@@ -1,7 +1,7 @@
 import { UploadCloud } from "lucide-react";
 import { useRef } from "react";
 
-function UploadCard({ selectedFiles, setSelectedFiles }) {
+function UploadCard({ selectedFiles, setSelectedFiles, onFilesSelected }) {
 
     const fileInputRef = useRef(null);
 
@@ -11,7 +11,7 @@ function UploadCard({ selectedFiles, setSelectedFiles }) {
             <h2>Study Materials</h2>
 
             <p className="upload-subtitle">
-                Upload new PDFs to begin your study session.
+                Upload your PDFs, DOCX or TXT files to begin your study session.
             </p>
 
             <div className="upload-box">
@@ -22,7 +22,7 @@ function UploadCard({ selectedFiles, setSelectedFiles }) {
                     className="upload-icon"
                 />
 
-                <h3>Drag & Drop PDF files here</h3>
+                <h3>Drag & Drop your study files here</h3>
 
                 <span>or</span>
 
@@ -37,46 +37,55 @@ function UploadCard({ selectedFiles, setSelectedFiles }) {
                     key={selectedFiles.length}
                     ref={fileInputRef}
                     type="file"
-                    accept="application/pdf"
+                    accept=".pdf,.docx,.txt"
                     multiple
                     hidden
                     onChange={(event) => {
 
                         const files = Array.from(event.target.files || []);
 
-                        setSelectedFiles((currentFiles) => {
+                        const fileKeys = new Set(
+                            selectedFiles.map(
+                                (file) => `${file.name}\u0000${file.size}`
+                            )
+                        );
 
-                            const fileKeys = new Set(
-                                currentFiles.map(
-                                    (file) => `${file.name}\u0000${file.size}`
-                                )
-                            );
+                        const newFiles = files.filter((file) => {
 
-                            const newFiles = files.filter((file) => {
+                            const fileKey = `${file.name}\u0000${file.size}`;
 
-                                const fileKey = `${file.name}\u0000${file.size}`;
+                            if (fileKeys.has(fileKey)) {
 
-                                if (fileKeys.has(fileKey)) {
+                                return false;
 
-                                    return false;
+                            }
 
-                                }
+                            fileKeys.add(fileKey);
 
-                                fileKeys.add(fileKey);
-
-                                return true;
-
-                            });
-
-                            return [...currentFiles, ...newFiles];
+                            return true;
 
                         });
+
+                        if (newFiles.length) {
+
+                            setSelectedFiles((currentFiles) => [
+                                ...currentFiles,
+                                ...newFiles,
+                            ]);
+
+                            onFilesSelected(newFiles);
+
+                        }
 
                     }}
                 />
 
                 <small>
-                    Only PDF files are supported
+                    Supported formats: PDF, DOCX and TXT
+                </small>
+
+                <small>
+                    For the best learning experience, upload one lesson or chapter per session.
                 </small>
 
             </div>

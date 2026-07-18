@@ -1,4 +1,5 @@
 import "./ChatMessages.css";
+import ReactMarkdown from "react-markdown";
 
 import LumiAvatar from "../../../../assets/lumi/wave.png";
 
@@ -25,7 +26,9 @@ function MessageBubble({
 
             <div className="message-bubble">
 
-                {message}
+                <ReactMarkdown>
+                    {message}
+                </ReactMarkdown>
 
             </div>
 

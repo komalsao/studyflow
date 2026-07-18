@@ -183,6 +183,32 @@ export async function renameSession(sessionId, newTitle) {
 }
 
 /* ------------------------------------------ */
+/* Save Study Resources */
+/* ------------------------------------------ */
+
+export async function saveStudyResources(sessionId, resources) {
+
+    try {
+
+        await updateDoc(doc(db, "sessions", sessionId), {
+
+            resources,
+
+            updatedAt: serverTimestamp()
+
+        });
+
+    } catch (error) {
+
+        console.error("Error saving study resources:", error);
+
+        throw error;
+
+    }
+
+}
+
+/* ------------------------------------------ */
 /* Delete Session */
 /* ------------------------------------------ */
 

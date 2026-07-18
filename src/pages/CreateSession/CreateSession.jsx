@@ -15,7 +15,8 @@ import {
 } from "../../services/sessionService";
 import {
     getUserMaterials,
-    uploadMaterial
+    uploadMaterial,
+    generateSessionTitle,
 } from "../../services/materialService";
 
 
@@ -30,6 +31,12 @@ function CreateSession() {
     const [selectedMaterialIds, setSelectedMaterialIds] = useState([]);
 
     const [isCreating, setIsCreating] = useState(false);
+
+    const [isGenerating, setIsGenerating] = useState(false);
+
+    const [uploadedMaterials, setUploadedMaterials] = useState([]);
+
+    const [suggestedTitle, setSuggestedTitle] = useState("");
 
     const navigate = useNavigate();
 
@@ -91,9 +98,60 @@ function CreateSession() {
 
     };
 
+    const handleFilesSelected = async (files) => {
+
+        const user = auth.currentUser;
+
+        if (!user || !files.length) {
+            return;
+        }
+
+        setIsGenerating(true);
+
+        try {
+
+            const newlyUploadedMaterials = await Promise.all(
+                files.map((file) => uploadMaterial(user.uid, file))
+            );
+
+            setUploadedMaterials((currentMaterials) => [
+                ...currentMaterials,
+                ...newlyUploadedMaterials,
+            ]);
+
+            setMaterials((currentMaterials) => [
+                ...newlyUploadedMaterials,
+                ...currentMaterials,
+            ]);
+
+            const generatedTitle = await generateSessionTitle(
+                newlyUploadedMaterials[0].downloadURL,
+                newlyUploadedMaterials[0].mimeType
+            );
+
+            setTitle(generatedTitle);
+            setSuggestedTitle(generatedTitle);
+
+        } catch (error) {
+
+            console.error("Unable to generate a session title:", error);
+
+        } finally {
+
+            setIsGenerating(false);
+
+        }
+
+    };
+
     const handleCreateSession = async () => {
 
-        if (isCreating) {
+        if (isCreating || isGenerating) {
+            return;
+        }
+
+        if (!uploadedMaterials.length) {
+            console.error("Please upload at least one study material.");
             return;
         }
 
@@ -119,17 +177,13 @@ function CreateSession() {
                 title: trimmedTitle,
             });
 
-            const materials = await Promise.all(
-                selectedFiles.map((file) => uploadMaterial(user.uid, file))
-            );
-
             await Promise.all(
-                materials.map((material) =>
+                uploadedMaterials.map((material) =>
                     attachMaterialToSession(session.id, material.id)
                 )
             );
 
-            navigate("/study-sessions");
+            navigate(`/study-workspace/${session.id}`);
 
         } catch (error) {
 
@@ -160,11 +214,14 @@ function CreateSession() {
                     materials={materials}
                     selectedMaterialIds={selectedMaterialIds}
                     onMaterialToggle={handleMaterialToggle}
+                    onFilesSelected={handleFilesSelected}
                 />
 
                 <SessionDetails
                     title={title}
                     onTitleChange={setTitle}
+                    suggestedTitle={suggestedTitle}
+                    onUseSuggestion={() => setTitle(suggestedTitle)}
                 />
 
                 <div className="workspace-footer">
@@ -172,7 +229,7 @@ function CreateSession() {
                     <button
                         className="create-session-btn"
                         onClick={handleCreateSession}
-                        disabled={isCreating}
+                        disabled={isCreating || isGenerating}
                     >
                         Create Study Session →
                     </button>

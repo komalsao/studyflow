@@ -1,5 +1,5 @@
 import "./StudyWorkspace.css";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "../../components/StudyWorkspace/Sidebar/Sidebar";
 import WorkspaceHeader from "../../components/StudyWorkspace/WorkspaceHeader/WorkspaceHeader";
@@ -14,8 +14,10 @@ import MaterialsView from "../../components/StudyWorkspace/MaterialsView/Materia
 import ChatInput from "../../components/StudyWorkspace/Shared/ChatInput/ChatInput";
 import {
     getSession,
-    getSessionMaterials
+    getSessionMaterials,
+    saveStudyResources,
 } from "../../services/sessionService";
+import { generateStudyResources } from "../../services/materialService";
 
 function StudyWorkspace() {
     const { sessionId } = useParams();
@@ -25,6 +27,7 @@ function StudyWorkspace() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [session, setSession] = useState(null);
     const [materials, setMaterials] = useState([]);
+    const generatedResourcesSessionRef = useRef(null);
     const showChatBar =
         activeView === "welcome";
 
@@ -66,7 +69,72 @@ function StudyWorkspace() {
     }, [sessionId]);
 
     const activeSession = session?.id === sessionId ? session : null;
-    const activeMaterials = activeSession ? materials : [];
+    const activeMaterials = useMemo(
+        () => activeSession ? materials : [],
+        [activeSession, materials]
+    );
+
+    useEffect(() => {
+
+        let isActive = true;
+
+        if (
+            !activeSession ||
+            !activeMaterials.length ||
+            activeSession.resources ||
+            generatedResourcesSessionRef.current === activeSession.id
+        ) {
+            return undefined;
+        }
+
+        generatedResourcesSessionRef.current = activeSession.id;
+
+        async function generateResources() {
+
+            try {
+
+                const generatedStudy = await generateStudyResources(
+                    activeMaterials[0].downloadURL,
+                    activeMaterials[0].mimeType
+                );
+
+                await saveStudyResources(
+                    activeSession.id,
+                    generatedStudy.resources
+                );
+
+                if (isActive) {
+
+                    setSession((currentSession) =>
+                        currentSession?.id === activeSession.id
+                            ? {
+                                ...currentSession,
+                                resources: generatedStudy.resources,
+                            }
+                            : currentSession
+                    );
+
+                }
+
+            } catch (error) {
+
+                generatedResourcesSessionRef.current = null;
+
+                console.error("Unable to generate study resources:", error);
+
+            }
+
+        }
+
+        generateResources();
+
+        return () => {
+
+            isActive = false;
+
+        };
+
+    }, [activeSession, activeMaterials]);
 
     const handleMaterialRename = (materialId, originalFileName) => {
 

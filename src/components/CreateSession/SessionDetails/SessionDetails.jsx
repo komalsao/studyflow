@@ -1,7 +1,12 @@
 import "./SessionDetails.css";
 import { Lightbulb } from "lucide-react";
 
-function SessionDetails({ title, onTitleChange }) {
+function SessionDetails({
+    title,
+    suggestedTitle,
+    onTitleChange,
+    onUseSuggestion,
+}) {
     return (
         <section className="session-details">
 
@@ -33,12 +38,16 @@ function SessionDetails({ title, onTitleChange }) {
                     <Lightbulb size={18} color="#2E8B57"/>
                     <strong>Suggested by Lumi:</strong>
                     <span className="suggestion-name">
-                        {" "}Operating Systems
+                        {" "}{suggestedTitle || "Generating a title..."}
                     </span>
 
                 </div>
 
-                <button className="use-suggestion-btn">
+                <button
+                    className="use-suggestion-btn"
+                    onClick={onUseSuggestion}
+                    disabled={!suggestedTitle}
+                >
                     Use Suggestion
                 </button>
 
