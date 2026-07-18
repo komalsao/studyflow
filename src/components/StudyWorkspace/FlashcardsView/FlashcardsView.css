@@ -1057,3 +1057,41 @@
 
     transform:translateY(-2px);
 }
+
+.explain-lumi {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    color: #2D7A4E;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+
+}
+
+.explain-lumi svg {
+
+    transition: transform .2s ease;
+
+}
+
+.explain-lumi:hover {
+
+    color: #23613d;
+
+}
+
+.explain-lumi:hover svg {
+
+    transform: translateX(5px);
+
+}

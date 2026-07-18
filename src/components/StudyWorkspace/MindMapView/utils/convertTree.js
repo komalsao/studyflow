@@ -19,15 +19,15 @@ export function convertTree(tree) {
             type: "custom",
 
             position: {
-
                 x: 0,
                 y: 0
-
             },
 
             data: {
 
-                label: node.title,
+                title: node.title,
+
+                explanation: node.explanation,
 
                 level
 
@@ -51,7 +51,7 @@ export function convertTree(tree) {
 
         }
 
-        if (node.children) {
+        if (node.children?.length) {
 
             node.children.forEach(child =>
 

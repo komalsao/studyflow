@@ -10,7 +10,6 @@ import MindMapEdge from "../Edge/MindMapEdge";
 import "@xyflow/react/dist/style.css";
 import MindMapToolbar from "../Toolbar/MindMapToolbar";
 import MindMapNode from "../Node/MindMapNode";
-import sampleMindMap from "../data/sampleMindMap";
 import { convertTree } from "../utils/convertTree";
 import { useEffect, useState } from "react";
 import { layoutTree } from "../utils/layout";
@@ -35,6 +34,8 @@ function AutoFit({ nodes }) {
 
 function MindMapCanvas({
 
+    rootNode,
+
     onNodeSelect,
 
     onCanvasClick
@@ -56,44 +57,15 @@ function MindMapCanvas({
 
     useEffect(() => {
 
+        if (!rootNode) return;
+
         async function buildMap() {
 
-            const tree = convertTree(sampleMindMap);
-
-            const descriptions = {
-
-                "Memory Management":
-                    "Memory Management controls how memory is allocated and used by programs.",
-
-                "Paging":
-                    "Paging divides memory into fixed-size pages for efficient allocation.",
-
-                "Segmentation":
-                    "Segmentation divides memory into logical sections such as code and data.",
-
-                "Virtual Memory":
-                    "Virtual Memory allows programs to use more memory than physically available.",
-
-                "Frames":
-                    "Frames are fixed-size blocks of physical memory.",
-
-                "TLB":
-                    "The Translation Lookaside Buffer caches recent page table entries.",
-
-                "Page Table":
-                    "A Page Table maps virtual pages to physical frames.",
-
-                "Demand Paging":
-                    "Demand Paging loads pages only when they are actually needed."
-
-            };
+            const tree = convertTree(rootNode);
 
             const layout = await layoutTree(
-
                 tree.nodes,
-
                 tree.edges
-
             );
 
             setNodes(
@@ -106,18 +78,9 @@ function MindMapCanvas({
 
                         ...node.data,
 
-                        title: node.data.label,
-
-                        description:
-
-                            descriptions[node.data.label] ||
-
-                            "Explanation coming soon.",
-
                         onClick: onNodeSelect
 
                     }
-
                 }))
 
             );
@@ -128,7 +91,7 @@ function MindMapCanvas({
 
         buildMap();
 
-    }, []);
+    }, [rootNode, onNodeSelect]);
 
 
     return (

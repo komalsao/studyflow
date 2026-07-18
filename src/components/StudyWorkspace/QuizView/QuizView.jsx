@@ -9,7 +9,7 @@ import OptionCard from "./OptionCard";
 import QuizStart from "./QuizStart";
 import { ClockAlert } from "lucide-react";
 
-function QuizView() {
+function QuizView({ session }) {
 
     const [selectedOption, setSelectedOption] = useState(null);
     const [showResult, setShowResult] = useState(false);
@@ -25,31 +25,7 @@ function QuizView() {
     const [startTime, setStartTime] = useState(null);
     const [totalTime, setTotalTime] = useState(0);
 
-    const questions = [
-
-        {
-            question: "Which page replacement algorithm suffers from Belady's Anomaly?",
-            options: [
-                "FIFO",
-                "LRU",
-                "Optimal",
-                "LFU"
-            ],
-            correctAnswer: "FIFO"
-        },
-
-        {
-            question: "Which scheduling algorithm can cause starvation?",
-            options: [
-                "FCFS",
-                "Round Robin",
-                "Priority Scheduling",
-                "FIFO"
-            ],
-            correctAnswer: "Priority Scheduling"
-        }
-
-    ];
+    const questions = session?.resources?.quiz;
 
     useEffect(() => {
 
@@ -172,7 +148,7 @@ function QuizView() {
         return (
 
             <QuizStart
-                topic="Operating Systems"
+                topic={session.title}
                 onStart={() => {
 
                     setStartTime(Date.now());
@@ -181,6 +157,27 @@ function QuizView() {
 
                 }}
             />
+
+        );
+
+    }
+    if (!questions.length) {
+
+        return (
+
+            <div className="quiz-view">
+
+                <div className="quiz-loading">
+
+                    <h2>Generating Quiz...</h2>
+
+                    <p>
+                        Lumi is preparing personalized quiz questions for this study session.
+                    </p>
+
+                </div>
+
+            </div>
 
         );
 
@@ -272,6 +269,17 @@ function QuizView() {
 
             </div>
             <div className="quiz-actions">
+                {showAnswer && (
+
+                    <div className="quiz-explanation">
+
+                        <h4>Explanation</h4>
+
+                        <p>{question.explanation}</p>
+
+                    </div>
+
+                )}
 
                 {showAnswer && (
 

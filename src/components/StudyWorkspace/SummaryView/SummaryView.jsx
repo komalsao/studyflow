@@ -10,7 +10,35 @@ import {
     Zap
 } from "lucide-react";
 
-function SummaryView() {
+function SummaryView({ session }) {
+
+    const overview = session?.resources?.overview;
+
+    const topics = session?.resources?.topics || [];
+
+    const mainTopic = topics[0];
+
+    const remainingTopics = topics.slice(1);
+
+    if (!session?.resources) {
+
+        return (
+            <div className="summary-view">
+                <div className="summary-layout">
+                    <div className="paper">
+                        <div className="paper-content">
+                            <h2>Generating Summary...</h2>
+                            <p>
+                                Lumi is reading your study material and preparing
+                                your personalized summary.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+    }
 
     return (
 
@@ -18,15 +46,13 @@ function SummaryView() {
 
             <div className="summary-layout">
 
-                {/* ===========================
-                    LEFT CONTENT
-                =========================== */}
+                {/* LEFT */}
 
                 <div className="paper">
 
                     <div className="paper-content">
 
-                        {/* Quick Overview */}
+                        {/* OVERVIEW */}
 
                         <section className="summary-overview">
 
@@ -36,28 +62,33 @@ function SummaryView() {
 
                                     <BookOpen size={22} />
 
-                                    Quick Overview
+                                    {overview?.title || "Quick Overview"}
 
                                 </h2>
 
                                 <p>
 
-                                    This lesson introduces the fundamentals of
-                                    Memory Management in operating systems. It
-                                    explains how memory is allocated,
-                                    organized and optimized for efficient
-                                    execution of processes.
+                                    {overview?.summary}
 
                                 </p>
 
-                                <p>
+                                {overview?.learningObjectives?.length > 0 && (
 
-                                    You will explore techniques like paging,
-                                    segmentation, virtual memory and
-                                    thrashing along with their real-world
-                                    applications.
+                                    <ul className="learning-objectives">
 
-                                </p>
+                                        {overview.learningObjectives.map((objective, index) => (
+
+                                            <li key={index}>
+
+                                                {objective}
+
+                                            </li>
+
+                                        ))}
+
+                                    </ul>
+
+                                )}
 
                             </div>
 
@@ -72,95 +103,100 @@ function SummaryView() {
 
                         </section>
 
-                        {/* Expanded Topic */}
+                        {/* MAIN TOPIC */}
 
-                        <section className="summary-topic expanded">
+                        {mainTopic && (
 
-                            <div className="topic-header">
+                            <section className="summary-topic expanded">
 
-                                <div className="topic-title">
+                                <div className="topic-header">
 
-                                    <ChevronDown size={18} />
+                                    <div className="topic-title">
 
-                                    <h3>
+                                        <ChevronDown size={18} />
 
-                                        Memory Management
+                                        <h3>
 
-                                    </h3>
+                                            {mainTopic.title}
 
-                                </div>
+                                        </h3>
 
-                            </div>
-
-                            <div className="topic-body">
-
-                                <p>
-
-                                    Memory management is a critical component
-                                    of an operating system. It tracks memory
-                                    usage, allocates and deallocates memory
-                                    resources and ensures that multiple
-                                    processes run efficiently without
-                                    interfering with one another.
-
-                                </p>
-
-                                <div className="topic-illustration">
-
+                                    </div>
 
                                 </div>
 
-                            </div>
+                                <div className="topic-body">
 
-                            <div className="topic-divider" />
+                                    <p>
 
-                            <button className="explore-topic">
+                                        {mainTopic.summary}
 
-                                <Sparkles size={18} />
+                                    </p>
 
-                                Explore This Topic
+                                    {mainTopic.keyPoints?.length > 0 && (
 
-                            </button>
+                                        <ul>
 
-                        </section>
+                                            {mainTopic.keyPoints.map((point, index) => (
 
-                        {/* Collapsed Topics */}
+                                                <li key={index}>
 
-                        <section className="summary-topic collapsed">
+                                                    {point}
 
-                            <ChevronRight size={18} />
+                                                </li>
 
-                            <span>Paging</span>
+                                            ))}
 
-                        </section>
+                                        </ul>
 
-                        <section className="summary-topic collapsed">
+                                    )}
 
-                            <ChevronRight size={18} />
+                                </div>
 
-                            <span>Segmentation</span>
+                                <div className="topic-divider" />
 
-                        </section>
+                                <button className="explore-topic">
 
-                        <section className="summary-topic collapsed">
+                                    <Sparkles size={18} />
 
-                            <ChevronRight size={18} />
+                                    Explore This Topic
 
-                            <span>Thrashing</span>
+                                </button>
 
-                        </section>
+                            </section>
+
+                        )}
+
+                        {/* OTHER TOPICS */}
+
+                        {remainingTopics.map((topic, index) => (
+
+                            <section
+                                key={index}
+                                className="summary-topic collapsed"
+                            >
+
+                                <ChevronRight size={18} />
+
+                                <span>
+
+                                    {topic.title}
+
+                                </span>
+
+                            </section>
+
+                        ))}
 
                     </div>
 
                 </div>
 
-                {/* ===========================
-                    STICKY NOTES
-                =========================== */}
+                {/* RIGHT */}
 
                 <aside className="notes">
 
-                    {/* Memory Trick */}
+                    {/* MEMORY TRICK */}
 
                     <div className="note yellow">
 
@@ -176,25 +212,21 @@ function SummaryView() {
 
                             <p>
 
-                                Remember PST
+                                {mainTopic?.memoryTrick?.title}
 
                             </p>
 
-                            <ul>
+                            <p>
 
-                                <li>P → Paging</li>
+                                {mainTopic?.memoryTrick?.content}
 
-                                <li>S → Segmentation</li>
-
-                                <li>T → Thrashing</li>
-
-                            </ul>
+                            </p>
 
                         </div>
 
                     </div>
 
-                    {/* Quick Revision */}
+                    {/* REVISION */}
 
                     <div className="note blue">
 
@@ -210,15 +242,15 @@ function SummaryView() {
 
                             <div className="revision-tags">
 
-                                <span>Paging</span>
+                                {mainTopic?.revisionTags?.map((tag, index) => (
 
-                                <span>TLB</span>
+                                    <span key={index}>
 
-                                <span>Virtual Memory</span>
+                                        {tag}
 
-                                <span>Demand Paging</span>
+                                    </span>
 
-                                <span>Thrashing</span>
+                                ))}
 
                             </div>
 
@@ -226,7 +258,7 @@ function SummaryView() {
 
                     </div>
 
-                    {/* Continue with Lumi */}
+                    {/* CONTINUE */}
 
                     <div className="note purple">
 
@@ -240,23 +272,15 @@ function SummaryView() {
 
                         <div className="note-content">
 
-                            <button>
+                            {mainTopic?.continueWithLumi?.map((question, index) => (
 
-                                Explain Memory Management
+                                <button key={index}>
 
-                            </button>
+                                    {question}
 
-                            <button>
+                                </button>
 
-                                Difference between Paging & Segmentation
-
-                            </button>
-
-                            <button>
-
-                                Practice Questions
-
-                            </button>
+                            ))}
 
                         </div>
 

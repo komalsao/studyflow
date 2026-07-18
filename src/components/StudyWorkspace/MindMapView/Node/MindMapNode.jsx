@@ -26,7 +26,7 @@ function MindMapNode({ data }) {
 
                         title: data.title,
 
-                        description: data.description
+                        explanation: data.explanation
 
                     })
 
@@ -36,7 +36,7 @@ function MindMapNode({ data }) {
 
                 <div className="node-title">
 
-                    {data.label}
+                    {data.title}
 
                 </div>
 

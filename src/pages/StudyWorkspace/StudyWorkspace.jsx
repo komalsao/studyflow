@@ -1,6 +1,6 @@
 import "./StudyWorkspace.css";
 import { useState, useRef, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Sidebar from "../../components/StudyWorkspace/Sidebar/Sidebar";
 import WorkspaceHeader from "../../components/StudyWorkspace/WorkspaceHeader/WorkspaceHeader";
 
@@ -19,8 +19,10 @@ import {
 } from "../../services/sessionService";
 import { generateStudyResources } from "../../services/materialService";
 
+
 function StudyWorkspace() {
     const { sessionId } = useParams();
+    const location = useLocation();
     const materialsRef = useRef(null);
     const [showMaterials, setShowMaterials] = useState(false);
     const [activeView, setActiveView] = useState("welcome");
@@ -30,6 +32,16 @@ function StudyWorkspace() {
     const generatedResourcesSessionRef = useRef(null);
     const showChatBar =
         activeView === "welcome";
+
+    useEffect(() => {
+
+        if (location.state?.activeView) {
+
+            setActiveView(location.state.activeView);
+
+        }
+
+    }, [location.state]);
 
     useEffect(() => {
 
@@ -236,19 +248,27 @@ function StudyWorkspace() {
                             />
                         )}
 
-                        {activeView === "chat" && <ChatView session={activeSession} />}
-
-                        {activeView === "summary" && <SummaryView />}
-
-                        {activeView === "flashcards" && (
-                            <FlashcardsView
-                                setActiveView={setActiveView}
+                        {activeView === "chat" && (
+                            <ChatView
+                                session={activeSession}
+                                autoPrompt={location.state?.autoPrompt}
                             />
                         )}
 
-                        {activeView === "quiz" && <QuizView />}
+                        {activeView === "summary" && <SummaryView session={activeSession} />}
+                        {activeView === "flashcards" && (
+                            <FlashcardsView
+                                session={activeSession}
+                                setActiveView={setActiveView}
+                            />
+                        )}
+                        {activeView === "quiz" && <QuizView
+                            session={activeSession}
+                        />}
 
-                        {activeView === "mindmap" && <MindMapView />}
+                        {activeView === "mindmap" && <MindMapView
+                            session={activeSession}
+                        />}
 
                     </div>
 

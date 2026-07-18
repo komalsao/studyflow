@@ -1,12 +1,14 @@
 import "./LumiExplanation.css";
-import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Lightbulb from "../../../../assets/lumi/lightbulb.svg";
 import StudyLumi from "../../../../assets/lumi/teach.png";
-
+import { useNavigate } from "react-router-dom";
+import { askLumi } from "../../../../services/askLumi";
 
 function LumiExplanation({
+
+    session,
 
     selectedNode,
 
@@ -23,7 +25,7 @@ function LumiExplanation({
 
         setTypedText("");
 
-        const text = selectedNode.description;
+        const text = selectedNode.explanation;
 
         let index = 0;
 
@@ -115,7 +117,7 @@ function LumiExplanation({
 
                     {typedText}
 
-                    {typedText.length < selectedNode.description.length && (
+                    {typedText.length < selectedNode.explanation.length && (
 
                         <span className="typing-cursor">|</span>
 
@@ -125,18 +127,15 @@ function LumiExplanation({
 
                 <button
                     className="explain-more"
-                    onClick={() =>
-                        navigate("/ask-lumi", {
-                            state: {
-                                prompt: `Explain the concept of ${selectedNode.title} in detail.
-Include:
-• Definition
-• Real-world analogy
-• Advantages
-• Disadvantages`
-                            }
-                        })
-                    }
+                    onClick={() => {
+                        console.log("Explain More clicked");
+
+                        askLumi({
+                            navigate,
+                            sessionId: session.id,
+                            prompt: `Explain "${selectedNode.title}" in detail using my uploaded study material.`
+                        });
+                    }}
                 >
                     Explain more →
                 </button>

@@ -1,12 +1,16 @@
 import "./ChatView.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatMessages from "./Messages/ChatMessages";
 import ChatInput from "../Shared/ChatInput/ChatInput";
 import { sendMessage } from "../../../services/chatService";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function ChatView({ session }) {
+function ChatView({ session, autoPrompt }) {
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const handledPrompt = useRef(null);
 
 
 
@@ -69,6 +73,25 @@ function ChatView({ session }) {
         }
 
     }
+
+    useEffect(() => {
+
+    const prompt = location.state?.autoPrompt;
+
+    if (!prompt) return;
+
+    if (handledPrompt.current === prompt) return;
+
+    handledPrompt.current = prompt;
+
+    handleSend(prompt);
+
+    navigate(location.pathname, {
+        replace: true,
+        state: null,
+    });
+
+}, [location.state, session]);
 
     return (
 

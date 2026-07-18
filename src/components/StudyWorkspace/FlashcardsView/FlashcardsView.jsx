@@ -1,33 +1,16 @@
 import "./FlashcardsView.css";
 import lumi from "../../../assets/lumi/peek.png";
 import { useEffect, useState } from "react";
+import { askLumi } from "../../../services/askLumi";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
-const flashcards = [
-    {
-        id: 1,
-        question: "What is Memory Management?",
-        answer: "Memory management is responsible for allocating, tracking and optimizing memory usage."
-    },
-    {
-        id: 2,
-        question: "What is Paging?",
-        answer: "Paging divides logical memory into pages and physical memory into frames."
-    },
-    {
-        id: 3,
-        question: "What is Thrashing?",
-        answer: "Thrashing occurs when the CPU spends more time swapping pages than executing processes."
-    },
-    {
-        id: 4,
-        question: "What is Virtual Memory?",
-        answer: "Virtual memory allows programs to use more memory than physically available."
-    }
-];
+function FlashcardsView({ session, setActiveView }) {
+    const navigate = useNavigate();
 
-function FlashcardsView({ setActiveView }) {
+    const flashcards = session?.resources?.flashcards;
 
-    const [cards, setCards] = useState(flashcards);
+    const [cards, setCards] = useState([]);
 
     const [showAnswer, setShowAnswer] = useState(false);
 
@@ -35,11 +18,28 @@ function FlashcardsView({ setActiveView }) {
 
     const [completed, setCompleted] = useState(0);
 
+    useEffect(() => {
+
+        if (!flashcards) return;
+
+        setCards(flashcards);
+
+        setCompleted(0);
+
+        setShowAnswer(false);
+
+    }, [flashcards]);
+
     const currentCard = cards[0];
+
     const secondCard = cards[1];
+
     const thirdCard = cards[2];
 
-    const progress = (completed / flashcards.length) * 100;
+    const progress =
+        flashcards.length > 0
+            ? (completed / flashcards.length) * 100
+            : 0;
 
     function handleCardClick() {
 
@@ -50,6 +50,7 @@ function FlashcardsView({ setActiveView }) {
             setShowAnswer(true);
 
             return;
+
         }
 
         setIsAnimating(true);
@@ -78,7 +79,6 @@ function FlashcardsView({ setActiveView }) {
 
     }
 
-
     useEffect(() => {
 
         if (completed === flashcards.length) return;
@@ -101,8 +101,13 @@ function FlashcardsView({ setActiveView }) {
 
         };
 
-    }, [showAnswer, isAnimating, completed, cards]);
-
+    }, [
+        showAnswer,
+        isAnimating,
+        completed,
+        cards,
+        flashcards.length,
+    ]);
 
     function restartCards() {
 
@@ -114,6 +119,30 @@ function FlashcardsView({ setActiveView }) {
 
     }
 
+    if (!flashcards) {
+
+        return (
+
+            <div className="flashcards-view">
+
+                <div className="completion-card">
+
+                    <h2>Generating Flashcards...</h2>
+
+                    <p>
+
+                        Lumi is preparing personalized flashcards...
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
     if (completed === flashcards.length) {
 
         return (
@@ -121,8 +150,6 @@ function FlashcardsView({ setActiveView }) {
             <div className="flashcards-view">
 
                 <div className="completion-card-wrapper">
-
-                    {/* Lumi */}
 
                     <img
                         src={lumi}
@@ -154,7 +181,7 @@ function FlashcardsView({ setActiveView }) {
 
                                 <strong>
 
-                                    Memory Management
+                                    {session?.title}
 
                                 </strong>
 
@@ -181,11 +208,9 @@ function FlashcardsView({ setActiveView }) {
                             </button>
 
                             <button
-                                onClick={() => setActiveView("summary")}
+                                onClick={() => setActiveView("quiz")}
                             >
-
-                                Back to Summary
-
+                                Try Quiz
                             </button>
 
                         </div>
@@ -207,11 +232,8 @@ function FlashcardsView({ setActiveView }) {
             {/* Decorative Background */}
 
             <div className="bg-card bg-card-1" />
-
             <div className="bg-card bg-card-2" />
-
             <div className="bg-card bg-card-3" />
-
             <div className="bg-card bg-card-4" />
 
             {/* Header */}
@@ -226,7 +248,7 @@ function FlashcardsView({ setActiveView }) {
 
                 <h3>
 
-                    Memory Management
+                    {session?.title}
 
                 </h3>
 
@@ -237,7 +259,7 @@ function FlashcardsView({ setActiveView }) {
                         <div
                             className="flash-progress-fill"
                             style={{
-                                width: `${progress}%`
+                                width: `${progress}%`,
                             }}
                         />
 
@@ -255,7 +277,10 @@ function FlashcardsView({ setActiveView }) {
 
             {/* Stack */}
 
-            <div className={`flashcards-stack ${isAnimating ? "animating" : ""}`}>
+            <div
+                className={`flashcards-stack ${isAnimating ? "animating" : ""
+                    }`}
+            >
 
                 {thirdCard && (
 
@@ -263,7 +288,7 @@ function FlashcardsView({ setActiveView }) {
 
                         <span>
 
-                            {thirdCard.question}
+                            {thirdCard?.question}
 
                         </span>
 
@@ -277,7 +302,7 @@ function FlashcardsView({ setActiveView }) {
 
                         <span>
 
-                            {secondCard.question}
+                            {secondCard?.question}
 
                         </span>
 
@@ -285,69 +310,87 @@ function FlashcardsView({ setActiveView }) {
 
                 )}
 
-                <div
-                    className={`flashcard
+                {currentCard && (
+
+                    <div
+                        className={`flashcard
                         ${showAnswer && !isAnimating ? "show-answer" : ""}
                         ${isAnimating ? "moving" : ""}
                     `}
-                    onClick={handleCardClick}
-                >
+                        onClick={handleCardClick}
+                    >
 
-                    <div className="flashcard-inner">
+                        <div className="flashcard-inner">
 
-                        <div className="flashcard-front">
+                            <div className="flashcard-front">
 
-                            <p>
+                                <p>
 
-                                Question
+                                    Question
 
-                            </p>
+                                </p>
 
-                            <h2>
+                                <h2>
 
-                                {currentCard.question}
+                                    {currentCard?.question}
 
-                            </h2>
+                                </h2>
 
-                        </div>
+                            </div>
 
-                        <div className="flashcard-back">
+                            <div className="flashcard-back">
 
-                            <p>
+                                <p>
 
-                                Answer
+                                    Answer
 
-                            </p>
+                                </p>
 
-                            <h2>
+                                <h2>
 
-                                {currentCard.answer}
+                                    {currentCard?.answer}
 
-                            </h2>
+                                </h2>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                )}
 
             </div>
+
+            {/* Footer */}
 
             <div className="flashcard-footer">
 
                 <p>
 
                     {showAnswer
-                        ? "Tap again for next card"
-                        : "Tap card to reveal answer"}
+                        ? "Tap again for the next flashcard."
+                        : "Tap the card to reveal the answer."}
 
                 </p>
 
-                <span>
+                <div
+                    className="explain-lumi"
+                    onClick={() =>
+                        askLumi({
+                            navigate,
+                            sessionId: session.id,
+                            setActiveView,
+                            prompt: `Explain "${currentCard.question}" in detail using my uploaded study material.`,
+                        })
+                    }
+                >
 
-                    Click / Tap Card
+                    <span>Dive Deeper</span>
 
-                </span>
+                    <ArrowRight size={18} />
+
+                </div>
 
             </div>
 
