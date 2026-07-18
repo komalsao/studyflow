@@ -4,15 +4,21 @@ export async function chat(req, res) {
 
     try {
 
-        const { prompt } = req.body;
+        const { prompt, resources } = req.body;
 
         if (!prompt) {
+
             return res.status(400).json({
-                error: "Prompt is required"
+                success: false,
+                error: "Prompt is required."
             });
+
         }
 
-        const answer = await generateResponse(prompt);
+        const answer = await generateResponse(
+            prompt,
+            resources || {}
+        );
 
         res.json({
             success: true,
@@ -25,15 +31,12 @@ export async function chat(req, res) {
 
         if (error.status === 429) {
 
-        return res.status(429).json({
+            return res.status(429).json({
+                success: false,
+                error: "Lumi is receiving a lot of requests right now. Please wait a moment and try again."
+            });
 
-            success: false,
-
-            error: "Lumi is receiving a lot of requests right now. Please wait a moment and try again."
-
-        });
-
-    }
+        }
 
         res.status(500).json({
             success: false,

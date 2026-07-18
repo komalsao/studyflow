@@ -4,11 +4,11 @@ import ChatMessages from "./Messages/ChatMessages";
 import ChatInput from "../Shared/ChatInput/ChatInput";
 import { sendMessage } from "../../../services/chatService";
 
-function ChatView() {
+function ChatView({ session }) {
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
 
-    
+
 
     async function handleSend(text) {
 
@@ -26,7 +26,10 @@ function ChatView() {
 
         try {
 
-            const reply = await sendMessage(text);
+            const reply = await sendMessage(
+                text,
+                session?.resources
+            );
 
             setMessages((prev) => [
                 ...prev,

@@ -236,7 +236,7 @@ function StudyWorkspace() {
                             />
                         )}
 
-                        {activeView === "chat" && <ChatView />}
+                        {activeView === "chat" && <ChatView session={activeSession} />}
 
                         {activeView === "summary" && <SummaryView />}
 

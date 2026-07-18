@@ -1,6 +1,6 @@
 const API_URL = "http://localhost:3001/api/chat";
 
-export async function sendMessage(prompt) {
+export async function sendMessage(prompt, resources) {
 
     const response = await fetch(API_URL, {
 
@@ -11,7 +11,8 @@ export async function sendMessage(prompt) {
         },
 
         body: JSON.stringify({
-            prompt
+            prompt,
+            resources
         })
 
     });
