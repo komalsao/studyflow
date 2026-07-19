@@ -11,6 +11,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import { getProgressPercentage } from "../../services/progressService";
+import RecentSessionsSkeleton from "../Shared/Skeleton/RecentSessionsSkeleton";
 
 const sessionColors = [
   "#2E8B57",
@@ -26,9 +27,18 @@ const iconMap = {
   code: Code2
 };
 
-function RecentSessions({ sessions }) {
+function RecentSessions({
+    sessions,
+    loading
+}) {
 
   const navigate = useNavigate();
+
+  if (loading) {
+
+    return <RecentSessionsSkeleton />;
+
+}
 
   return (
 

@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import SessionsSkeleton from "../../Shared/Skeleton/SessionsSkeleton";
 import SessionCard from "../SessionCard/SessionCard";
 
 import auth from "../../../firebase/auth";
@@ -38,6 +38,7 @@ function formatSession(session, index) {
 }
 
 function SessionsList({
+    searchQuery,
     selectedSessionId,
     selectedMaterials,
     onSessionSelect,
@@ -49,6 +50,12 @@ function SessionsList({
     const [sessions, setSessions] = useState([]);
 
     const [loading, setLoading] = useState(true);
+
+    const filteredSessions = sessions.filter((session) =>
+    session.title
+        .toLowerCase()
+        .includes(searchQuery.trim().toLowerCase())
+);
 
     useEffect(() => {
 
@@ -147,9 +154,9 @@ function SessionsList({
 
             {loading ? (
 
-                <p>Loading sessions...</p>
+                <SessionsSkeleton />
 
-            ) : sessions.map((session) => (
+            ) : filteredSessions.map((session) => (
 
                 <SessionCard
 

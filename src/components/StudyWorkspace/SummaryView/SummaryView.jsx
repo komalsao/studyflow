@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { askLumi } from "../../../services/askLumi";
 import { updateProgress } from "../../../services/progressService";
+import SummarySkeleton from "../../Shared/Skeleton/Workspace/SummarySkeleton";
 
 function SummaryView({ session, onProgressUpdate }) {
 
@@ -56,27 +57,9 @@ function SummaryView({ session, onProgressUpdate }) {
 
     };
 
-    if (!session?.resources) {
-
-        return (
-            <div className="summary-view">
-                <div className="summary-layout">
-                    <div className="paper">
-                        <div className="paper-content">
-                            <div className="summary-overview summary-loading">
-                                <h2>Generating Summary...</h2>
-                                <p>
-                                    Lumi is reading your study material and preparing
-                                    your personalized summary.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-    }
+    if (!session?.resources?.overview) {
+    return <SummarySkeleton />;
+}
 
     return (
 

@@ -5,6 +5,7 @@ import { askLumi } from "../../../services/askLumi";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { updateProgress } from "../../../services/progressService";
+import FlashcardsSkeleton from "../../Shared/Skeleton/Workspace/FlashcardsSkeleton";
 
 function FlashcardsView({ session, setActiveView, onProgressUpdate }) {
     const navigate = useNavigate();
@@ -140,27 +141,7 @@ function FlashcardsView({ session, setActiveView, onProgressUpdate }) {
     }
 
     if (!flashcards) {
-
-        return (
-
-            <div className="flashcards-view">
-
-                <div className="completion-card">
-
-                    <h2>Generating Flashcards...</h2>
-
-                    <p>
-
-                        Lumi is preparing personalized flashcards...
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        );
-
+        return <FlashcardsSkeleton />;
     }
 
     if (completed === flashcards.length) {

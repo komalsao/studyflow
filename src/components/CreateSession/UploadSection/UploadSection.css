@@ -201,3 +201,19 @@
 
     font-size:15px;
 }
+
+.material-item.selected{
+
+    border:2px solid #2E8B57;
+
+    background:#F4FBF6;
+
+    transition:.2s ease;
+
+}
+
+.material-item.selected .pdf-icon{
+
+    color:#2E8B57;
+
+}

@@ -1,11 +1,13 @@
-import { FileText, Square } from "lucide-react";
+import { FileText, Square, CheckSquare } from "lucide-react";
 
 function SelectedMaterials({
     materials,
     selectedMaterialIds,
     onMaterialToggle
 }) {
+
     return (
+
         <div className="selected-materials">
 
             <h2>Selected Materials</h2>
@@ -16,33 +18,49 @@ function SelectedMaterials({
 
             <div className="material-list">
 
-                {materials.map((material) => (
+                {materials.map((material) => {
 
-                    <div
-                        key={material.id}
-                        className="material-item"
-                        onClick={() => onMaterialToggle(material.id)}
-                    >
+                    const isSelected = selectedMaterialIds.includes(material.id);
 
-                        <div className="material-left">
+                    return (
 
-                            <FileText
-                                size={22}
-                                className="pdf-icon"
-                            />
+                        <div
+                            key={material.id}
+                            className={`material-item ${
+                                isSelected ? "selected" : ""
+                            }`}
+                            onClick={() => onMaterialToggle(material.id)}
+                        >
 
-                            <span>{material.originalFileName}</span>
+                            <div className="material-left">
+
+                                <FileText
+                                    size={22}
+                                    className="pdf-icon"
+                                />
+
+                                <span>{material.originalFileName}</span>
+
+                            </div>
+
+                            {isSelected ? (
+
+                                <CheckSquare
+                                    size={20}
+                                    color="#2E8B57"
+                                />
+
+                            ) : (
+
+                                <Square size={20} />
+
+                            )}
 
                         </div>
 
-                        <Square
-                            size={20}
-                            aria-checked={selectedMaterialIds.includes(material.id)}
-                        />
+                    );
 
-                    </div>
-
-                ))}
+                })}
 
             </div>
 
@@ -51,7 +69,9 @@ function SelectedMaterials({
             </button>
 
         </div>
+
     );
+
 }
 
 export default SelectedMaterials;

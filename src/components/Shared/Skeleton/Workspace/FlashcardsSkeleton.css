@@ -1,0 +1,242 @@
+.fc-skeleton{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    overflow:hidden;
+
+    padding:52px 40px;
+}
+
+/* -------------------------------- */
+
+.fc-shimmer{
+
+    background:linear-gradient(
+        90deg,
+        #EEF3EF 25%,
+        #F9FBF9 50%,
+        #EEF3EF 75%
+    );
+
+    background-size:300% 100%;
+
+    animation:fcSkeletonShimmer 1.3s infinite;
+
+    border-radius:12px;
+}
+
+@keyframes fcSkeletonShimmer{
+
+    0%{
+
+        background-position:200% 0;
+
+    }
+
+    100%{
+
+        background-position:-200% 0;
+
+    }
+
+}
+
+/* -------------------------------- */
+
+.fc-bg-card{
+
+    position:absolute;
+
+    width:270px;
+
+    height:180px;
+
+    border-radius:24px;
+
+    border:2px solid #EEF3EF;
+
+    background:#FAFCFB;
+}
+
+.fc-bg-left{
+
+    top:85px;
+
+    left:95px;
+
+    transform:rotate(-10deg);
+}
+
+.fc-bg-right{
+
+    top:110px;
+
+    right:90px;
+
+    transform:rotate(9deg);
+}
+
+.fc-bg-bottom-left{
+
+    bottom:105px;
+
+    left:150px;
+
+    transform:rotate(11deg);
+}
+
+.fc-bg-bottom-right{
+
+    bottom:90px;
+
+    right:130px;
+
+    transform:rotate(-11deg);
+}
+
+/* -------------------------------- */
+
+.fc-header{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    margin-bottom:42px;
+}
+
+.fc-title{
+
+    width:230px;
+
+    height:46px;
+
+    margin-bottom:18px;
+}
+
+.fc-subtitle{
+
+    width:170px;
+
+    height:18px;
+
+    margin-bottom:24px;
+}
+
+.fc-progress-wrapper{
+
+    width:460px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.fc-progress-track{
+
+    width:100%;
+
+    height:8px;
+
+    border-radius:999px;
+}
+
+.fc-progress-label{
+
+    width:120px;
+
+    height:16px;
+}
+
+/* -------------------------------- */
+
+.fc-card{
+
+    width:650px;
+
+    height:360px;
+
+    margin:auto;
+
+    background:#FFF;
+
+    border-radius:28px;
+
+    border:1px solid #E8EFEA;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.05);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:50px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+.fc-card-label{
+
+    width:110px;
+
+    height:16px;
+
+    margin-bottom:34px;
+}
+
+.fc-card-line{
+
+    width:80%;
+
+    height:28px;
+
+    margin-bottom:18px;
+}
+
+.fc-card-line.medium{
+
+    width:66%;
+}
+
+.fc-card-line.short{
+
+    width:46%;
+}
+
+/* -------------------------------- */
+
+.fc-hint{
+
+    width:290px;
+
+    height:46px;
+
+    border-radius:999px;
+
+    margin:30px auto 18px;
+}
+
+.fc-button{
+
+    width:150px;
+
+    height:20px;
+
+    margin:auto;
+}

@@ -15,146 +15,200 @@ import HeroCard from "../../components/Dashboard/HeroCard";
 import StartSessionCard from "../../components/Dashboard/StartSessionCard";
 import RecentSessions from "../../components/Dashboard/RecentSessions";
 import TipCard from "../../components/Dashboard/TipCard";
+import DashboardSkeleton from "../../components/Shared/Skeleton/DashboardSkeleton";
 
 function Dashboard() {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [name, setName] = useState("");
+  const [name, setName] = useState("");
 
-    const [recentSessions, setRecentSessions] = useState([]);
+  const [recentSessions, setRecentSessions] = useState([]);
 
-    const handleLogout = async () => {
+  const [pageLoading, setPageLoading] = useState(true);
 
-        try {
+  const [sessionsLoading, setSessionsLoading] = useState(true);[];
 
-            await signOut(auth);
+  const handleLogout = async () => {
 
-            alert("Logged out successfully!");
+    try {
 
-            navigate("/login");
+      await signOut(auth);
 
-        } catch (error) {
+      alert("Logged out successfully!");
 
-            alert(error.message);
+      navigate("/login");
+
+    } catch (error) {
+
+      alert(error.message);
+
+    }
+
+  };
+
+  useEffect(() => {
+
+    const loadUser = async () => {
+
+      const user = auth.currentUser;
+
+      if (!user) {
+
+        setPageLoading(false);
+
+        return;
+
+      }
+
+      try {
+
+        const snap = await getDoc(doc(db, "users", user.uid));
+
+        if (snap.exists()) {
+
+          setName(snap.data().name);
 
         }
 
+      } finally {
+
+        setPageLoading(false);
+
+      }
+
     };
 
-    useEffect(() => {
+    loadUser();
 
-        const loadUser = async () => {
+  }, []);
 
-            const user = auth.currentUser;
+  useEffect(() => {
 
-            if (!user) return;
+    let isActive = true;
 
-            const snap = await getDoc(doc(db, "users", user.uid));
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
-            if (snap.exists()) {
+      if (!user) {
 
-                setName(snap.data().name);
+        if (isActive) {
 
-            }
+          setRecentSessions([]);
 
-        };
+          setSessionsLoading(false);
 
-        loadUser();
+        }
 
-    }, []);
+        return;
 
-    useEffect(() => {
+      }
 
-        let isActive = true;
+      setSessionsLoading(true);
 
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      try {
 
-            if (!user) {
+        const sessions = await getUserSessions(user.uid);
 
-                if (isActive) {
+        if (isActive) {
 
-                    setRecentSessions([]);
+          setRecentSessions(sessions.slice(0, 6));
 
-                }
+        }
 
-                return;
+      } catch (error) {
 
-            }
+        console.error("Unable to load recent study sessions:", error);
 
-            try {
+      } finally {
 
-                const sessions = await getUserSessions(user.uid);
+        if (isActive) {
 
-                if (isActive) {
+          setSessionsLoading(false);
 
-                    setRecentSessions(sessions.slice(0, 6));
+        }
 
-                }
+      }
 
-            } catch (error) {
+    });
 
-                console.error("Unable to load recent study sessions:", error);
+    return () => {
 
-            }
+      isActive = false;
 
-        });
+      unsubscribe();
 
-        return () => {
+    };
 
-            isActive = false;
-
-            unsubscribe();
-
-        };
-
-    }, []);
+  }, []);
+  if (pageLoading) {
 
     return (
 
-        <>
+      <>
 
-            <AppHeader
-                name={name}
-                onLogout={handleLogout}
-            />
+        <AppHeader
+          name={name}
+          onLogout={handleLogout}
+        />
 
-            <div className="dashboard">
+        <div className="dashboard">
 
-                <HeroCard
-                    name={name}
-                    session={recentSessions[0]}
-                />
+          <DashboardSkeleton />
 
-                <div className="dashboard-grid">
+        </div>
 
-                    <div className="dashboard-start">
-
-                        <StartSessionCard />
-
-                    </div>
-
-                    <div className="dashboard-recent">
-
-                        <RecentSessions
-                            sessions={recentSessions}
-                        />
-
-                    </div>
-
-                    <div className="dashboard-tip">
-
-                        <TipCard />
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </>
+      </>
 
     );
+
+  }
+
+  return (
+
+    <>
+
+      <AppHeader
+        name={name}
+        onLogout={handleLogout}
+      />
+
+      <div className="dashboard">
+
+        <HeroCard
+          name={name}
+          session={recentSessions[0]}
+        />
+
+        <div className="dashboard-grid">
+
+          <div className="dashboard-start">
+
+            <StartSessionCard />
+
+          </div>
+
+          <div className="dashboard-recent">
+
+            <RecentSessions
+              sessions={recentSessions}
+              loading={sessionsLoading}
+            />
+
+          </div>
+
+          <div className="dashboard-tip">
+
+            <TipCard />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </>
+
+  );
 
 }
 

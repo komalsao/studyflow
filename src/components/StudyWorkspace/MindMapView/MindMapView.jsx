@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import MindMapCanvas from "./Canvas/MindMapCanvas";
 import LumiExplanation from "./LumiExplanation/LumiExplanation";
 import { updateProgress } from "../../../services/progressService";
+import MindMapSkeleton from "../../Shared/Skeleton/Workspace/MindMapSkeleton";
 
 function MindMapView({ session, onProgressUpdate }) {
     const [selectedNode, setSelectedNode] = useState(null);
@@ -24,32 +25,9 @@ function MindMapView({ session, onProgressUpdate }) {
 
     if (!mindMap) {
 
-        return (
-
-            <div className="mindmap-view">
-
-                <div className="mindmap-loading">
-
-                    <h2>
-
-                        Building Mind Map...
-
-                    </h2>
-
-                    <p>
-
-                        Lumi is organizing the concepts into a visual map.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        );
+        return <MindMapSkeleton />;
 
     }
-
     return (
 
         <div className="mindmap-view">

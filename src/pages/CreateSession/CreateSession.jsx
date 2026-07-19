@@ -19,7 +19,6 @@ import {
     generateSessionTitle,
 } from "../../services/materialService";
 
-
 function CreateSession() {
 
     const [title, setTitle] = useState("");
@@ -51,7 +50,6 @@ function CreateSession() {
                 if (isActive) {
 
                     setMaterials([]);
-
                     setSelectedMaterialIds([]);
 
                 }
@@ -81,7 +79,6 @@ function CreateSession() {
         return () => {
 
             isActive = false;
-
             unsubscribe();
 
         };
@@ -150,23 +147,41 @@ function CreateSession() {
             return;
         }
 
-        if (!uploadedMaterials.length) {
-            console.error("Please upload at least one study material.");
+        const materialIds = [
+
+            ...new Set([
+
+                ...selectedMaterialIds,
+
+                ...uploadedMaterials.map((material) => material.id),
+
+            ]),
+
+        ];
+
+        if (!materialIds.length) {
+
+            console.error("Please select or upload at least one study material.");
             return;
+
         }
 
         const trimmedTitle = title.trim();
 
         if (!trimmedTitle) {
+
             console.error("A session title is required.");
             return;
+
         }
 
         const user = auth.currentUser;
 
         if (!user) {
+
             console.error("A user must be logged in.");
             return;
+
         }
 
         setIsCreating(true);
@@ -178,9 +193,11 @@ function CreateSession() {
             });
 
             await Promise.all(
-                uploadedMaterials.map((material) =>
-                    attachMaterialToSession(session.id, material.id)
+
+                materialIds.map((materialId) =>
+                    attachMaterialToSession(session.id, materialId)
                 )
+
             );
 
             navigate(`/study-workspace/${session.id}`);
@@ -196,6 +213,7 @@ function CreateSession() {
         }
 
     };
+
     return (
 
         <div className="create-session-page">
@@ -235,11 +253,13 @@ function CreateSession() {
                     </button>
 
                 </div>
+
             </div>
 
         </div>
 
     );
+
 }
 
 export default CreateSession;

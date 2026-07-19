@@ -22,6 +22,7 @@ import {
     getUserMaterials,
     renameMaterial
 } from "../../../services/materialService";
+import MaterialsSkeleton from "../../Shared/Skeleton/MaterialsSkeleton";
 
 const iconMap = {
     pdf: FileText,
@@ -55,6 +56,8 @@ function MaterialsPreview() {
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+    const [loading, setLoading] = useState(true);
+
     const [newName, setNewName] = useState("");
 
     const formattedMaterials = useMemo(
@@ -73,12 +76,15 @@ function MaterialsPreview() {
                 if (isActive) {
 
                     setMaterials([]);
+                    setLoading(false);
 
                 }
 
                 return;
 
             }
+
+            setLoading(true);
 
             try {
 
@@ -93,6 +99,14 @@ function MaterialsPreview() {
             } catch (error) {
 
                 console.error("Unable to load user materials:", error);
+
+            } finally {
+
+                if (isActive) {
+
+                    setLoading(false);
+
+                }
 
             }
 
@@ -208,159 +222,170 @@ function MaterialsPreview() {
 
     return (
 
-        <>        <aside className="materials-preview">
+        <>
 
-            <div className="materials-header">
+            <aside className="materials-preview">
 
-                <h2>Materials</h2>
+                <div className="materials-header">
 
-                <p className="materials-subtitle">
-                    Available in this study session
-                </p>
+                    <h2>Materials</h2>
 
-            </div>
+                    <p className="materials-subtitle">
+                        Available in this study session
+                    </p>
 
-            <div className="materials-list">
+                </div>
 
-                {formattedMaterials.map((material) => {
+                <div className="materials-list">
 
-                    const Icon = iconMap[material.type];
+                    {loading ? (
 
-                    return (
+                        <MaterialsSkeleton />
 
-                        <div
-                            key={material.id}
-                            className={`material-item ${
-                                selectedMaterial === material.id
-                                    ? "selected"
-                                    : ""
-                            }`}
-                            onClick={(e) => {
+                    ) : (
 
-                                e.stopPropagation();
+                        formattedMaterials.map((material) => {
 
-                                setSelectedMaterial(
-                                    selectedMaterial === material.id
-                                        ? null
-                                        : material.id
-                                );
+                            const Icon = iconMap[material.type];
 
-                            }}
-                        >
+                            return (
 
-                            <div className="material-left">
+                                <div
+                                    key={material.id}
+                                    className={`material-item ${
+                                        selectedMaterial === material.id
+                                            ? "selected"
+                                            : ""
+                                    }`}
+                                    onClick={(e) => {
 
-                                <div className={`material-icon ${material.type}`}>
+                                        e.stopPropagation();
 
-                                    <Icon size={18} />
+                                        setSelectedMaterial(
+                                            selectedMaterial === material.id
+                                                ? null
+                                                : material.id
+                                        );
+
+                                    }}
+                                >
+
+                                    <div className="material-left">
+
+                                        <div className={`material-icon ${material.type}`}>
+
+                                            <Icon size={18} />
+
+                                        </div>
+
+                                        <div className="material-info">
+
+                                            <span>
+
+                                                {material.name.substring(
+                                                    0,
+                                                    material.name.lastIndexOf(".")
+                                                )}
+
+                                            </span>
+
+                                            <small>
+
+                                                {material.type.toUpperCase()}
+
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                    {selectedMaterial === material.id && (
+
+                                        <div className="material-actions">
+
+                                            <button
+                                                onClick={(e) => {
+
+                                                    e.stopPropagation();
+
+                                                    openRename(material);
+
+                                                }}
+                                            >
+
+                                                <SquarePen size={16} />
+
+                                            </button>
+
+                                            <button
+                                                onClick={(e) => {
+
+                                                    e.stopPropagation();
+
+                                                    openDelete(material);
+
+                                                }}
+                                            >
+
+                                                <Trash2 size={16} />
+
+                                            </button>
+
+                                        </div>
+
+                                    )}
 
                                 </div>
 
-                                <div className="material-info">
+                            );
 
-                                    <span>
+                        })
 
-                                        {material.name.substring(
-                                            0,
-                                            material.name.lastIndexOf(".")
-                                        )}
+                    )}
 
-                                    </span>
+                </div>
 
-                                    <small>
+                <button
+                    className="upload-material-btn"
+                    onClick={() => setSelectedMaterial(null)}
+                >
 
-                                        {material.type.toUpperCase()}
+                    <Upload size={18} />
 
-                                    </small>
+                    Upload Material
 
-                                </div>
+                </button>
 
-                            </div>
+            </aside>
 
-                            {selectedMaterial === material.id && (
+            <RenameModal
+                isOpen={showRenameModal}
+                title="Rename Material"
+                value={newName}
+                setValue={setNewName}
+                onClose={() => {
 
-                                <div className="material-actions">
+                    setShowRenameModal(false);
 
-                                    <button
-                                        onClick={(e) => {
+                    setEditingMaterial(null);
 
-                                            e.stopPropagation();
+                }}
+                onSave={handleRename}
+            />
 
-                                            openRename(material);
+            <DeleteModal
+                isOpen={showDeleteModal}
+                title="Delete Material"
+                message={`Are you sure you want to delete "${editingMaterial?.name}"?`}
+                onClose={() => {
 
-                                        }}
-                                    >
+                    setShowDeleteModal(false);
 
-                                        <SquarePen size={16} />
+                    setEditingMaterial(null);
 
-                                    </button>
-
-                                    <button
-                                        onClick={(e) => {
-
-                                            e.stopPropagation();
-
-                                            openDelete(material);
-
-                                        }}
-                                    >
-
-                                        <Trash2 size={16} />
-
-                                    </button>
-
-                                </div>
-
-                            )}
-
-                        </div>
-
-                    );
-
-                })}
-
-            </div>
-
-            <button
-                className="upload-material-btn"
-                onClick={() => setSelectedMaterial(null)}
-            >
-
-                <Upload size={18} />
-
-                Upload Material
-
-            </button>
-
-        </aside>
-                <RenameModal
-            isOpen={showRenameModal}
-            title="Rename Material"
-            value={newName}
-            setValue={setNewName}
-            onClose={() => {
-
-                setShowRenameModal(false);
-
-                setEditingMaterial(null);
-
-            }}
-            onSave={handleRename}
-        />
-
-        <DeleteModal
-            isOpen={showDeleteModal}
-            title="Delete Material"
-            message={`Are you sure you want to delete "${editingMaterial?.name}"?`}
-            onClose={() => {
-
-                setShowDeleteModal(false);
-
-                setEditingMaterial(null);
-
-            }}
-            onDelete={handleDelete}
-        />
+                }}
+                onDelete={handleDelete}
+            />
 
         </>
 

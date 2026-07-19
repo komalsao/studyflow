@@ -9,6 +9,7 @@ import OptionCard from "./OptionCard";
 import QuizStart from "./QuizStart";
 import { ClockAlert } from "lucide-react";
 import { updateProgress } from "../../../services/progressService";
+import QuizSkeleton from "../../Shared/Skeleton/Workspace/QuizSkeleton";
 
 function QuizView({ session, onProgressUpdate }) {
 
@@ -179,27 +180,9 @@ function QuizView({ session, onProgressUpdate }) {
         );
 
     }
-    if (!questions.length) {
-
-        return (
-
-            <div className="quiz-view">
-
-                <div className="quiz-loading">
-
-                    <h2>Generating Quiz...</h2>
-
-                    <p>
-                        Lumi is preparing personalized quiz questions for this study session.
-                    </p>
-
-                </div>
-
-            </div>
-
-        );
-
-    }
+    if (!questions?.length) {
+    return <QuizSkeleton />;
+}
 
     if (showResult) {
 

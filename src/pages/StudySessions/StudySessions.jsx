@@ -13,6 +13,9 @@ function StudySessions() {
 
     const [selectedSessionId, setSelectedSessionId] = useState(null);
     const [selectedMaterials, setSelectedMaterials] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchText, setSearchText] = useState("");
+
     useEffect(() => {
 
         let isActive = true;
@@ -81,11 +84,16 @@ function StudySessions() {
 
                 </div>
 
-                <SearchBar />
+                <SearchBar
+                    value={searchText}
+                    onChange={setSearchText}
+                    onSearch={setSearchQuery}
+                />
 
                 <div className="study-sessions-layout">
 
                     <SessionsList
+                        searchQuery={searchQuery}
                         selectedSessionId={selectedSessionId}
                         selectedMaterials={selectedMaterials}
                         onSessionSelect={handleSessionSelect}
