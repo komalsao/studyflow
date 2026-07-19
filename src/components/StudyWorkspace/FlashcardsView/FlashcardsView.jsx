@@ -1,11 +1,12 @@
 import "./FlashcardsView.css";
 import lumi from "../../../assets/lumi/peek.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { askLumi } from "../../../services/askLumi";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { updateProgress } from "../../../services/progressService";
 
-function FlashcardsView({ session, setActiveView }) {
+function FlashcardsView({ session, setActiveView, onProgressUpdate }) {
     const navigate = useNavigate();
 
     const flashcards = session?.resources?.flashcards;
@@ -17,6 +18,7 @@ function FlashcardsView({ session, setActiveView }) {
     const [isAnimating, setIsAnimating] = useState(false);
 
     const [completed, setCompleted] = useState(0);
+    const markedSessionId = useRef(null);
 
     useEffect(() => {
 
@@ -40,6 +42,24 @@ function FlashcardsView({ session, setActiveView }) {
         flashcards.length > 0
             ? (completed / flashcards.length) * 100
             : 0;
+
+    useEffect(() => {
+        if (
+            !session?.id ||
+            !flashcards?.length ||
+            completed !== flashcards.length ||
+            session.progress?.flashcards ||
+            markedSessionId.current === session.id
+        ) return;
+
+        markedSessionId.current = session.id;
+        updateProgress(session.id, "flashcards")
+            .then(() => onProgressUpdate?.("flashcards"))
+            .catch((error) => {
+                markedSessionId.current = null;
+                console.error("Unable to update flashcard progress:", error);
+            });
+    }, [completed, flashcards?.length, session?.id, session?.progress?.flashcards]);
 
     function handleCardClick() {
 

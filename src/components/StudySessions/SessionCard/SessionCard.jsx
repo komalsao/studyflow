@@ -21,6 +21,7 @@ import {
     deleteSession,
     renameSession
 } from "../../../services/sessionService";
+import { getProgressPercentage } from "../../../services/progressService";
 
 const iconMap = {
     monitor: Monitor,
@@ -47,6 +48,7 @@ function SessionCard({
     const [newName, setNewName] = useState(session.title);
 
     const Icon = iconMap[session.icon];
+    const progressPercentage = getProgressPercentage(session.progress);
 
     return (
 
@@ -95,7 +97,7 @@ function SessionCard({
                             }}
                         >
 
-                            {session.progress}%
+                            {progressPercentage}%
 
                         </span>
 
@@ -131,7 +133,7 @@ function SessionCard({
                                 <div
                                     className="progress-fill"
                                     style={{
-                                        width: `${session.progress}%`,
+                                        width: `${progressPercentage}%`,
                                         background: session.color
                                     }}
                                 />

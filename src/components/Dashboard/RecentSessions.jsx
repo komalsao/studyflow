@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import { getProgressPercentage } from "../../services/progressService";
 
 const sessionColors = [
   "#2E8B57",
@@ -48,6 +49,7 @@ function RecentSessions({ sessions }) {
               const color =
                 session.color ||
                 sessionColors[index % sessionColors.length];
+              const progressPercentage = getProgressPercentage(session.progress);
 
               return (
 
@@ -72,15 +74,34 @@ function RecentSessions({ sessions }) {
                       <Icon size={22} />
                     </div>
 
-                    <span className="recent-session-title">
-                      {session.title}
-                    </span>
+                    <div className="recent-session-content">
+
+                      <span className="recent-session-title">
+                        {session.title}
+                      </span>
+
+                      <div className="recent-session-progress-bar">
+                        <div
+                          className="recent-session-progress-fill"
+                          style={{ width: `${progressPercentage}%` }}
+                        />
+                      </div>
+
+                    </div>
 
                   </div>
 
-                  <div className="recent-session-arrow">
+                  <div className="recent-session-right">
 
-                    <ArrowRight size={18} />
+                    <span className="recent-session-progress">
+                      {progressPercentage}%
+                    </span>
+
+                    <div className="recent-session-arrow">
+
+                      <ArrowRight size={18} />
+
+                    </div>
 
                   </div>
 

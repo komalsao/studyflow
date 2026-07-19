@@ -1,6 +1,6 @@
 import "./SummaryView.css";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     BookOpen,
@@ -12,17 +12,31 @@ import {
     Zap
 } from "lucide-react";
 import { askLumi } from "../../../services/askLumi";
+import { updateProgress } from "../../../services/progressService";
 
-function SummaryView({ session }) {
+function SummaryView({ session, onProgressUpdate }) {
 
     const navigate = useNavigate();
     const { sessionId } = useParams();
     const [expandedTopicIndex, setExpandedTopicIndex] = useState(0);
     const [isOverviewExpanded, setIsOverviewExpanded] = useState(false);
+    const markedSessionId = useRef(null);
 
     const overview = session?.resources?.overview;
     const topics = session?.resources?.topics || [];
     const expandedTopic = topics[expandedTopicIndex] || null;
+
+    useEffect(() => {
+        if (!session?.id || session.progress?.summary || markedSessionId.current === session.id) return;
+
+        markedSessionId.current = session.id;
+        updateProgress(session.id, "summary")
+            .then(() => onProgressUpdate?.("summary"))
+            .catch((error) => {
+                markedSessionId.current = null;
+                console.error("Unable to update summary progress:", error);
+            });
+    }, [session?.id, session?.progress?.summary]);
 
     const handleAskLumi = (prompt) => {
 

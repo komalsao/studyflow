@@ -178,6 +178,22 @@ function StudyWorkspace() {
 
     };
 
+    const handleProgressUpdate = (feature) => {
+
+        setSession((currentSession) =>
+            currentSession?.id === sessionId
+                ? {
+                    ...currentSession,
+                    progress: {
+                        ...currentSession.progress,
+                        [feature]: true,
+                    },
+                }
+                : currentSession
+        );
+
+    };
+
     useEffect(() => {
 
         function handleClick(e) {
@@ -255,19 +271,25 @@ function StudyWorkspace() {
                             />
                         )}
 
-                        {activeView === "summary" && <SummaryView session={activeSession} />}
+                        {activeView === "summary" && <SummaryView
+                            session={activeSession}
+                            onProgressUpdate={handleProgressUpdate}
+                        />}
                         {activeView === "flashcards" && (
                             <FlashcardsView
                                 session={activeSession}
                                 setActiveView={setActiveView}
+                                onProgressUpdate={handleProgressUpdate}
                             />
                         )}
                         {activeView === "quiz" && <QuizView
                             session={activeSession}
+                            onProgressUpdate={handleProgressUpdate}
                         />}
 
                         {activeView === "mindmap" && <MindMapView
                             session={activeSession}
+                            onProgressUpdate={handleProgressUpdate}
                         />}
 
                     </div>

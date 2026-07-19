@@ -1,6 +1,6 @@
 import "./QuizView.css";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ResultScreen from "./ResultScreen";
 import QuizHeader from "./QuizHeader";
 import ProgressBar from "./ProgressBar";
@@ -8,8 +8,9 @@ import QuestionCard from "./QuestionCard";
 import OptionCard from "./OptionCard";
 import QuizStart from "./QuizStart";
 import { ClockAlert } from "lucide-react";
+import { updateProgress } from "../../../services/progressService";
 
-function QuizView({ session }) {
+function QuizView({ session, onProgressUpdate }) {
 
     const [selectedOption, setSelectedOption] = useState(null);
     const [showResult, setShowResult] = useState(false);
@@ -24,6 +25,7 @@ function QuizView({ session }) {
     const [timeUp, setTimeUp] = useState(false);
     const [startTime, setStartTime] = useState(null);
     const [totalTime, setTotalTime] = useState(0);
+    const markedSessionId = useRef(null);
 
     const questions = session?.resources?.quiz;
 
@@ -57,6 +59,20 @@ function QuizView({ session }) {
 
 
     function finishQuiz() {
+
+        if (
+            session?.id &&
+            !session.progress?.quiz &&
+            markedSessionId.current !== session.id
+        ) {
+            markedSessionId.current = session.id;
+            updateProgress(session.id, "quiz")
+                .then(() => onProgressUpdate?.("quiz"))
+                .catch((error) => {
+                    markedSessionId.current = null;
+                    console.error("Unable to update quiz progress:", error);
+                });
+        }
 
         const endTime = Date.now();
 

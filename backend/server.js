@@ -18,7 +18,7 @@ app.use("/api/study", generateStudyRoutes);
 app.get("/", (req, res) => {
     res.json({
         success: true,
-        message: "🚀 StudyFlow Backend is running!"
+        message: "StudyFlow Backend is running!"
     });
 });
 

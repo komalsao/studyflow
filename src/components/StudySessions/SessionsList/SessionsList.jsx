@@ -32,7 +32,6 @@ function formatSession(session, index) {
         ...session,
         icon: supportedIcons.includes(session.icon) ? session.icon : "monitor",
         color: session.color || sessionColors[index % sessionColors.length],
-        progress: typeof session.progress === "number" ? session.progress : 0,
         lastOpened: formatLastOpened(session.lastOpened),
     };
 

@@ -1,12 +1,26 @@
 import "./MindMapView.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import MindMapCanvas from "./Canvas/MindMapCanvas";
 import LumiExplanation from "./LumiExplanation/LumiExplanation";
+import { updateProgress } from "../../../services/progressService";
 
-function MindMapView({ session }) {
+function MindMapView({ session, onProgressUpdate }) {
     const [selectedNode, setSelectedNode] = useState(null);
+    const markedSessionId = useRef(null);
     const mindMap = session?.resources?.mindMap;
+
+    useEffect(() => {
+        if (!session?.id || session.progress?.mindmap || markedSessionId.current === session.id) return;
+
+        markedSessionId.current = session.id;
+        updateProgress(session.id, "mindmap")
+            .then(() => onProgressUpdate?.("mindmap"))
+            .catch((error) => {
+                markedSessionId.current = null;
+                console.error("Unable to update mind map progress:", error);
+            });
+    }, [session?.id, session?.progress?.mindmap]);
 
     if (!mindMap) {
 
