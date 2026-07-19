@@ -8,6 +8,8 @@ import SearchBar from "../../components/StudySessions/SearchBar/SearchBar";
 import SessionsList from "../../components/StudySessions/SessionsList/SessionsList";
 import MaterialsLibrary from "../../components/StudySessions/MaterialsLibrary/MaterialsLibrary";
 import { getSessionMaterials } from "../../services/sessionService";
+import { House } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function StudySessions() {
 
@@ -15,6 +17,7 @@ function StudySessions() {
     const [selectedMaterials, setSelectedMaterials] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchText, setSearchText] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -76,10 +79,27 @@ function StudySessions() {
 
                 <div className="study-sessions-header">
 
-                    <h1>Study Sessions</h1>
+                    <div className="study-header-top">
+
+                        <h1>Study Sessions</h1>
+
+                        <button
+                            className="dashboard-home-btn"
+                            onClick={() => navigate("/dashboard")}
+                        >
+
+                            <House size={18} />
+
+                            Dashboard
+
+                        </button>
+
+                    </div>
 
                     <p>
+
                         Continue where you left off.
+
                     </p>
 
                 </div>

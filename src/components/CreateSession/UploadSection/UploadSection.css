@@ -145,6 +145,14 @@
     gap:15px;
 
     margin-bottom:25px;
+
+    margin-top:10px;
+
+    max-height:320px;
+
+    overflow-y:auto;
+
+    padding-right:6px;
 }
 
 .material-item{
@@ -215,5 +223,25 @@
 .material-item.selected .pdf-icon{
 
     color:#2E8B57;
+
+}
+
+.material-list::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.material-list::-webkit-scrollbar-thumb{
+
+    background:#C8D8CE;
+
+    border-radius:999px;
+
+}
+
+.material-list::-webkit-scrollbar-track{
+
+    background:transparent;
 
 }

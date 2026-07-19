@@ -1,0 +1,41 @@
+.upload-spinner{
+
+    width:56px;
+
+    height:56px;
+
+    border:5px solid #E7EFE9;
+
+    border-top:5px solid #2E8B57;
+
+    border-radius:50%;
+
+    animation:uploadSpin .8s linear infinite;
+
+    margin-bottom:20px;
+
+}
+
+.upload-loading-note{
+
+    margin-top:12px;
+
+    color:#6D7871;
+
+    font-size:14px;
+
+    text-align:center;
+
+    line-height:1.5;
+
+}
+
+@keyframes uploadSpin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}

@@ -136,3 +136,29 @@
 
     color:#7A857E;
 }
+
+.chat-send-spinner{
+
+    width:16px;
+
+    height:16px;
+
+    border:2px solid rgba(255,255,255,.4);
+
+    border-top-color:#FFFFFF;
+
+    border-radius:50%;
+
+    animation:chatSendSpin .7s linear infinite;
+
+}
+
+@keyframes chatSendSpin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}

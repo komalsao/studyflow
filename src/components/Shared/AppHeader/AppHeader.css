@@ -21,6 +21,7 @@
     top:0;
 
     z-index:100;
+
 }
 
 .logo h2{
@@ -32,6 +33,7 @@
     font-weight:700;
 
     letter-spacing:-0.5px;
+
 }
 
 .navbar-right{
@@ -39,39 +41,99 @@
     display:flex;
 
     align-items:center;
+
+    gap:18px;
+
 }
 
-.profile-btn{
+.navbar-profile{
 
     display:flex;
 
     align-items:center;
 
-    gap:10px;
+    gap:12px;
 
-    background:none;
+}
 
-    border:none;
+.profile-avatar{
 
-    cursor:pointer;
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:#2E8B57;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     font-size:18px;
+
+    font-weight:700;
+
+}
+
+.profile-name{
+
+    font-size:17px;
 
     font-weight:600;
 
     color:#222;
 
-    transition:.2s;
 }
 
-.profile-btn:hover{
+.navbar-logout{
 
-    color:#2E8B57;
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#F5F8F6;
+
+    color:#555;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.2s ease;
+
 }
 
-.dropdown{
+.navbar-logout:hover{
 
-    font-size:14px;
+    background:#2E8B57;
 
-    color:#666;
+    color:#fff;
+
+}
+.logo h2,
+.workspace-logo{
+
+    font-family:"Playfair Display", serif;
+
+    font-size:2.3rem;
+
+    font-weight:700;
+
+    color:#6b7b5d;
+
+    letter-spacing:-0.5px;
+
 }

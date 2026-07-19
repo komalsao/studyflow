@@ -148,3 +148,33 @@
 
     color:#2E8B57;
 }
+
+.workspace-home-btn{
+
+    width:38px;
+
+    height:38px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#F5FAF7;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.workspace-home-btn:hover{
+
+    background:#EAEDED;
+
+}

@@ -4,6 +4,8 @@ import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { PencilLine } from "lucide-react";
 import RenameModal from "../../Shared/Modals/RenameModal/RenameModal";
 import { renameSession } from "../../../services/sessionService";
+import { House } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function WorkspaceHeader({
     sidebarCollapsed,
@@ -12,6 +14,8 @@ function WorkspaceHeader({
     materialsCount,
     onRename,
 }) {
+
+    const navigate = useNavigate();
 
     const [showRenameModal, setShowRenameModal] = useState(false);
     const [newName, setNewName] = useState("");
@@ -56,62 +60,71 @@ function WorkspaceHeader({
     return (
         <>
 
-        <header className="workspace-header">
+            <header className="workspace-header">
 
-            <div className="workspace-brand">
+                <div className="workspace-brand">
 
-                <h2 className="workspace-logo">
-                    StudyFlow
-                </h2>
-
-                <button
-                    className="collapse-btn"
-                    onClick={() =>
-                        setSidebarCollapsed(!sidebarCollapsed)
-                    }
-                >
-                    {sidebarCollapsed ? (
-                        <PanelLeftOpen size={18} />
-                    ) : (
-                        <PanelLeftClose size={18} />
-                    )}
-                </button>
-
-            </div>
-
-            <div className="workspace-session">
-
-                <div className="workspace-title">
-
-                    <h1>{session?.title || "Study Session"}</h1>
+                    <h2 className="workspace-logo">
+                        StudyFlow
+                    </h2>
 
                     <button
-                        className="edit-title-btn"
-                        onClick={handleOpenRenameModal}
+                        className="collapse-btn"
+                        onClick={() =>
+                            setSidebarCollapsed(!sidebarCollapsed)
+                        }
+                    >
+                        {sidebarCollapsed ? (
+                            <PanelLeftOpen size={18} />
+                        ) : (
+                            <PanelLeftClose size={18} />
+                        )}
+                    </button>
+
+                    <button
+                        className="workspace-home-btn"
+                        onClick={() => navigate("/dashboard")}
                     >
 
-                        <PencilLine size={16} />
+                        <House size={18} />
 
                     </button>
 
                 </div>
 
-                <p>
-                    {materialsCount} Materials
-                </p>
+                <div className="workspace-session">
 
-            </div>
+                    <div className="workspace-title">
 
-        </header>
+                        <h1>{session?.title || "Study Session"}</h1>
 
-        <RenameModal
-            isOpen={showRenameModal}
-            title="Rename Study Session"
-            value={newName}
-            setValue={setNewName}
-            onClose={() => setShowRenameModal(false)}
-            onSave={handleRename}
-        />
+                        <button
+                            className="edit-title-btn"
+                            onClick={handleOpenRenameModal}
+                        >
+
+                            <PencilLine size={16} />
+
+                        </button>
+
+                    </div>
+
+                    <p>
+                        {materialsCount} Materials
+                    </p>
+
+                </div>
+
+            </header>
+
+            <RenameModal
+                isOpen={showRenameModal}
+                title="Rename Study Session"
+                value={newName}
+                setValue={setNewName}
+                onClose={() => setShowRenameModal(false)}
+                onSave={handleRename}
+            />
 
         </>
     );

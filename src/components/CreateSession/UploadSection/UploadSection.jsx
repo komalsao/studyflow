@@ -9,7 +9,8 @@ function UploadSection({
     materials,
     selectedMaterialIds,
     onMaterialToggle,
-    onFilesSelected
+    onFilesSelected,
+    isGenerating
 }) {
     return (
 
@@ -21,6 +22,7 @@ function UploadSection({
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                     onFilesSelected={onFilesSelected}
+                    isGenerating={isGenerating}
                 />
 
                 <SelectedMaterials

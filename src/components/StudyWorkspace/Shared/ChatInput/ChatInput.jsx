@@ -28,23 +28,23 @@ function ChatInput({
 
     function handleSend() {
 
-    if (disabled) return;
+        if (disabled) return;
 
-    const text = message.trim();
+        const text = message.trim();
 
-    if (!text) return;
+        if (!text) return;
 
-    if (onSend) {
+        if (onSend) {
 
-        onSend(text);
+            onSend(text);
 
-        setMessage("");
+            setMessage("");
 
-        inputRef.current?.focus();
+            inputRef.current?.focus();
+
+        }
 
     }
-
-}
 
     function handleBoxClick() {
 
@@ -122,7 +122,15 @@ function ChatInput({
 
                 >
 
-                    <Send size={18} />
+                    {disabled ? (
+
+                        <div className="chat-send-spinner"></div>
+
+                    ) : (
+
+                        <Send size={18} />
+
+                    )}
 
                 </button>
 

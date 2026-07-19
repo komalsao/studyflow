@@ -6,6 +6,8 @@
 
     align-items:center;
 
+    text-align:center;
+
     background:#FFFDF8;
 
     border:1px solid #E6DED2;
@@ -21,21 +23,23 @@
         box-shadow .25s ease;
 
     cursor:pointer;
-}
 
-.mindmap-node:hover{
+    white-space:normal;
 
-    transform:translateY(-4px);
+    overflow-wrap:break-word;
 
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.09);
+    word-break:break-word;
+
+    height:auto;
 }
 
 /* Root */
 
 .level-0{
 
-    width:320px;
+    min-width:320px;
+
+    max-width:420px;
 
     min-height:92px;
 
@@ -50,7 +54,9 @@
 
 .level-1{
 
-    width:200px;
+    min-width:200px;
+
+    max-width:280px;
 
     min-height:70px;
 
@@ -61,7 +67,9 @@
 
 .level-2{
 
-    width:150px;
+    min-width:150px;
+
+    max-width:220px;
 
     min-height:54px;
 
@@ -74,20 +82,7 @@
 
     font-weight:600;
 
-    line-height:1.5;
-}
+    line-height:1.4;
 
-.level-0 .node-title{
-
-    font-size:28px;
-}
-
-.level-1 .node-title{
-
-    font-size:18px;
-}
-
-.level-2 .node-title{
-
-    font-size:15px;
+    width:100%;
 }

@@ -15,38 +15,66 @@ import db from "../../firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 
 function Login() {
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
 
   const handleLogin = async (e) => {
+
     e.preventDefault();
+
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     try {
+
       await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+
       const user = auth.currentUser;
+
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
+
         navigate("/dashboard");
+
       } else {
+
         navigate("/onboarding");
+
       }
 
       alert("Login successful!");
 
     } catch (error) {
+
       alert(error.message);
+
+    } finally {
+
+      setIsLoading(false);
+
     }
+
   };
 
   const handleGoogleLogin = async () => {
+
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     try {
 
       const result = await signInWithPopup(auth, provider);
@@ -55,32 +83,54 @@ function Login() {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
+
         navigate("/dashboard");
+
       } else {
+
         navigate("/onboarding");
+
       }
 
     } catch (error) {
+
       alert(error.message);
+
+    } finally {
+
+      setIsLoading(false);
+
     }
+
   };
 
   const handleForgotPassword = async () => {
+
     if (!email) {
+
       alert("Please enter your email first.");
       return;
+
     }
+
     try {
+
       await sendPasswordResetEmail(auth, email);
+
       alert("Password reset email sent!");
+
     } catch (error) {
+
       alert(error.message);
+
     }
 
   };
 
   return (
+
     <div className="login-page">
+
       <img
         src={sideLumi}
         alt="Lumi"
@@ -88,13 +138,19 @@ function Login() {
       />
 
       <div className="login-card">
+
         <form onSubmit={handleLogin}>
 
           <div className="brand">
-            <h2 className="brand-title">StudyFlow</h2>
+
+            <h2 className="brand-title">
+              StudyFlow
+            </h2>
+
             <p className="brand-tagline">
               Learn smarter together.
             </p>
+
           </div>
 
           <h1>Welcome back!</h1>
@@ -103,31 +159,50 @@ function Login() {
             Sign in to continue your study journey.
           </p>
 
-          <button className="google-btn" onClick={handleGoogleLogin}>
+          <button
+            type="button"
+            className="google-btn"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+          >
+
             <FcGoogle className="google-icon" />
-            Continue with Google
+
+            {isLoading
+              ? "Signing In..."
+              : "Continue with Google"}
+
           </button>
 
           <div className="divider">
+
             <span></span>
+
             <p>or</p>
+
             <span></span>
+
           </div>
 
           <div className="input-group">
+
             <label>Email</label>
+
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+
           </div>
 
           <div className="input-group">
+
             <label>Password</label>
 
             <div className="password-input">
+
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
@@ -140,13 +215,20 @@ function Login() {
                 className="eye-btn"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+
+                {showPassword
+                  ? <FiEyeOff />
+                  : <FiEye />}
+
               </button>
+
             </div>
 
           </div>
 
-          <button type="button" className="forgot-password"
+          <button
+            type="button"
+            className="forgot-password"
             onClick={handleForgotPassword}
           >
             Forgot Password?
@@ -155,21 +237,38 @@ function Login() {
           <button
             type="submit"
             className="signin-btn"
+            disabled={isLoading}
           >
-            Sign In
+
+            {isLoading
+              ? "Signing In..."
+              : "Sign In"}
+
           </button>
 
           <p className="signup-text">
+
             Don't have an account?
-            <Link to="/signup" className="signup-link">
+
+            <Link
+              to="/signup"
+              className="signup-link"
+            >
+
               {" "}Create one
+
             </Link>
+
           </p>
+
         </form>
+
       </div>
 
-    </div >
+    </div>
+
   );
+
 }
 
 export default Login;

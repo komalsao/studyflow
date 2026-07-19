@@ -11,6 +11,7 @@ function ChatView({ session, autoPrompt }) {
     const location = useLocation();
     const navigate = useNavigate();
     const handledPrompt = useRef(null);
+    const [loadingMessages, setLoadingMessages] = useState(true);
 
 
 
@@ -76,22 +77,22 @@ function ChatView({ session, autoPrompt }) {
 
     useEffect(() => {
 
-    const prompt = location.state?.autoPrompt;
+        const prompt = location.state?.autoPrompt;
 
-    if (!prompt) return;
+        if (!prompt) return;
 
-    if (handledPrompt.current === prompt) return;
+        if (handledPrompt.current === prompt) return;
 
-    handledPrompt.current = prompt;
+        handledPrompt.current = prompt;
 
-    handleSend(prompt);
+        handleSend(prompt);
 
-    navigate(location.pathname, {
-        replace: true,
-        state: null,
-    });
+        navigate(location.pathname, {
+            replace: true,
+            state: null,
+        });
 
-}, [location.state, session]);
+    }, [location.state, session]);
 
     return (
 

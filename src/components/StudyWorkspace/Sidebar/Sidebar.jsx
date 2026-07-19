@@ -6,8 +6,15 @@ import {
     Layers,
     CircleHelp,
     Network,
-    FolderOpen
+    FolderOpen,
+    LogOut
 } from "lucide-react";
+import auth from "../../../firebase/auth";
+import { getCurrentUserProfile } from "../../../services/userService";
+import { useState, useRef, useEffect } from "react";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 
 function Sidebar({
 
@@ -22,6 +29,70 @@ function Sidebar({
     setShowMaterials
 
 }) {
+
+    const [profile, setProfile] = useState(null);
+
+    const [showMenu, setShowMenu] = useState(false);
+
+    const menuRef = useRef(null);
+
+    const navigate = useNavigate();
+
+
+
+    async function handleLogout() {
+
+    try {
+
+        await signOut(auth);
+
+        navigate("/login");
+
+    } catch (error) {
+
+        console.error("Unable to logout:", error);
+
+    }
+
+}
+
+    useEffect(() => {
+
+        function handleClick(e) {
+
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(e.target)
+            ) {
+
+                setShowMenu(false);
+
+            }
+
+        }
+
+        document.addEventListener("pointerdown", handleClick);
+
+        return () => {
+
+            document.removeEventListener("pointerdown", handleClick);
+
+        };
+
+    }, []);
+
+
+
+    useEffect(() => {
+
+        const user = auth.currentUser;
+
+        if (!user) return;
+
+        getCurrentUserProfile(user.uid)
+            .then(setProfile);
+
+    }, []);
 
     return (
 
@@ -108,26 +179,62 @@ function Sidebar({
 
             </div>
 
-            <div className="sidebar-profile">
+            <div
+                className="sidebar-profile"
+                ref={menuRef}
+                onClick={() => {
+
+                    if (!collapsed) {
+
+                        setShowMenu((prev) => !prev);
+
+                    }
+
+                }}
+            >
 
                 <div className="profile-avatar">
-                    K
+                    {profile?.name?.charAt(0).toUpperCase() || "?"}
                 </div>
 
                 {!collapsed && (
 
                     <div className="profile-info">
 
-                        <h4>Komal</h4>
+                        <h4>{profile?.name || "User"}</h4>
 
-                        <p>Your AI Study Companion</p>
+                        <p>{profile?.email}</p>
+
+                    </div>
+
+                )}
+
+                {showMenu && (
+
+                    <div className="profile-menu">
+
+                        <button
+                            className="logout-btn"
+                            onClick={(e) => {
+
+                                e.stopPropagation();
+
+                                handleLogout();
+
+                            }}
+                        >
+
+                            <LogOut size={16} />
+
+                            Logout
+
+                        </button>
 
                     </div>
 
                 )}
 
             </div>
-
         </aside>
 
     );

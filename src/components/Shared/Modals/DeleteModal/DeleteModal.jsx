@@ -1,14 +1,46 @@
 import "./DeleteModal.css";
 
 import { TriangleAlert, X } from "lucide-react";
+import { useEffect } from "react";
 
 function DeleteModal({
     isOpen,
     title,
     message,
     onClose,
-    onDelete
+    onDelete,
+    loading = false
 }) {
+
+    useEffect(() => {
+
+        if (!isOpen || loading) return;
+
+        function handleKeyDown(e) {
+
+            if (e.key === "Enter") {
+
+                onDelete();
+
+            }
+
+            if (e.key === "Escape") {
+
+                onClose();
+
+            }
+
+        }
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+
+            window.removeEventListener("keydown", handleKeyDown);
+
+        };
+
+    }, [isOpen, loading, onDelete, onClose]);
 
     if (!isOpen) return null;
 
@@ -21,6 +53,7 @@ function DeleteModal({
                 <button
                     className="delete-close"
                     onClick={onClose}
+                    disabled={loading}
                 >
 
                     <X size={18} />
@@ -42,6 +75,7 @@ function DeleteModal({
                     <button
                         className="delete-cancel"
                         onClick={onClose}
+                        disabled={loading}
                     >
 
                         Cancel
@@ -51,9 +85,12 @@ function DeleteModal({
                     <button
                         className="delete-btn"
                         onClick={onDelete}
+                        disabled={loading}
                     >
 
-                        Delete
+                        {loading
+                            ? "Deleting..."
+                            : "Delete"}
 
                     </button>
 

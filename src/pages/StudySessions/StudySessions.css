@@ -77,3 +77,43 @@
 
     border-radius:999px;
 }
+
+.study-header-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.dashboard-home-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:10px 16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#2E8B57;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.dashboard-home-btn:hover{
+
+    background:#266F47;
+
+}

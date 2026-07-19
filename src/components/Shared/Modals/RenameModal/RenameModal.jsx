@@ -8,7 +8,8 @@ function RenameModal({
     value,
     setValue,
     onClose,
-    onSave
+    onSave,
+    loading = false
 }) {
 
     if (!isOpen) return null;
@@ -26,6 +27,7 @@ function RenameModal({
                     <button
                         className="rename-close"
                         onClick={onClose}
+                        disabled={loading}
                     >
 
                         <X size={18} />
@@ -39,7 +41,17 @@ function RenameModal({
                     type="text"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
+                    onKeyDown={(e) => {
+
+                        if (e.key === "Enter" && !loading) {
+
+                            onSave();
+
+                        }
+
+                    }}
                     autoFocus
+                    disabled={loading}
                 />
 
                 <div className="rename-actions">
@@ -47,6 +59,7 @@ function RenameModal({
                     <button
                         className="rename-cancel"
                         onClick={onClose}
+                        disabled={loading}
                     >
 
                         Cancel
@@ -56,9 +69,12 @@ function RenameModal({
                     <button
                         className="rename-save"
                         onClick={onSave}
+                        disabled={loading}
                     >
 
-                        Save
+                        {loading
+                            ? "Saving..."
+                            : "Save"}
 
                     </button>
 

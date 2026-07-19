@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import db from "../../firebase/firestore";
 import auth from "../../firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { useRef } from "react";
 
 function Onboarding() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
+    const inputRef = useRef(null);
 
     const handleContinue = async (e) => {
         e.preventDefault();
@@ -49,7 +51,10 @@ function Onboarding() {
                 </p>
 
                 <form onSubmit={handleContinue}>
-                    <div className="input-wrapper">
+                    <div
+                        className="input-wrapper"
+                        onClick={() => inputRef.current?.focus()}
+                    >
 
                         <img
                             src={sitLumi}
@@ -62,9 +67,11 @@ function Onboarding() {
                         </label>
 
                         <input
+                            ref={inputRef}
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            placeholder="Enter your name"
                         />
 
                     </div>

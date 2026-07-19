@@ -233,6 +233,7 @@ function CreateSession() {
                     selectedMaterialIds={selectedMaterialIds}
                     onMaterialToggle={handleMaterialToggle}
                     onFilesSelected={handleFilesSelected}
+                    isGenerating={isGenerating}
                 />
 
                 <SessionDetails
@@ -249,7 +250,11 @@ function CreateSession() {
                         onClick={handleCreateSession}
                         disabled={isCreating || isGenerating}
                     >
-                        Create Study Session →
+
+                        {isCreating
+                            ? "Creating Session..."
+                            : "Create Study Session →"}
+
                     </button>
 
                 </div>
