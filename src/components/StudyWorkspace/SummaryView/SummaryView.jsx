@@ -1,5 +1,7 @@
 import "./SummaryView.css";
 
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     BookOpen,
     BrainCircuit,
@@ -9,16 +11,36 @@ import {
     Sparkles,
     Zap
 } from "lucide-react";
+import { askLumi } from "../../../services/askLumi";
 
 function SummaryView({ session }) {
 
+    const navigate = useNavigate();
+    const { sessionId } = useParams();
+    const [expandedTopicIndex, setExpandedTopicIndex] = useState(0);
+    const [isOverviewExpanded, setIsOverviewExpanded] = useState(false);
+
     const overview = session?.resources?.overview;
-
     const topics = session?.resources?.topics || [];
+    const expandedTopic = topics[expandedTopicIndex] || null;
 
-    const mainTopic = topics[0];
+    const handleAskLumi = (prompt) => {
 
-    const remainingTopics = topics.slice(1);
+        askLumi({
+            navigate,
+            sessionId: session?.id || sessionId,
+            prompt,
+        });
+
+    };
+
+    const handleTopicToggle = (index) => {
+
+        setExpandedTopicIndex((currentIndex) =>
+            currentIndex === index ? null : index
+        );
+
+    };
 
     if (!session?.resources) {
 
@@ -27,11 +49,13 @@ function SummaryView({ session }) {
                 <div className="summary-layout">
                     <div className="paper">
                         <div className="paper-content">
-                            <h2>Generating Summary...</h2>
-                            <p>
-                                Lumi is reading your study material and preparing
-                                your personalized summary.
-                            </p>
+                            <div className="summary-overview summary-loading">
+                                <h2>Generating Summary...</h2>
+                                <p>
+                                    Lumi is reading your study material and preparing
+                                    your personalized summary.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,13 +70,9 @@ function SummaryView({ session }) {
 
             <div className="summary-layout">
 
-                {/* LEFT */}
-
                 <div className="paper">
 
                     <div className="paper-content">
-
-                        {/* OVERVIEW */}
 
                         <section className="summary-overview">
 
@@ -62,33 +82,48 @@ function SummaryView({ session }) {
 
                                     <BookOpen size={22} />
 
-                                    {overview?.title || "Quick Overview"}
+                                    {overview?.title}
 
                                 </h2>
 
-                                <p>
+                                <div className="overview-summary-content">
 
-                                    {overview?.summary}
+                                    <p className={isOverviewExpanded ? "" : "overview-preview"}>
 
-                                </p>
+                                        {overview?.summary}
 
-                                {overview?.learningObjectives?.length > 0 && (
+                                    </p>
 
-                                    <ul className="learning-objectives">
+                                    {isOverviewExpanded && overview?.learningObjectives?.length > 0 && (
 
-                                        {overview.learningObjectives.map((objective, index) => (
+                                        <ul className="learning-objectives">
 
-                                            <li key={index}>
+                                            {overview.learningObjectives.map((objective, index) => (
 
-                                                {objective}
+                                                <li key={`${objective}-${index}`}>
 
-                                            </li>
+                                                    {objective}
 
-                                        ))}
+                                                </li>
 
-                                    </ul>
+                                            ))}
 
-                                )}
+                                        </ul>
+
+                                    )}
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="overview-toggle"
+                                    onClick={() => setIsOverviewExpanded((expanded) => !expanded)}
+                                    aria-expanded={isOverviewExpanded}
+                                >
+
+                                    {isOverviewExpanded ? "Read Less" : "Read More"}
+
+                                </button>
 
                             </div>
 
@@ -103,100 +138,100 @@ function SummaryView({ session }) {
 
                         </section>
 
-                        {/* MAIN TOPIC */}
+                        {topics.map((topic, index) => {
 
-                        {mainTopic && (
+                            const isExpanded = expandedTopicIndex === index;
 
-                            <section className="summary-topic expanded">
+                            return (
 
-                                <div className="topic-header">
+                                <section
+                                    key={`${topic.title}-${index}`}
+                                    className={`summary-topic ${isExpanded
+                                        ? "expanded"
+                                        : "collapsed"
+                                        }`}
+                                >
 
-                                    <div className="topic-title">
+                                    <button
+                                        type="button"
+                                        className="topic-header"
+                                        onClick={() => handleTopicToggle(index)}
+                                        aria-expanded={isExpanded}
+                                    >
 
-                                        <ChevronDown size={18} />
+                                        <div className="topic-title">
 
-                                        <h3>
+                                            {isExpanded ? (
+                                                <ChevronDown size={18} />
+                                            ) : (
+                                                <ChevronRight size={18} />
+                                            )}
 
-                                            {mainTopic.title}
+                                            <h3>{topic.title}</h3>
 
-                                        </h3>
+                                        </div>
 
-                                    </div>
+                                    </button>
 
-                                </div>
+                                    {isExpanded && (
 
-                                <div className="topic-body">
+                                        <>
 
-                                    <p>
+                                            <div className="topic-body">
 
-                                        {mainTopic.summary}
+                                                <p>{topic.summary}</p>
 
-                                    </p>
+                                                {topic.keyPoints?.length > 0 && (
 
-                                    {mainTopic.keyPoints?.length > 0 && (
+                                                    <ul className="key-points">
 
-                                        <ul>
+                                                        {topic.keyPoints.map((point, pointIndex) => (
 
-                                            {mainTopic.keyPoints.map((point, index) => (
+                                                            <li key={`${point}-${pointIndex}`}>
 
-                                                <li key={index}>
+                                                                {point}
 
-                                                    {point}
+                                                            </li>
 
-                                                </li>
+                                                        ))}
 
-                                            ))}
+                                                    </ul>
 
-                                        </ul>
+                                                )}
+
+                                            </div>
+
+                                            <div className="topic-divider" />
+
+                                            <button
+                                                type="button"
+                                                className="explore-topic"
+                                                onClick={() => handleAskLumi(
+                                                    `Explain "${topic.title}" in detail using my uploaded study material.`
+                                                )}
+                                            >
+
+                                                <Sparkles size={18} />
+
+                                                Explore This Topic
+
+                                            </button>
+
+                                        </>
 
                                     )}
 
-                                </div>
+                                </section>
 
-                                <div className="topic-divider" />
+                            );
 
-                                <button className="explore-topic">
-
-                                    <Sparkles size={18} />
-
-                                    Explore This Topic
-
-                                </button>
-
-                            </section>
-
-                        )}
-
-                        {/* OTHER TOPICS */}
-
-                        {remainingTopics.map((topic, index) => (
-
-                            <section
-                                key={index}
-                                className="summary-topic collapsed"
-                            >
-
-                                <ChevronRight size={18} />
-
-                                <span>
-
-                                    {topic.title}
-
-                                </span>
-
-                            </section>
-
-                        ))}
+                        })}
 
                     </div>
 
                 </div>
 
-                {/* RIGHT */}
-
                 <aside className="notes">
-
-                    {/* MEMORY TRICK */}
 
                     <div className="note yellow">
 
@@ -210,23 +245,21 @@ function SummaryView({ session }) {
 
                         <div className="note-content">
 
-                            <p>
+                            {expandedTopic?.memoryTrick && (
 
-                                {mainTopic?.memoryTrick?.title}
+                                <>
 
-                            </p>
+                                    <p>{expandedTopic.memoryTrick.title}</p>
 
-                            <p>
+                                    <p>{expandedTopic.memoryTrick.content}</p>
 
-                                {mainTopic?.memoryTrick?.content}
+                                </>
 
-                            </p>
+                            )}
 
                         </div>
 
                     </div>
-
-                    {/* REVISION */}
 
                     <div className="note blue">
 
@@ -242,13 +275,18 @@ function SummaryView({ session }) {
 
                             <div className="revision-tags">
 
-                                {mainTopic?.revisionTags?.map((tag, index) => (
+                                {expandedTopic?.revisionTags?.map((tag, index) => (
 
-                                    <span key={index}>
+                                    <button
+                                        key={`${tag}-${index}`}
+                                        onClick={() => handleAskLumi(
+                                            `Give me a quick revision of "${tag}" using my uploaded study material.`
+                                        )}
+                                    >
 
                                         {tag}
 
-                                    </span>
+                                    </button>
 
                                 ))}
 
@@ -257,8 +295,6 @@ function SummaryView({ session }) {
                         </div>
 
                     </div>
-
-                    {/* CONTINUE */}
 
                     <div className="note purple">
 
@@ -272,11 +308,14 @@ function SummaryView({ session }) {
 
                         <div className="note-content">
 
-                            {mainTopic?.continueWithLumi?.map((question, index) => (
+                            {expandedTopic?.continueWithLumi?.map((prompt, index) => (
 
-                                <button key={index}>
+                                <button
+                                    key={`${prompt}-${index}`}
+                                    onClick={() => handleAskLumi(prompt)}
+                                >
 
-                                    {question}
+                                    {prompt}
 
                                 </button>
 

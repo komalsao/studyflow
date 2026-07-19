@@ -148,7 +148,9 @@ function QuizView({ session }) {
         return (
 
             <QuizStart
-                topic={session.title}
+                topic={session?.title || "this study session"}
+                totalQuestions={questions.length}
+                lives={3}
                 onStart={() => {
 
                     setStartTime(Date.now());
