@@ -163,6 +163,7 @@ Overview:
 - Summarize the entire study material.
 - Mention every major topic.
 - Keep it between 150–250 words.
+-Memory tricks should be written as plain sentences without markdown formatting.
 
 Topics:
 - Create one topic object for every major concept.
