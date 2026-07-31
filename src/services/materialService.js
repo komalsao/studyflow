@@ -16,7 +16,7 @@ import supabase from "../supabase";
 
 const materialsCollection = collection(db, "materials");
 const materialsBucket = "materials";
-const studyApiUrl = "http://localhost:3001/api/study";
+const studyApiUrl = `${import.meta.env.VITE_API_BASE_URL}/api/study`;
 
 function getStorageFileName(fileName) {
     return fileName.replace(/[\\/]/g, "_");
