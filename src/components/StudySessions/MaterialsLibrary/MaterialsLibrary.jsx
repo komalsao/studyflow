@@ -1,4 +1,4 @@
-import "./Materialslibrary.css";
+import "./MaterialsLibrary.css";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect, useMemo } from "react";
